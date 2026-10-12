@@ -98,8 +98,8 @@ function edit($d){
     $nama = $d['nama'];
     $telp = $d['telepon'];
 
-    $cn = query("SELECT * FROM pelanggan WHERE nama='$nama' AND id_pelanggan != '$id'");
-    if($cn){
+    $cn = query("SELECT * FROM pelanggan WHERE nama_pelanggan='$nama' AND id_pelanggan <> '$id'");
+    if(mysqli_num_rows($cn) > 0){
         return [
             'bg' => 'info',
             'pesan' => 'Nama pelanggan tersebut sudah digunakan. Harap ganti nama yang lain.'

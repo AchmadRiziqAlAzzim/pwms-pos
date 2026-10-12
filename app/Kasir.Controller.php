@@ -209,10 +209,11 @@ function simpanPesananMenunggu($data)
                 status_pembayaran,
                 id_metode,
                 uang_diterima,
-                kembalian
+                kembalian,
+                id_user
             )
             VALUES (
-                ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                ?, NOW(), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
             )
         ";
 
@@ -223,7 +224,7 @@ function simpanPesananMenunggu($data)
 
         mysqli_stmt_bind_param(
             $stmt,
-            "siisiiiiiiii",
+            "siisiiiiiiiii",
             $kodeTransaksi,
             $tipePesananDb,
             $idPelanggan,
@@ -235,7 +236,8 @@ function simpanPesananMenunggu($data)
             $statusPembayaran,
             $idMetode,
             $uangDiterima,
-            $kembalian
+            $kembalian,
+            $idUser
         );
 
         if (!mysqli_stmt_execute($stmt)) {
