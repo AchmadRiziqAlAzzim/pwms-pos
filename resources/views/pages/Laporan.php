@@ -137,13 +137,13 @@ function formatWaktuLaporan($tanggal): string
                 <button type="button"
                     class="w-full sm:w-auto flex-1 xl:flex-none flex items-center justify-center gap-2 text-gray-700 font-bold px-5 py-3 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 active:scale-95 transition-all duration-200 cursor-pointer">
                         <i class="bx bxs-file text-md"></i>
-                    <span>Eksport Excel</span>
+                    <span class="">Eksport</span>
                 </button>
 
                 <button
                     type="button"
                     @click="FilterRiwayatTransaksi = true"
-                    class="w-full h-12 md:w-auto flex items-center justify-center bg-primary text-white font-bold px-6 gap-2 rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                    class="w-full h-12 md:w-auto flex-1 items-center justify-center bg-primary text-white font-bold px-6 gap-2 rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
                 >
                     <i class="bx bxs-filter text-lg"></i>
 

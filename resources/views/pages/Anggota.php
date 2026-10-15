@@ -42,7 +42,7 @@
 
     <div class="w-full sticky top-10 bg-white dark:bg-gray-900 rounded-lg p-5 mb-6">
         <div>
-            <form method="GET" class="flex flex-row gap-3" autocomplete="off">
+            <form method="GET" class="flex flex-col lg:flex-row gap-3" autocomplete="off">
                 <input type="hidden" name="route" value="<?= htmlspecialchars($_GET['route'] ?? '')?>">
                 <div class="relative flex-1">
                     <i class="bx bx-search absolute left-4 top-1/2 -translate-y-1/2 text-xl text-gray-400"></i>
@@ -89,8 +89,8 @@
             Data anggota yang terdaftar pada sistem.
         </p>
     </div>
-    <div class="overflow-hidden">
-        <table id="selection-table" class="w-full text-sm">
+    <div class="overflow-x-auto">
+        <table id="selection-table" class="w-full min-w-[900px] text-sm">
             <thead>
                 <tr class="bg-gray-50 dark:bg-gray-900 text-gray-400">
                     <th class="text-left font-bold px-5 py-4">#</th>

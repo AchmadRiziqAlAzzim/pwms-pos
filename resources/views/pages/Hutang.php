@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            <div class="relative bg-white dark:bg-gray-900  dark:border-gray-700 rounded-lg p-3 flex items-center justify-between overflow-hidden group transition-all duration-300 col-span-full lg:col-span-1">
+            <div class="relative bg-white dark:bg-gray-900  dark:border-gray-700 rounded-lg p-3 flex items-center justify-between overflow-hidden group transition-all duration-300">
                 <div>
                     <p class="text-[10px] uppercase tracking-wider font-black text-gray-400">Belum Lunas</p>
                     <div class="flex items-end gap-2 mt-1">
@@ -81,7 +81,7 @@
             </div>
 
             <div class="overflow-x-auto overflow-y-auto max-h-[700px] p-1">
-                <table id="selection-table" class="w-full min-w-[600px] text-sm">
+                <table id="selection-table" class="w-full min-w-[1100px] text-sm">
                     <thead class="sticky top-0 bg-gray-50 dark:bg-gray-900 z-10">
                         <tr class="text-gray-400">
                             <th class="text-left font-bold px-5 py-4">#</th>
