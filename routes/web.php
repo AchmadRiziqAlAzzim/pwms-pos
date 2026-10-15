@@ -1,0 +1,122 @@
+<?php
+
+$route = $_GET['route'] ?? 'dashboard';
+
+switch ($route) {
+
+    case 'dashboard':
+        
+        include __DIR__ . '/../app/Dashboard.Controller.php';
+        $page = __DIR__ . '/../resources/views/pages/Dashboard.php';
+
+        break;
+
+
+    case 'menu':
+        include __DIR__ . '/../app/Menu.Controller.php';
+        $page = __DIR__ . '/../resources/views/pages/KelolaMenu.php';
+
+        break;
+
+    case 'menu/kategori':
+        include __DIR__ . '/../app/Kategori.Controller.php';
+        $page = __DIR__ . '/../resources/views/pages/KelolaKategori.php';
+
+        break;
+
+    case 'menu/aktivitas':
+        
+        $page = __DIR__ . '/../resources/views/pages/AktivitasKelolaMenu.php';
+
+        break;
+
+    case 'kalender':
+        
+        $page = __DIR__ . '/../resources/views/pages/Kalender.php';
+
+        break;
+
+    case 'kasir':
+        
+        include  __DIR__ . '../../app/Kasir.Controller.php';
+        $page = __DIR__ . '/../resources/views/pages/Kasir.php';
+
+        break;
+
+    case 'jurnal':
+        // include  __DIR__ . '../../app/Anggota.Controller.php';
+        $page = __DIR__ . '/../resources/views/pages/Jurnal.php';
+        
+        break;
+
+    case 'metode':
+        
+        include  __DIR__ . '../../app/Metode.Controller.php';
+        $page = __DIR__ . '/../resources/views/pages/KelolaMetode.php';
+        
+        break;
+        
+    case 'hutang':
+            
+        include  __DIR__ . '../../app/Hutang.Controller.php';
+        $page = __DIR__ . '/../resources/views/pages/Hutang.php';
+
+        break;
+
+    case 'pelanggan':
+        include  __DIR__ . '../../app/Pelanggan.Controller.php';
+        $page = __DIR__ . '/../resources/views/pages/pelanggan.php';
+
+        break;
+
+    case 'anggota':
+        include  __DIR__ . '../../app/Anggota.Controller.php';
+        $page = __DIR__ . '/../resources/views/pages/Anggota.php';
+        
+        break;
+        
+    case 'hak/akses':
+            
+        $page = __DIR__ . '/../resources/views/pages/HakAkses.php';
+            
+        break;
+            
+    case 'laporan':
+                
+        include  __DIR__ . '../../app/Laporan.Controller.php';
+        $page = __DIR__ . '/../resources/views/pages/Laporan.php';
+        
+        break;
+        
+    case 'pengaturan':
+            
+        include  __DIR__ . '../../app/Pengaturan.Controller.php';
+        $page = __DIR__ . '/../resources/views/pages/Pengaturan.php';
+
+        break;
+
+    case 'profile':
+            
+        include  __DIR__ . '../../app/Profile.Controller.php';
+        $page = __DIR__ . '/../resources/views/pages/Profile.php';
+
+        break;
+
+    case 'struk':
+        include __DIR__ . '/../app/Struk.Controller.php';
+        $page = __DIR__ . '/../resources/views/pages/Struk.php';
+        break;
+
+    case 'api/struk':
+
+        include __DIR__ . '/../app/Struk.Controller.php';
+        
+        break;
+
+    default:
+
+        http_response_code(404);
+
+        exit('404 | Halaman tidak ditemukan');
+
+}

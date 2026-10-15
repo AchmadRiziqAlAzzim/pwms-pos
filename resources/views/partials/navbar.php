@@ -1,0 +1,44 @@
+<nav class="sticky top-0 left-0 min-w-full h-fit bg-white border-b border-gray-200/70 z-[999]">
+    <div class="flex justify-between items-center px-4 py-3 sm:px-8 sm:py-6">
+
+        <div class="w-full flex lg:hidden justify-between items-center">
+            <button type="button" @click="sidebarOpen = !sidebarOpen" id="IconSideBar" class="group flex justify-start items-center h-9 my-2 cursor-pointer translate-x-0 duration-[3s] transition-all ease-in-out">
+                <div class="group-hover:hidden p-3 rounded-lg bg-primary flex items-center justify-center">
+                    <i class="bx bxs-store text-xl text-white"></i>
+                </div>
+                <h1 class="flex lg:hidden font-black ml-3">
+                    POS
+                </h1>
+            </button>
+
+            <button type="button" @click="sidebarOpen = !sidebarOpen; if (!sidebarOpen) { dashboardOpen = false; }" class="flex lg:hidden items-center justify-center p-2.5 rounded-lg bg-white text-slate-700 hover:text-primary active:scale-95 transition-all duration-200 focus:outline-none">
+                 <i class="bx text-2xl transition-transform duration-300" :class="sidebarOpen ? 'bx-x rotate-90' : 'bx-menu'"></i>
+             </button>
+        </div>
+        <div class="flex items-center">
+            <div class="hidden lg:flex items-center space-x-2">              
+                <div class="flex flex-col text-left">
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                        Outlet
+                    </span>
+                    <span class="text-sm font-black text-gray-900">
+                        <?= $nama_usaha ?>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden lg:flex justify-end items-center gap-2">
+            <div class="p-3 rounded-full w-11 h-11 bg-primary flex items-center justify-center">
+                <span class="text-xl font-black text-white"><?= $hprofil ?></span>
+            </div>
+            <div class="flex flex-col">                
+                <span class="text-[10px] font-black text-primary uppercase tracking-widest leading-none"><?= $dataUser['nama_role'] ?></span>
+                <span class="text-base font-black text-slate-900 mt-1.5 leading-none"><?= $dataAnggota['nama'] ?></span>
+            </div>      
+        </div> 
+
+    </div>
+</nav>
+
+

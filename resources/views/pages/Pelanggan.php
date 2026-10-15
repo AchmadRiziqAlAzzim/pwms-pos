@@ -1,0 +1,296 @@
+<section id="Pelanggan">
+    <div class="w-full flex flex-col items-center justify-between gap-5">
+        <div class="w-full flex flex-col md:flex-row md:items-center justify-between gap-5">
+            <div class="flex items-center gap-x-5">
+                <div class="w-13 h-13 rounded-lg bg-primary flex items-center justify-center shrink-0 border-e border-gray-200">
+                    <i class="bx bx-group text-2xl text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black text-gray-900">
+                        Pelanggan
+                    </h1>
+                    <p class="text-sm text-gray-500 font-medium mt-1.5">
+                        Kelola data pelanggan.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex flex-row gap-x-3 my-1 shrink-0">
+                <button
+                    type="button"
+                        onclick='showGlobalModal(<?= json_encode([
+                        "title" => "Tambah Pelanggan",
+                        "subtitle" => "Tambahkan data pelanggan baru ke dalam sistem.",
+                        "icon" => "bxs-user-plus",
+                        "iconBg" => "bg-primary",
+                        "method" => "POST",
+                        "buttonText" => "Tambahkan",
+                        "buttonIcon" => "bxs-save",
+                        "buttonColor" => "bg-primary hover:bg-blue-700",
+                        "nameBtn" => "aksi",
+                        "value" => "tambah"
+                    ]) ?>)'
+                    class="w-full h-12 md:w-auto flex items-center justify-center bg-primary text-white font-bold px-6 gap-2 rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                >
+                    <i class="bx bxs-plus text-lg"></i>
+                    <span>Tambah Pelanggan</span>
+                </button>
+
+            </div>
+        </div>
+
+    <div class="w-full mt-8">
+        <form method="GET" autocomplete="off">
+            <input type="hidden" name="route" value="<?= htmlspecialchars($_GET['route'] ?? '')?>">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-5">
+                <div>
+                    <h2 class="text-lg font-black text-gray-900">
+                        Daftar Pelanggan
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-1">
+                        Data pelanggan yang terdaftar di sistem
+                    </p>
+                </div>
+
+                <div class="relative w-full lg:w-96">
+                    <i class="bx bx-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></i>
+                    <input
+                        type="search"
+                        placeholder="Cari nama, atau nomor Telepon..."
+                        class="input-delay w-full h-12 pl-11 pr-11 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary transition-all"
+                        name="cari"
+                        value="<?= htmlspecialchars($_GET['cari'] ?? '')?>"
+                    >
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="w-full overflow-hidden">
+        <table id="selection-table" class="w-full text-sm">
+            <thead>
+                <tr class="bg-gray-50 dark:bg-gray-900 text-gray-400">
+                    <th class="text-left font-bold px-5 py-4">#</th>
+                    <th class="text-left font-bold px-5 py-4">Nama</th>
+                    <th class="text-left font-bold px-5 py-4">No Telepon</th>
+                    <th class="text-left font-bold px-5 py-4">Catatan</th>
+                    <th class="text-center font-bold px-5 py-4">Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="body-tabel-Pelanggan">
+            <?php if(mysqli_num_rows($data)): ?>
+                <?php while($d = mysqli_fetch_assoc($data)): ?>
+                    <tr>
+                        <td class="px-5 py-4 font-medium"><?= $no++ ?></td>
+                        <td class="px-5 py-4 font-medium"><?= $d['nama_pelanggan'] ?></td>
+                        <td class="px-5 py-4 font-medium"><?= $d['telepon'] ?></td>
+                        <td class="px-5 py-4 font-medium"><?= $d['catatan'] ?></td>
+                        <td class="px-5 py-4 font-medium">
+                            <div class="flex items-center justify-center gap-2">
+                                <button type="button" 
+                                onclick='showGlobalModal(<?= json_encode([
+                                    "title" => "Edit Pelanggan",
+                                    "subtitle" => "Perbarui data pelanggan.",
+                                    "icon" => "bxs-edit",
+                                    "iconBg" => "bg-amber-500",
+                                    "method" => "POST",
+                                    "buttonText" => "Simpan Perubahan",
+                                    "buttonIcon" => "bxs-save",
+                                    "buttonColor" => "bg-amber-500 hover:bg-amber-600",
+                                    "nameBtn" => "aksi",
+                                    "value" => "edit"
+                                ]) ?>)
+                                 modalEdit(this)
+                                 '
+                                class="w-10 h-10 rounded-lg bg-primary text-white flex items-center justify-center hover:opacity-90 active:scale-95 transition-all" title="Edit menu"
+                                data-id="<?= htmlspecialchars($d['id_pelanggan']) ?>" data-nama="<?= htmlspecialchars($d['nama_pelanggan']) ?>" data-telp="<?= htmlspecialchars($d['telepon']) ?>" data-catatan="<?= htmlspecialchars($d['catatan']) ?>">
+                                    <i class="bx bxs-pencil"></i>
+                                </button>
+                                <button type="button" 
+                                onclick="showConfirmForm({
+                                    title: 'Hapus Pelanggan',
+                                    message: 'Apakah Anda yakin ingin hapus pelanggan <?= htmlspecialchars($d['nama_pelanggan']) ?>?.',
+                                    actionText: 'Ya, hapus',
+                                    type: 'danger',
+                                    nameAksi: 'hapus',
+                                    inputs: [
+                                        {
+                                            name: 'aksi',
+                                            type: 'hidden',
+                                            value: 'hapus'
+                                        },
+                                        {
+                                            name: 'id',
+                                            type: 'hidden',
+                                            value: <?= htmlspecialchars($d['id_pelanggan']) ?>
+                                        }
+                                    ]
+                                });"    
+                                class="w-10 h-10 rounded-lg bg-red-500 text-white flex items-center justify-center hover:opacity-90 active:scale-95 transition-all" title="Hapus menu">
+                                    <i class="bx bxs-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="5">
+                        <div class="flex flex-col items-center justify-center py-12 px-4 text-center bg-gray-50">
+                            <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4 border border-gray-200/80">
+                                <i class="bx bxs-user text-4xl text-gray-300"></i>
+                            </div>
+                            <h3 class="text-base font-black text-gray-800 mb-1">
+                                Pelanggan Belum Tersedia
+                            </h3>
+                            <p class="text-xs text-gray-400 max-w-sm mb-5">
+                                Belum ada data Pelanggan yang ditambahkan atau hasil pencarian tidak cocok.
+                            </p>
+                            <button 
+                                type="button"
+                                onclick='showGlobalModal(<?= json_encode([
+                                    "title" => "Tambah Pelanggan",
+                                    "subtitle" => "Tambahkan data pelanggan baru ke dalam sistem.",
+                                    "icon" => "bxs-user-plus",
+                                    "iconBg" => "bg-primary",
+                                    "method" => "POST",
+                                    "buttonText" => "Tambahkan",
+                                    "buttonIcon" => "bxs-save",
+                                    "buttonColor" => "bg-primary hover:bg-blue-700",
+                                    "nameBtn" => "aksi",
+                                    "value" => "tambah"
+                                ]) ?>)'
+                                class="px-4 py-3 bg-primary text-white text-sm font-bold rounded-lg hover:opacity-90 transition-all flex items-center gap-2"
+                            >
+                                <i class="bx bxs-plus text-base"></i>
+                                <span>Tambah Pelanggan</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="w-full flex justify-center mt-7">
+        <nav aria-label="Pagination">
+            <ul class="flex items-center gap-1.5 bg-white border-e border-gray-200 rounded-full p-2">
+                <li>
+                    <?php if($currentPage > 1): ?>
+                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => $currentPage - 1])) ?>"
+                        class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        Previous
+                    </a>
+                    <?php else: ?>
+                    <span
+                        class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-400 dark:text-gray-500 opacity-50 cursor-not-allowed pointer-events-none">
+                        Previous
+                    </span>
+                    <?php endif; ?>
+                </li>
+
+                <?php for($i = 1; $i <= $totalPage; $i++): ?>
+                <li>
+                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>"
+                        class="flex items-center justify-center w-9 h-9 rounded-lg <?= $i == $currentPage ? 'bg-primary text-white font-bold shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors' ?>">
+                        <?= $i  ?>
+                    </a>
+                </li>
+                <?php endfor; ?>
+
+                <li>
+                    <?php if($currentPage < $totalPage): ?>
+                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => $currentPage + 1])) ?>"
+                        class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                        Next
+                    </a>
+                    <?php else: ?>
+                    <span
+                        class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-400 dark:text-gray-500 opacity-50 cursor-not-allowed pointer-events-none">
+                        Next
+                    </span>
+                    <?php endif; ?>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="global-modal" role="dialog" aria-modal="true" aria-labelledby="globalModalTitle" class="hidden fixed inset-0 z-[9999] items-center justify-center p-4 bg-gray-950/60 backdrop-blur-[2px]">
+        <div class="relative p-4 w-full max-w-xl">
+            <div class="relative bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-800">
+                <div class="flex items-start justify-between p-5 sm:p-6 border-b border-gray-100 dark:border-gray-800">
+                    <div class="flex items-center gap-3 sm:gap-4">
+                        <div id="globalModalIconContainer" class="flex w-12 h-12 rounded-lg bg-primary items-center justify-center shrink-0">
+                            <i id="globalModalIcon" class="bx bxs-user-plus text-2xl text-white" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h3 id="globalModalTitle" class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white leading-tight"></h3>
+                            <p id="globalModalSubtitle" class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium mt-1"></p>
+                        </div>
+                    </div>
+                    <button type="button" onclick="closeGlobalModal()" class="text-gray-500 bg-gray-100 dark:bg-gray-800 dark:text-gray-400 hover:bg-primary hover:text-white rounded-full w-10 h-10 inline-flex justify-center items-center transition-colors cursor-pointer shrink-0" aria-label="Tutup modal">
+                        <i class="bx bxs-x text-2xl" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <form id="globalModalForm" action="" method="POST" class="p-5 sm:p-6" autocomplete="off">
+                    <input type="hidden" name="id" id="id">
+                    <div class="grid grid-cols-1 gap-5">
+                        <div class="flex flex-col gap-1.5 w-full">
+                            <label for="nama" class="text-[11px] sm:text-xs font-bold uppercase tracking-wide text-gray-600 dark:text-gray-400 ml-1">
+                            Nama Pelanggan <span class="text-red-500" aria-hidden="true">*</span>
+                            </label>
+                            <div class="relative flex items-center w-full group">
+                            <div class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
+                                <i class="bx bxs-user text-xl" aria-hidden="true"></i>
+                            </div>
+                            <input type="text" name="nama" id="nama" placeholder="Masukkan nama pelanggan" class="w-full pl-11 pr-4 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all" required>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-1.5 w-full">
+                            <label for="telepon" class="text-[11px] sm:text-xs font-bold uppercase tracking-wide text-gray-600 dark:text-gray-400 ml-1">
+                            No. Telepon <span class="text-red-500" aria-hidden="true">*</span>
+                            </label>
+                            <div class="relative flex items-center w-full group">
+                            <div class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
+                                <i class="bx bxs-phone text-xl" aria-hidden="true"></i>
+                            </div>
+                            <input type="text" name="telepon" inputmode="numeric" pattern="[0-9]{12}" minlength="12" maxlength="12" id="telepon" placeholder="Contoh: 081234567890" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full pl-11 pr-4 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all" required>
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-1.5 w-full">
+                            <label for="catatan" class="text-[11px] sm:text-xs font-bold uppercase tracking-wide text-gray-600 dark:text-gray-400 ml-1">
+                            Nama Pelanggan (Opsional)
+                            </label>
+                            <div class="relative flex items-center w-full group">
+                            <div class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
+                                <i class="bx bxs-note text-xl" aria-hidden="true"></i>
+                            </div>
+                            <input type="text" name="catatan" id="catatan" placeholder="Masukkan catatan pelanggan" class="w-full pl-11 pr-4 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col-reverse sm:flex-row items-center justify-end pt-5 mt-6 border-t border-gray-100 dark:border-gray-800 gap-3">
+                        <button type="button" onclick="closeGlobalModal()" class="w-full sm:w-auto bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 font-bold px-6 py-3 rounded-lg text-sm transition-all">
+                            Batal
+                        </button>
+                        <button id="globalModalSubmit" type="submit" class="w-full sm:w-auto flex items-center justify-center bg-primary hover:bg-blue-700 text-white font-black px-6 py-3 gap-2 rounded-lg text-sm transition-all">
+                            <i id="globalModalSubmitIcon" class="bx bxs-save text-lg" aria-hidden="true"></i>
+                            <span id="globalModalSubmitText"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script>
+    function modalEdit(btn){
+      $('#id').val(btn.dataset.id);
+      $('#nama').val(btn.dataset.nama);
+      $('#telepon').val(btn.dataset.telp);
+      $('#catatan').val(btn.dataset.catatan);
+    }
+</script>
