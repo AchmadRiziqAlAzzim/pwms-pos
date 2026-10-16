@@ -1,7 +1,23 @@
 <?php
     session_start();
+    if(!isset($_SESSION['id_user'])){
+      header("location: ../Login.php");
+      exit;
+    }
+
     require_once __DIR__ . '/../../../app/Global.Controller.php';
     require_once __DIR__ . '/../../../routes/web.php';
+
+    $idAnggota = $_SESSION['id_anggota'];
+    $idUser = (int)$_SESSION['id_user'];
+    $aid = query("SELECT * FROM anggota WHERE id_anggota= '$idAnggota'");
+    $uid = query("SELECT * FROM users u LEFT JOIN roles r ON u.id_role = r.id_role WHERE id_anggota = '$idAnggota'");
+    $dataAnggota = mysqli_fetch_assoc($aid);
+    $dataUser = mysqli_fetch_assoc($uid);
+
+    $hprofil = strtoupper(substr($dataAnggota['nama'], 0, 1));
+    $kr = $dataUser['kode_role'];
+
     ob_start();
     include $page;
     $content = ob_get_clean();
@@ -11,7 +27,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Kedaiku | PW</title>   
+        <title><?= $nama_usaha ?? '' ?> | POS</title>   
 
         <!-- STYLE ICON -->
         <link rel="icon" type="image/png" href="/assets/svg/cursor.svg">        
@@ -46,21 +62,20 @@
             sidebarOpen: $persist(false),
             Menu: $persist(false),
             Pengguna: $persist(false),
-        }"  >
+        }"  >     
         <main>
             <section id="MainContent">
                 <div class="flex flex-row">
                     <?php include ('../partials/sidebar.php') ?>
                     <div class="w-full flex flex-col">
                         <?php include ('../partials/navbar.php') ?>
-                        <main id="mainContent" class="px-4 md:px-8 lg:px-10 xl:px-20 my-12">
+                        <main id="mainContent" class="w-full px-4 md:px-8 lg:max-w-6xl xl:max-w-7xl mx-auto my-12 duration-300 transition-all ease">
                             <?= $content ?>
                         </main>
                     </div>
                 </div>
 
-                <!-- INI TOAST JIR -->
-                <div id="liveToast" class="fixed top-28 right-5 z-50 flex items-center w-full max-w-xs p-4 rounded-lg shadow-lg text-white hidden opacity-0 transition-all duration-300 transform translate-y-2 bg-emerald-600" role="alert">
+                <div id="liveToast" class="fixed top-28 right-5 z-[9991] flex items-center w-full max-w-xs p-4 rounded-lg shadow-lg text-white hidden opacity-0 transition-all duration-300 transform translate-y-2 bg-emerald-600" role="alert">
                     <i id="toastIcon" class="bx bxs-check-circle text-xl text-white"></i>
                     <div id="pesanToast" class="ms-2.5 text-white text-sm font-bold border-s border-white/30 ps-3.5"></div>
                     <button type="button" id="toastCloseBtn" class="ms-auto flex items-center justify-center text-white hover:bg-white/20 font-medium rounded text-sm h-8 w-8 focus:outline-none transition" aria-label="Close">
@@ -71,7 +86,6 @@
                     </button>
                 </div>
 
-                <!-- INI MODAL KONFIRMASI TANPA FORM -->
                 <div id="confirmModal" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-[9999] items-center justify-center p-4 overflow-y-auto">
                     <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
                     <div id="confirmBox" class="relative w-full max-w-md p-6 sm:p-8 bg-white dark:bg-slate-900 rounded-3xl shadow-2xl text-center z-10">
@@ -87,7 +101,6 @@
                     </div>
                 </div>
 
-                <!-- INI MODAL KONFIRMASI FORM -->
                 <div id="confirmModalId" tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-[9999] items-center justify-center p-4 overflow-y-auto">
                     <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
                     <div id="confirmFormBox" class="relative z-10 w-full max-w-md p-6 sm:p-8 bg-white dark:bg-slate-900 rounded-3xl shadow-2xl">
@@ -125,8 +138,18 @@
         <?php endif; ?>
 
         <script>
+            document.querySelectorAll('.input-delay').forEach(input => {
+                let timer;
+                    
+                input.addEventListener('input', function () {
+                    clearTimeout(timer);
+                    
+                    timer = setTimeout(() => {
+                        console.log(this.form.submit());
+                    }, 500);
+                });
+            });
 
-            // INI GLOBAL TOAST JS YE..
 
             // function showToast(message, type = 'success') {
             function showToast(d) {
@@ -142,6 +165,13 @@
                     'bg-amber-500',
                     'bg-blue-600'
                 );
+
+                // icon.classList.remove(
+                //     'bx bxs-check-circle text-xl text-white',
+                //     'bx bxs-x-circle text-xl text-white',
+                //     'bx bxs-alert-triangle text-xl text-white',
+                //     'bx bxs-info-circle text-xl text-white'
+                // );
 
                 if (d.bg === 'success') {
                     toast.classList.add('bg-emerald-600');
@@ -174,7 +204,6 @@
                 }, 3000);
             }
 
-        // INI ANU ADALAH POKOKNYA INI MODAL KONFIRMASI GLOBAL
 
         const confirmModal = document.getElementById('confirmModal');
         let confirmAction = null;
@@ -309,31 +338,6 @@
         
         confirmModal.querySelector('.fixed.inset-0')
             .addEventListener('click', closeConfirm);
-
-
-
-            // INI MODAL ID LOGIKA JS MODAL YG ADA FORM NYA
-
-            // Contoh
-            // showConfirmForm({
-            //     title: 'Hapus Pelanggan',
-            //     message: 'Apakah Anda yakin ingin hapus pelanggan tersebut?.',
-            //     actionText: 'Ya, hapus',
-            //     type: 'danger',
-            //     nameAksi: 'hapus',
-            //     inputs: [
-            //         {
-            //             name: 'aksi',
-            //             type: 'hidden',
-            //             value: 'hapus'
-            //         },
-            //         {
-            //             name: 'id',
-            //             type: 'hidden',
-            //             type: id data
-            //         }
-            //     ]
-            // });
 
     const confirmModalId = document.getElementById('confirmModalId');
 
@@ -494,8 +498,6 @@
         confirmModalId
             .querySelector('.fixed.inset-0')
             .addEventListener('click', closeConfirmForm);
-
-            // INI MODAL UTAMA GLOBAL YANG ADA FORM NYA
 
             function showGlobalModal(data){
                 const modal=document.getElementById('global-modal');

@@ -3,7 +3,7 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 dark:border-slate-800 gap-4">
             <div class="flex items-center gap-4 min-w-0">
                 <div class="flex w-13 h-13 rounded-lg bg-primary border border-indigo-100/80 items-center justify-center shrink-0 border border-gray-200/80">
-                    <i class="bx bxs-credit-card text-2xl text-white"></i>
+                    <i class="bx bx-credit-card text-2xl text-white"></i>
                 </div>
                 <div class="min-w-0">
                     <div class="flex items-center gap-3 flex-wrap">
@@ -40,9 +40,9 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2  gap-5 mb-7">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-7">
 
-        <div class="relative bg-white dark:bg-slate-900 border-e border-gray-200/80 dark:border-slate-700 rounded-lg p-3 flex items-center justify-between overflow-hidden group transition-all duration-300">
+        <div class="relative bg-white dark:bg-slate-900 md:border-e border-gray-200/80 dark:border-slate-700 rounded-lg p-3 flex items-center justify-between overflow-hidden group transition-all duration-300">
             <div>
                 <p class="text-[10px] uppercase tracking-wider font-black text-gray-400">Total Tersedia</p>
                 <div class="flex items-end gap-2 mt-1">
@@ -50,12 +50,12 @@
                     <span class="text-xs font-bold text-gray-400">metode</span>
                 </div>
             </div>
-            <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary text-white dark:text-emerald-400 group-hover:scale-110 transition-transform duration-300 shrink-0">
+            <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary text-white dark:text-emerald-400 transition-transform duration-300 shrink-0">
                 <i class="bx bxs-wallet-alt text-2xl"></i>
             </div>
         </div>
 
-        <div class="relative bg-white dark:bg-slate-900 border-e border-gray-200/80 dark:border-slate-700 rounded-lg p-3 flex items-center justify-between overflow-hidden group transition-all duration-300">
+        <div class="relative bg-white dark:bg-slate-900 rounded-lg p-3 flex items-center justify-between overflow-hidden group transition-all duration-300">
             <div>
                 <p class="text-[10px] uppercase tracking-wider font-black text-gray-400">Metode Aktif</p>
                 <div class="flex items-end gap-2 mt-1">
@@ -63,7 +63,7 @@
                     <span class="text-xs font-bold text-gray-400">aktif</span>
                 </div>
             </div>
-            <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary text-white dark:text-emerald-400 group-hover:scale-110 transition-transform duration-300 shrink-0">
+            <div class="flex items-center justify-center w-12 h-12 rounded-lg bg-primary text-white dark:text-emerald-400 transition-transform duration-300 shrink-0">
                 <i class="bx bxs-check-circle text-2xl"></i>
             </div>
         </div>
@@ -96,8 +96,7 @@
                             name="cari"
                             type="search"
                             id="search-dropdown"
-                            oninput="this.form.submit()"
-                            class="flex-1 px-1 py-1 bg-transparent text-slate-900 dark:text-slate-100 text-sm placeholder:text-gray-400 focus:outline-none font-medium min-w-0"
+                            class="input-delay flex-1 px-1 py-1 bg-transparent text-slate-900 dark:text-slate-100 text-sm placeholder:text-gray-400 focus:outline-none font-medium min-w-0"
                             placeholder="Cari metode..."
                             value="<?= htmlspecialchars($_GET['cari'] ?? '')?>"
                             >
@@ -108,7 +107,7 @@
 
         <div class="overflow-x-auto overflow-y-auto max-h-[700px] p-1">
             <table id="selection-table" class="w-full min-w-[600px] text-sm">
-                <thead class="sticky top-0 bg-slate-50 dark:bg-slate-900 z-10">
+                <thead class="sticky top-0 bg-gray-50 dark:bg-slate-900 z-10">
                     <tr class="text-gray-400">
                         <th class="text-left font-bold px-5 py-4">#</th>
                         <th class="text-left font-bold px-5 py-4">Nama</th>
@@ -144,6 +143,7 @@
                         </td>
                         <td class="px-5 py-4 w-36 whitespace-nowrap">
                             <div class="flex items-center justify-center gap-2">
+                                <?php if($d['kode_tipe'] !== 'tunai'): ?>
                                 <button type="button" 
                                 onclick='showGlobalModal(<?= json_encode([
                                     "title" => "Edit Metode Pembayaran",
@@ -163,6 +163,7 @@
                                 >
                                     <i class="bx bxs-pencil"></i>
                                 </button>
+
                                 <button type="button" 
                                 onclick="showConfirmForm({
                                     title: 'Hapus Metode',
@@ -186,6 +187,9 @@
                                 class="w-10 h-10 rounded-lg bg-red-500 text-white flex items-center justify-center hover:opacity-90 active:scale-95 transition-all" title="Hapus menu">
                                     <i class="bx bxs-trash"></i>
                                 </button>
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
                             </div>
                         </td>
                     </tr>
@@ -195,7 +199,7 @@
 
                         <td colspan="5">
                             <div class="flex flex-col items-center justify-center py-12 px-4 text-center bg-gray-50">
-                                <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4 border border-gray-200/80">
+                                <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4 border border-gray-200/80">
                                     <i class="bx bxs-credit-card text-4xl text-gray-300"></i>
                                 </div>
                                 <h3 class="text-base font-black text-slate-800 mb-1">Metode Belum Tersedia</h3>
@@ -208,13 +212,12 @@
                                     "subtitle" => "Tambahkan metode pembayaran baru untuk pembayaran.",
                                     "icon" => "bxs-credit-card",
                                     "iconBg" => "bg-primary",
-                                    "action" => "/metode-pembayaran/store",
                                     "method" => "POST",
-                                    "buttonText" => "Simpan Metode",
+                                    "buttonText" => "Tambahkan",
                                     "buttonIcon" => "bxs-save",
                                     "buttonColor" => "bg-primary hover:bg-blue-700",
                                     "nameBtn" => "aksi",
-                                    "value" => "tambah"  
+                                    "value" => "tambah"
                                 ]) ?>);
                                  modalTambah();'
                                 class="px-4 py-3 bg-primary text-white text-sm font-bold rounded-lg hover:opacity-90 transition-all flex items-center gap-2">
