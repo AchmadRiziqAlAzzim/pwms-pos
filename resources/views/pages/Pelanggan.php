@@ -3,13 +3,13 @@
         <div class="w-full flex flex-col md:flex-row md:items-center justify-between gap-5">
             <div class="flex items-center gap-x-5">
                 <div class="w-13 h-13 rounded-lg bg-primary flex items-center justify-center shrink-0 border-e border-gray-200">
-                    <i class="bx bxs-group text-2xl text-white"></i>
+                    <i class="bx bx-group text-2xl text-white"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-black text-slate-900">
+                    <h1 class="text-2xl font-black text-gray-900">
                         Pelanggan
                     </h1>
-                    <p class="text-sm text-slate-500 font-medium mt-1.5">
+                    <p class="text-sm text-gray-500 font-medium mt-1.5">
                         Kelola data pelanggan.
                     </p>
                 </div>
@@ -44,20 +44,20 @@
             <input type="hidden" name="route" value="<?= htmlspecialchars($_GET['route'] ?? '')?>">
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-5">
                 <div>
-                    <h2 class="text-lg font-black text-slate-900">
+                    <h2 class="text-lg font-black text-gray-900">
                         Daftar Pelanggan
                     </h2>
-                    <p class="text-xs text-slate-400 mt-1">
+                    <p class="text-xs text-gray-400 mt-1">
                         Data pelanggan yang terdaftar di sistem
                     </p>
                 </div>
 
                 <div class="relative w-full lg:w-96">
-                    <i class="bx bx-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl"></i>
+                    <i class="bx bx-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></i>
                     <input
                         type="search"
                         placeholder="Cari nama, atau nomor Telepon..."
-                        class="input-delay w-full h-12 pl-11 pr-11 text-xs sm:text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                        class="input-delay w-full h-12 pl-11 pr-11 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                         name="cari"
                         value="<?= htmlspecialchars($_GET['cari'] ?? '')?>"
                     >
@@ -69,7 +69,7 @@
     <div class="w-full overflow-hidden">
         <table id="selection-table" class="w-full text-sm">
             <thead>
-                <tr class="bg-slate-50 dark:bg-slate-900 text-gray-400">
+                <tr class="bg-gray-50 dark:bg-gray-900 text-gray-400">
                     <th class="text-left font-bold px-5 py-4">#</th>
                     <th class="text-left font-bold px-5 py-4">Nama</th>
                     <th class="text-left font-bold px-5 py-4">No Telepon</th>
@@ -135,12 +135,12 @@
                 <?php endwhile; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="4">
+                    <td colspan="5">
                         <div class="flex flex-col items-center justify-center py-12 px-4 text-center bg-gray-50">
-                            <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4 border border-gray-200/80">
+                            <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4 border border-gray-200/80">
                                 <i class="bx bxs-user text-4xl text-gray-300"></i>
                             </div>
-                            <h3 class="text-base font-black text-slate-800 mb-1">
+                            <h3 class="text-base font-black text-gray-800 mb-1">
                                 Pelanggan Belum Tersedia
                             </h3>
                             <p class="text-xs text-gray-400 max-w-sm mb-5">
@@ -179,12 +179,12 @@
                 <li>
                     <?php if($currentPage > 1): ?>
                     <a href="?<?= http_build_query(array_merge($_GET, ['page' => $currentPage - 1])) ?>"
-                        class="flex items-center justify-center px-3.5 h-9 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                         Previous
                     </a>
                     <?php else: ?>
                     <span
-                        class="flex items-center justify-center px-3.5 h-9 rounded-lg text-slate-400 dark:text-slate-500 opacity-50 cursor-not-allowed pointer-events-none">
+                        class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-400 dark:text-gray-500 opacity-50 cursor-not-allowed pointer-events-none">
                         Previous
                     </span>
                     <?php endif; ?>
@@ -193,7 +193,7 @@
                 <?php for($i = 1; $i <= $totalPage; $i++): ?>
                 <li>
                     <a href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>"
-                        class="flex items-center justify-center w-9 h-9 rounded-lg <?= $i == $currentPage ? 'bg-primary text-white font-bold shadow-sm' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors' ?>">
+                        class="flex items-center justify-center w-9 h-9 rounded-lg <?= $i == $currentPage ? 'bg-primary text-white font-bold shadow-sm' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors' ?>">
                         <?= $i  ?>
                     </a>
                 </li>
@@ -202,12 +202,12 @@
                 <li>
                     <?php if($currentPage < $totalPage): ?>
                     <a href="?<?= http_build_query(array_merge($_GET, ['page' => $currentPage + 1])) ?>"
-                        class="flex items-center justify-center px-3.5 h-9 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
+                        class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
                         Next
                     </a>
                     <?php else: ?>
                     <span
-                        class="flex items-center justify-center px-3.5 h-9 rounded-lg text-slate-400 dark:text-slate-500 opacity-50 cursor-not-allowed pointer-events-none">
+                        class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-400 dark:text-gray-500 opacity-50 cursor-not-allowed pointer-events-none">
                         Next
                     </span>
                     <?php endif; ?>
@@ -216,20 +216,20 @@
         </nav>
     </div>
 
-    <div id="global-modal" role="dialog" aria-modal="true" aria-labelledby="globalModalTitle" class="hidden fixed inset-0 z-[9999] items-center justify-center p-4 bg-slate-950/60 backdrop-blur-[2px]">
+    <div id="global-modal" role="dialog" aria-modal="true" aria-labelledby="globalModalTitle" class="hidden fixed inset-0 z-[9999] items-center justify-center p-4 bg-gray-950/60 backdrop-blur-[2px]">
         <div class="relative p-4 w-full max-w-xl">
-            <div class="relative bg-white dark:bg-slate-900 rounded-lg shadow-xl border border-gray-200 dark:border-slate-800">
-                <div class="flex items-start justify-between p-5 sm:p-6 border-b border-gray-100 dark:border-slate-800">
+            <div class="relative bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-800">
+                <div class="flex items-start justify-between p-5 sm:p-6 border-b border-gray-100 dark:border-gray-800">
                     <div class="flex items-center gap-3 sm:gap-4">
                         <div id="globalModalIconContainer" class="flex w-12 h-12 rounded-lg bg-primary items-center justify-center shrink-0">
                             <i id="globalModalIcon" class="bx bxs-user-plus text-2xl text-white" aria-hidden="true"></i>
                         </div>
                         <div>
-                            <h3 id="globalModalTitle" class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white leading-tight"></h3>
+                            <h3 id="globalModalTitle" class="text-xl sm:text-2xl font-black text-gray-900 dark:text-white leading-tight"></h3>
                             <p id="globalModalSubtitle" class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium mt-1"></p>
                         </div>
                     </div>
-                    <button type="button" onclick="closeGlobalModal()" class="text-slate-500 bg-slate-100 dark:bg-slate-800 dark:text-slate-400 hover:bg-primary hover:text-white rounded-full w-10 h-10 inline-flex justify-center items-center transition-colors cursor-pointer shrink-0" aria-label="Tutup modal">
+                    <button type="button" onclick="closeGlobalModal()" class="text-gray-500 bg-gray-100 dark:bg-gray-800 dark:text-gray-400 hover:bg-primary hover:text-white rounded-full w-10 h-10 inline-flex justify-center items-center transition-colors cursor-pointer shrink-0" aria-label="Tutup modal">
                         <i class="bx bxs-x text-2xl" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -244,7 +244,7 @@
                             <div class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
                                 <i class="bx bxs-user text-xl" aria-hidden="true"></i>
                             </div>
-                            <input type="text" name="nama" id="nama" placeholder="Masukkan nama pelanggan" class="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all" required>
+                            <input type="text" name="nama" id="nama" placeholder="Masukkan nama pelanggan" class="w-full pl-11 pr-4 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all" required>
                             </div>
                         </div>
                         <div class="flex flex-col gap-1.5 w-full">
@@ -255,7 +255,7 @@
                             <div class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
                                 <i class="bx bxs-phone text-xl" aria-hidden="true"></i>
                             </div>
-                            <input type="text" name="telepon" inputmode="numeric" pattern="[0-9]{12}" minlength="12" maxlength="12" id="telepon" placeholder="Contoh: 081234567890" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all" required>
+                            <input type="text" name="telepon" inputmode="numeric" pattern="[0-9]{12}" minlength="12" maxlength="12" id="telepon" placeholder="Contoh: 081234567890" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full pl-11 pr-4 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all" required>
                             </div>
                         </div>
                         <div class="flex flex-col gap-1.5 w-full">
@@ -266,12 +266,12 @@
                             <div class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors">
                                 <i class="bx bxs-note text-xl" aria-hidden="true"></i>
                             </div>
-                            <input type="text" name="catatan" id="catatan" placeholder="Masukkan catatan pelanggan" class="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all">
+                            <input type="text" name="catatan" id="catatan" placeholder="Masukkan catatan pelanggan" class="w-full pl-11 pr-4 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-gray-700 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all">
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col-reverse sm:flex-row items-center justify-end pt-5 mt-6 border-t border-gray-100 dark:border-slate-800 gap-3">
-                        <button type="button" onclick="closeGlobalModal()" class="w-full sm:w-auto bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold px-6 py-3 rounded-lg text-sm transition-all">
+                    <div class="flex flex-col-reverse sm:flex-row items-center justify-end pt-5 mt-6 border-t border-gray-100 dark:border-gray-800 gap-3">
+                        <button type="button" onclick="closeGlobalModal()" class="w-full sm:w-auto bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 font-bold px-6 py-3 rounded-lg text-sm transition-all">
                             Batal
                         </button>
                         <button id="globalModalSubmit" type="submit" class="w-full sm:w-auto flex items-center justify-center bg-primary hover:bg-blue-700 text-white font-black px-6 py-3 gap-2 rounded-lg text-sm transition-all">

@@ -3,7 +3,7 @@
     <div>
         <div>
             <div class="flex gap-x-5 mt-3">
-                <div class="hidden w-13 h-13 rounded-2xl bg-primary border border-gray-200 lg:flex items-center justify-center shrink-0">
+                <div class="hidden w-13 h-13 rounded-lg bg-primary border border-gray-200 lg:flex items-center justify-center shrink-0">
                     <i class="bx bx-user text-2xl text-white"></i>
                 </div>
                 <div>
@@ -21,7 +21,7 @@
         </div>
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mt-8">
             <div class="lg:col-span-full space-y-6">
-                <div class="bg-white rounded-2xl p-6 lg:p-7">
+                <div class="bg-white rounded-lg p-6 lg:p-7">
                     <div class="flex items-start justify-between mb-7">
                         <div>
                             <h2 class="text-[20px] font-black text-[#12131a] tracking-tight">

@@ -62,14 +62,14 @@
             sidebarOpen: $persist(false),
             Menu: $persist(false),
             Pengguna: $persist(false),
-        }"  >
+        }"  >     
         <main>
             <section id="MainContent">
                 <div class="flex flex-row">
                     <?php include ('../partials/sidebar.php') ?>
                     <div class="w-full flex flex-col">
                         <?php include ('../partials/navbar.php') ?>
-                        <main id="mainContent" class="px-4 md:px-8 lg:px-10 xl:px-20 my-12">
+                        <main id="mainContent" class="w-full px-4 md:px-8 lg:max-w-6xl xl:max-w-7xl mx-auto my-12 duration-300 transition-all ease">
                             <?= $content ?>
                         </main>
                     </div>

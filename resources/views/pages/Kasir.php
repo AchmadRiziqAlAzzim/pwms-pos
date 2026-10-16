@@ -56,7 +56,7 @@
             
             pesananMenunggu: false,        
 
-            StepJenisPesanan: '',
+            StepJenisPesanan: 'DineIn',
             StepDataDiri: false,
             StepPembayaran: false,
 
@@ -90,18 +90,20 @@
             <div class="min-w-0 order-2 xl:order-1">
                 <div class="bg-white overflow-hidden"> 
                     <div class="sm:px-3 pt-5 border-b-2 border-dashed border-gray-200"> 
-                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5 mb-5"> 
-                            <div class="flex items-center gap-4 min-w-0"> 
-                                <div class="w-12 h-12 rounded-lg bg-primary flex items-center justify-center shrink-0"> 
-                                    <i class="bx bxs-cart text-2xl text-white"></i> 
-                                </div> 
-
-                                <div class="min-w-0"> 
-                                    <h1 class="text-black font-black text-2xl">Kasir</h1> 
-                                    <p class="hidden sm:flex text-sm text-gray-500 font-medium mt-1"> 
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-5 mb-5">          
+                            <div class="flex items-center gap-4 min-w-0">
+                                <div
+                                    class="w-13 h-13 rounded-lg bg-primary flex items-center justify-center shrink-0 border border-gray-200">
+                                    <i class="bx bx-store text-2xl text-white"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <h1 class="text-black dark:text-white font-black text-2xl">
+                                        Kasir
+                                    </h1>
+                                    <p class="text-sm text-gray-500 font-medium mt-1">
                                         Pilih menu untuk membuat pesanan pelanggan. 
-                                    </p> 
-                                </div> 
+                                    </p>
+                                </div>
                             </div>
                             <button
                                 type="button"
@@ -188,7 +190,7 @@
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left">
                                     <thead>
-                                        <tr class="bg-slate-50">
+                                        <tr class="bg-slate  -50">
                                             <th class="px-4 py-3 text-[11px] font-black text-gray-400 uppercase tracking-wider">No</th>
                                             <th class="px-4 py-3 text-[11px] font-black text-gray-400 uppercase tracking-wider">Foto</th>
                                             <th class="px-4 py-3 text-[11px] font-black text-gray-400 uppercase tracking-wider">Nama</th>
@@ -260,7 +262,7 @@
                             <tr>
                                 <td colspan="6">
                                     <div class="flex flex-col items-center justify-center py-12 px-4 text-center bg-gray-50">
-                                        <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4 border border-gray-200/80">
+                                        <div class="w-20 h-20 bg-slate  -50 rounded-full flex items-center justify-center mb-4 border border-gray-200/80">
                                             <i class="bx bxs-dish text-4xl text-gray-300"></i>
                                         </div>
                                         <h3 class="text-base font-black text-slate-800 mb-1">
@@ -337,7 +339,7 @@
                             </div>
                         <?php else: ?>
                             <div class="flex flex-col items-center justify-center py-12 px-4 text-center">
-                                <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4 border border-gray-200/80">
+                                <div class="w-20 h-20 bg-slate  -50 rounded-full flex items-center justify-center mb-4 border border-gray-200/80">
                                     <i class="bx bxs-dish text-4xl text-gray-300"></i>
                                 </div>
                                 <h3 class="text-base font-black text-slate-800 mb-1">
@@ -397,7 +399,7 @@
                 </div>
             </div>
 
-            <aside class="w-full xl:sticky xl:top-6 xl:h-[calc(85vh)] order-1 xl:order-2">
+            <aside class="w-full xl:sticky xl:top-32 xl:h-[calc(85vh)] order-1 xl:order-2">
                 <div class="bg-white xl:h-full flex flex-col">
                     <div class="py-5 border-b-2 border-dashed border-gray-200">
                         <div class="flex items-center justify-between">
@@ -430,7 +432,7 @@
                             </button>
                         </div>
 
-                        <div class="w-full mt-6">
+                        <div class="w-full mt-7">
                             <div class="flex items-center gap-1 bg-gray-100 rounded-lg">
                                 <label
                                     class="flex-1 relative flex items-center justify-center gap-2 px-4 py-3 rounded-md cursor-pointer select-none transition-all duration-150"
@@ -1035,7 +1037,7 @@
             x-cloak
             x-transition.opacity
             @keydown.escape.window="pesananMenunggu = false"
-            class="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/40"
+            class="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
         >
             <div
                 x-show="pesananMenunggu"
@@ -1068,7 +1070,7 @@
 
                 <div class="max-h-[60vh] overflow-y-auto">
                 <?php if(empty($pesananMenunggu)): ?>
-                    <div class="text-center py-8 text-gray-400">
+                    <div class="text-center py-32 text-gray-400">
                         <i class="bx bx-receipt text-4xl"></i>
                         <p class="mt-2">Belum ada pesanan menunggu.</p>
                     </div>
@@ -1080,89 +1082,153 @@
                         default => 'Tidak diketahui'
                     }
                     ?>
-                    <div class="px-10 py-5 border-b border-gray-200">
-                        <div class="flex items-center justify-between gap-4">
-                            <div class="min-w-0">
-                                <div class="flex items-center justify-between gap-4">
-                                    <div class="">
-                                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-400">
-                                            No. Transaksi
-                                        </span>
-                                        <h3 class="text-sm font-black text-gray-900 mt-1">
-                                            <?= htmlspecialchars($p['kode_transaksi']) ?>
-                                        </h3>
-                                    </div>
-                                    <span class="min-w-5 h-5 px-2 flex items-center justify-center rounded-full bg-primary text-white text-[10px] font-black">
-                                        <?= $tipePesanan ?>
-                                    </span>
-                                </div>
-                                <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3">
-                                    <div>
-                                        <span class="text-[10px] text-gray-400 font-medium block">
-                                            Pelanggan
-                                        </span>
-                                        <span class="text-sm font-bold text-gray-700">
-                                            <?php if(!empty($p['nama_pelanggan'])){
-                                                echo htmlspecialchars($p['nama_pelanggan']);
-                                            } elseif($p['id_pelanggan'] !== null){
-                                                echo htmlspecialchars($p['namapelanggan']);
-                                            } else{
-                                                echo "-";
-                                            }?>
-                                        </span>
-                                    </div>
-                                    <div>
-                                        <span class="text-[10px] text-gray-400 font-medium block">
-                                            Total
-                                        </span>
-                                        <span class="text-sm font-black text-gray-900">
-                                            Rp<?= number_format($p['total'], 0, ",", ".") ?>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="relative bg-white border border-gray-200/80 rounded-2xl overflow-hidden shadow-sm">
 
-                            <div class="flex items-center gap-2 shrink-0">
-                                <button
-                                    type="button"
-                                    @click="bukaPembayaranMenunggu(<?= (int)$p['id_transaksi'] ?>, <?= (int)$p['total'] ?>)"
-                                    class="h-10 px-6 rounded-lg bg-primary text-white text-sm font-black flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all"
-                                >
-                                    <i class="bx bxs-wallet-alt text-base"></i>
-                                    Bayar
-                                </button>
-                                <?php if (!empty($p['id_pelanggan'])): ?>
+    <div class="flex flex-col lg:flex-row">
 
-                                <button
-                                    type="button"
-                                    @click="
-                                        konfirmasiJadikanPiutang(
-                                            <?= (int)$p['id_transaksi'] ?>,
-                                            <?= (int)$p['id_pelanggan'] ?>
-                                        )
-                                    "
-                                    class="w-full sm:w-auto h-11 px-4 flex items-center justify-center gap-2 rounded-lg bg-gray-100 font-black text-sm text-gray-600 hover:bg-gray-200 transition-all"
-                                    >
-                                    Jadikan Piutang
-                                </button>
-                                <?php else: ?>
-                                    
-                                    <button
-                                    type="button"
-                                    @click="
-                                    idTransaksiPiutang = <?= (int)$p['id_transaksi'] ?>;
-                                    pelangganPiutang = '';
-                                    modalPiutang = true;
-                                    "
-                                    class="w-full sm:w-auto h-11 px-4 flex items-center justify-center gap-2 rounded-lg bg-gray-100 font-black text-sm text-gray-600 hover:bg-gray-200 transition-all"
-                                >
-                                    Jadikan Piutang
-                                </button>
-                                
-                                <?php endif; ?>
-                            </div>
-                        </div>
+        <div class="flex-1 min-w-0 px-5 sm:px-7 py-5">
+
+            <div class="flex items-start justify-between gap-4">
+
+                <div class="min-w-0">
+
+                    <div class="flex items-center gap-2 mb-2">
+
+                        <i class="bx bx-receipt text-lg text-primary"></i>
+
+                        <span class="text-[10px] font-black uppercase tracking-wider text-gray-400">
+                            No. Transaksi
+                        </span>
+
                     </div>
+
+                    <h3 class="text-base font-black text-gray-900 break-all">
+                        <?= htmlspecialchars($p['kode_transaksi']) ?>
+                    </h3>
+
+                </div>
+
+                <span class="shrink-0 px-3 py-1.5 rounded-lg bg-primary text-white text-[10px] font-black">
+                    <?= $tipePesanan ?>
+                </span>
+
+            </div>
+
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-6">
+
+                <div class="min-w-0">
+
+                    <div class="flex items-center gap-2 mb-1.5">
+
+                        <i class="bx bx-user text-base text-gray-400"></i>
+
+                        <span class="text-[10px] font-bold uppercase tracking-wide text-gray-400">
+                            Pelanggan
+                        </span>
+
+                    </div>
+
+                    <p class="text-sm font-bold text-gray-700 break-words">
+                        <?php if(!empty($p['nama_pelanggan'])){
+                            echo htmlspecialchars($p['nama_pelanggan']);
+                        } elseif($p['id_pelanggan'] !== null){
+                            echo htmlspecialchars($p['namapelanggan']);
+                        } else{
+                            echo "-";
+                        }?>
+                    </p>
+
+                </div>
+
+
+                <div class="min-w-0">
+
+                    <div class="flex items-center gap-2 mb-1.5">
+
+                        <i class="bx bx-wallet text-base text-gray-400"></i>
+
+                        <span class="text-[10px] font-bold uppercase tracking-wide text-gray-400">
+                            Total Transaksi
+                        </span>
+
+                    </div>
+
+                    <h3 class="text-xl font-black text-gray-900">
+                        Rp<?= number_format($p['total'], 0, ",", ".") ?>
+                    </h3>
+
+                </div>
+
+            </div>
+
+
+            <div class="flex items-center gap-2 mt-5 pt-4 border-t border-dashed border-gray-200">
+
+                <i class="bx bx-check-circle text-base text-primary"></i>
+
+                <span class="text-[11px] font-semibold text-gray-400">
+                    Menunggu pembayaran
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="relative flex flex-row lg:flex-col items-center justify-center gap-3 px-5 py-5 lg:px-6 bg-gray-50/70 border-t-2 border-dashed border-gray-200 lg:border-t-0 lg:border-l-2 lg:min-w-[210px]">
+
+            <div class="hidden lg:block absolute -top-3.5 -left-[15px] w-7 h-7 rounded-full bg-gray-100 border-r border-gray-200/80"></div>
+
+            <div class="hidden lg:block absolute -bottom-3.5 -left-[15px] w-7 h-7 rounded-full bg-gray-100 border-r border-gray-200/80"></div>
+
+
+            <button
+                type="button"
+                @click="bukaPembayaranMenunggu(<?= (int)$p['id_transaksi'] ?>, <?= (int)$p['total'] ?>)"
+                class="h-11 flex-1 lg:flex-none w-full lg:w-full px-5 rounded-lg bg-primary text-white text-sm font-black flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all"
+            >
+                <i class="bx bxs-wallet-alt text-base"></i>
+                Bayar
+            </button>
+
+
+            <?php if (!empty($p['id_pelanggan'])): ?>
+
+                <button
+                    type="button"
+                    @click="
+                        konfirmasiJadikanPiutang(
+                            <?= (int)$p['id_transaksi'] ?>,
+                            <?= (int)$p['id_pelanggan'] ?>
+                        )
+                    "
+                    class="h-11 flex-1 lg:flex-none w-full lg:w-full px-3 rounded-lg bg-white border border-gray-200 font-black text-sm text-gray-600 hover:bg-gray-100 transition-all"
+                >
+                    Jadikan Piutang
+                </button>
+
+            <?php else: ?>
+
+                <button
+                    type="button"
+                    @click="
+                        idTransaksiPiutang = <?= (int)$p['id_transaksi'] ?>;
+                        pelangganPiutang = '';
+                        modalPiutang = true;
+                    "
+                    class="h-11 flex-1 lg:flex-none w-full lg:w-full px-3 rounded-lg bg-white border border-gray-200 font-black text-sm text-gray-600 hover:bg-gray-100 transition-all"
+                >
+                    Jadikan Piutang
+                </button>
+
+            <?php endif; ?>
+
+        </div>
+
+    </div>
+
+</div>
                     <?php endforeach; ?>
                 <?php endif; ?>
 

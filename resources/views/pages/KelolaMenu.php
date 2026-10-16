@@ -5,7 +5,7 @@
             <div class="flex items-center gap-4 min-w-0">
                 <div
                     class="w-13 h-13 rounded-lg bg-primary border-y border-indigo-100 flex items-center justify-center shrink-0">
-                    <i class="bx bxs-bowl-noodles text-2xl text-white"></i>
+                    <i class="bx bx-bowl-noodles text-2xl text-white"></i>
                 </div>
                 <div class="min-w-0">
                     <h1 class="text-black dark:text-white font-black text-2xl">
@@ -18,7 +18,7 @@
             </div>
             <div class="flex flex-row gap-3 mt-1">
                 <a href="?route=menu/kategori"
-                    class="w-full sm:w-auto flex items-center justify-center gap-2 text-gray-700 font-bold px-5 py-3 border border-gray-200 rounded-lg  hover:bg-slate-50 active:scale-95 transition-all duration-200">
+                    class="w-full sm:w-auto flex-1 xl:flex-none flex items-center justify-center gap-2 text-gray-700 font-bold px-5 py-3 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 active:scale-95 transition-all duration-200">
                         <i class="bx bxs-book-bookmark text-md"></i>
                     <span>Kategori</span>
                 </a>
@@ -36,16 +36,16 @@
                         "nameBtn" => "aksi",
                         "value" => "tambah" 
                     ]) ?>)'
-                    class="w-full sm:w-auto flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-lg hover:bg-blue-700 active:scale-95 transition-all duration-200">
+                    class="w-full sm:w-auto flex-1 xl:flex-none flex items-center justify-center gap-2 bg-primary text-white font-bold px-6 py-3 rounded-lg hover:bg-blue-700 active:scale-95 transition-all duration-200">
                         <i class="bx bxs-plus text-xl"></i>
                     <span>Tambah Menu</span>
                 </button>
             </div>
         </div>
 
-        <div class="bg-white overflow-hidden border-gray-200/80 mt-4 sm:mt-8">
-            <div class="py-6  border-gray-200/80">
-                <div class="grid grid-cols-2 lg:grid-cols-4 divide-x divide-gray-200">
+        <div class="bg-white overflow-hidden mt-4 sm:mt-8">
+            <div class="py-6">
+                <div class="grid grid-cols-2 lg:grid-cols-4 md:divide-x md:divide-gray-200">
 
                     <div class="flex items-center gap-4 px-5 py-4">
                         <div class="w-12 h-12 rounded-lg bg-primary flex items-center justify-center shrink-0">
@@ -53,7 +53,7 @@
                         </div>
                         <div>
                             <p class="text-sm font-semibold text-gray-400">Total Menu</p>
-                            <p class="text-2xl font-extrabold text-slate-800 mt-0.5" id="totalMenuStat"><?= (totalmenu()); ?></p>
+                            <p class="text-2xl font-extrabold text-gray-800 mt-0.5" id="totalMenuStat"><?= (totalmenu()); ?></p>
                         </div>
                     </div>
 
@@ -63,7 +63,7 @@
                         </div>
                         <div>
                             <p class="text-sm font-semibold text-gray-400">Total Kategori</p>
-                            <p class="text-2xl font-extrabold text-slate-800 mt-0.5" id="totalCategoryStat"><?= (totalkategori()); ?></p>
+                            <p class="text-2xl font-extrabold text-gray-800 mt-0.5" id="totalCategoryStat"><?= (totalkategori()); ?></p>
                         </div>
                     </div>
 
@@ -73,7 +73,7 @@
                         </div>
                         <div>
                             <p class="text-sm font-semibold text-gray-400">Menu Aktif</p>
-                            <p class="text-2xl font-extrabold text-slate-800 mt-0.5" id="activeMenuStat"><?= (totalaktif()); ?></p>
+                            <p class="text-2xl font-extrabold text-gray-800 mt-0.5" id="activeMenuStat"><?= (totalaktif()); ?></p>
                         </div>
                     </div>
 
@@ -83,7 +83,7 @@
                         </div>
                         <div>
                             <p class="text-sm font-semibold text-gray-400">Menu Nonaktif</p>
-                            <p class="text-2xl font-extrabold text-slate-800 mt-0.5" id="inactiveMenuStat"><?= (totalnonaktif()); ?></p>
+                            <p class="text-2xl font-extrabold text-gray-800 mt-0.5" id="inactiveMenuStat"><?= (totalnonaktif()); ?></p>
                         </div>
                     </div>
 
@@ -99,7 +99,7 @@
         <select 
             name="kategori"
             onchange="this.form.submit()"
-            class="w-full h-12 pl-4 pr-10 bg-slate-50 text-sm font-bold text-gray-700 border border-gray-200 rounded-t-xl md:rounded-t-none md:rounded-l-xl md:border-r-0 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary focus:z-10 cursor-pointer appearance-none">
+            class="w-full h-12 pl-4 pr-10 bg-gray-50 text-sm font-bold text-gray-700 border border-gray-200 rounded-t-xl md:rounded-t-none md:rounded-l-xl md:border-r-0 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary focus:z-10 cursor-pointer appearance-none">
             <option value="">Semua Kategori</option>
             <?php foreach ($kategori as $k): ?>
                 <option 
@@ -118,7 +118,7 @@
             <i class="bx bx-search text-xl"></i>
         </div>
         <input 
-            type="search" name="keyword" id="searchMenu" value="<?= htmlspecialchars($keyword ?? '') ?>" class="w-full h-12 pl-11 pr-4 bg-white border-x border-b md:border-y md:border-x-0 border-gray-200 text-sm font-semibold text-slate-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary focus:z-10"placeholder="Cari nama menu...">
+            type="search" name="keyword" id="searchMenu" value="<?= htmlspecialchars($keyword ?? '') ?>" class="w-full h-12 pl-11 pr-4 bg-white border-x border-b md:border-y md:border-x-0 border-gray-200 text-sm font-semibold text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary focus:z-10"placeholder="Cari nama menu...">
     </div>
     <button 
         type="submit"
@@ -135,33 +135,34 @@
                 <div class="min-w-0">
                     <div class="flex items-center gap-2">
                         <div class="w-1.5 h-5 rounded-full bg-primary"></div>
-                        <h2 class="text-xl font-black text-slate-800 dark:text-white">Daftar Menu</h2>
+                        <h2 class="text-xl font-black text-gray-800 dark:text-white">Daftar Menu</h2>
                     </div>
-                    <p class="text-xs font-medium text-slate-400 mt-1 ml-3.5">Kelola menu yang tersedia di KedaiKu.</p>
+                    <p class="text-xs font-medium text-gray-400 mt-1 ml-3.5">Kelola menu yang tersedia di KedaiKu.</p>
                 </div>
-                <div class="flex items-center gap-1 p-1.5 rounded-lg border-2 border-gray-200/80 dark:border-slate-700 bg-white dark:bg-slate-800 shrink-0 min-h-[48px]">
+                <div class="flex items-center gap-1 p-1.5 rounded-lg border-2 border-gray-200/80 dark:border-gray-700 bg-white dark:bg-gray-800 shrink-0 min-h-[48px]">
                     <a href="?route=menu&layoutMode=table&kategori=<?= urlencode($kategoripilih); ?>&keyword=<?= urlencode($keyword); ?>"
-                        class="flex items-center justify-center w-9 h-9 rounded-lg text-lg transition-colors <?= $layoutMode == 'table' ? 'bg-primary text-white font-bold shadow-sm' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200' ?>">
+                        class="flex items-center justify-center w-9 h-9 rounded-lg text-lg transition-colors <?= $layoutMode == 'table' ? 'bg-primary text-white font-bold shadow-sm' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200' ?>">
                         <i class="bx bxs-rows"></i>
                     </a>
                   <a href="?route=menu&layoutMode=grid&kategori=<?= urlencode($kategoripilih); ?>&keyword=<?= urlencode($keyword); ?>"
-                        class="flex items-center justify-center w-9 h-9 rounded-lg text-lg transition-colors <?= $layoutMode == 'grid' ? 'bg-primary text-white font-bold shadow-sm' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200' ?>"                    >
+                        class="flex items-center justify-center w-9 h-9 rounded-lg text-lg transition-colors <?= $layoutMode == 'grid' ? 'bg-primary text-white font-bold shadow-sm' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200' ?>"                    >
                         <i class="bx bxs-grid"></i>
                     </a>
                 </div>
             </div>
             
-            <div class="overflow-y-auto p-1 max-h-[700px]">
+            <div class="overflow-y-auto max-h-[700px]">
                 <?php if ($layoutMode == 'table'): ?>                    
                     <div class="w-full overflow-x-auto">
-                        <table id="selection-table" class="w-full min-w-[900px] text-sm text-left text-gray-500">
-                            <thead class="text-xs text-gray-500 uppercase bg-slate-50 dark:bg-slate-900">
+                        <table id="selection-table" class="w-full min-w-[1100px] text-sm text-left text-gray-500">
+                            <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-900 text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-5 py-4 font-bold">#</th>
                                     <th scope="col" class="px-5 py-4 font-bold">Foto</th>
                                     <th scope="col" class="px-5 py-4 font-bold">Nama Menu</th>
                                     <th scope="col" class="px-5 py-4 font-bold">Harga</th>
                                     <th scope="col" class="px-5 py-4 font-bold">Kategori</th>
+                                    <th scope="col" class="px-5 py-4 font-bold">Deskripsi</th>
                                     <th scope="col" class="px-5 py-4 font-bold">Tersedia</th>
                                     <th scope="col" class="px-5 py-4 font-bold">Status</th>
                                     <th scope="col" class="px-5 py-4 text-center font-bold">Aksi</th>
@@ -173,7 +174,7 @@
                             $no = (($paginationMenu['halaman'] - 1) * $paginationMenu['perHalaman']) + 1;
                             ?>
                             <?php foreach ($menu as $m): ?>
-                                <tr class="group hover:bg-slate-50 transition-colors">
+                                <tr class="group hover:bg-gray-50 transition-colors">
                                     <td class="px-5 py-4 font-bold text-gray-500">
                                         <?= $no++ ?>
                                     </td>
@@ -190,12 +191,12 @@
                                         </div>
                                     </td>
                                     <td class="px-5 py-4">
-                                        <span class="font-bold text-slate-800">
+                                        <span class="font-bold text-gray-800">
                                             <?= htmlspecialchars($m['nama']); ?>
                                         </span>
                                     </td>
                                     <td class="px-5 py-4">
-                                        <span class="font-bold text-slate-800">
+                                        <span class="font-bold text-gray-800">
                                             Rp <?= number_format($m['harga'], 0, ',', '.'); ?>
                                         </span>
                                     </td>
@@ -205,17 +206,21 @@
                                         </span>
                                     </td>
                                     <td class="px-5 py-4">
+                                        <span class="font-bold text-gray-800">
+                                            <?= htmlspecialchars($m['deskripsi']); ?>
+                                        </span>
+                                    </td>                                    
+                                    <td class="px-5 py-4">
                                         <?php
                                         if ($m['menu_tersedia'] == 1) {
-                                            $s = 'Tersedia';
-                                            $ws = 'bg-emerald-600';
+                                            $s = '<i class="bx bxs-check-circle text-sm"></i>Tersedia';
+                                            $ws = 'text-emerald-600';
                                         } else {
-                                            $s = 'Tidak Tersedia';
-                                            $ws = 'bg-gray-600';
+                                            $s = '<i class="bx bxs-alert-triangle text-sm"></i>Tidak Tersedia';
+                                            $ws = 'text-rose-600';
                                         }
                                         ?>
-                                        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg <?= $ws ?> text-xs font-bold text-white">
-                                            <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                                        <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg <?= $ws ?> text-xs font-bold">                                      
                                             <?= $s ?>
                                         </span>
                                     </td>
@@ -295,10 +300,10 @@
                             <tr>
                                 <td colspan="8">
                                     <div class="flex flex-col items-center justify-center py-12 px-4 text-center bg-gray-50">
-                                        <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4 border border-gray-200/80">
+                                        <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4 border border-gray-200/80">
                                             <i class="bx bxs-dish text-4xl text-gray-300"></i>
                                         </div>
-                                        <h3 class="text-base font-black text-slate-800 mb-1">
+                                        <h3 class="text-base font-black text-gray-800 mb-1">
                                             Menu Belum Tersedia
                                         </h3>
                                         <p class="text-xs text-gray-400 max-w-sm mb-5">
@@ -413,7 +418,7 @@
                                                                 }
                                                             ]
                                                         });"
-                                                        class="w-10 h-10 rounded-xl bg-red-600 text-white flex items-center justify-center hover:opacity-90 active:scale-95 transition-all shrink-0"
+                                                        class="w-10 h-10 rounded-lg bg-red-600 text-white flex items-center justify-center hover:opacity-90 active:scale-95 transition-all shrink-0"
                                                         title="Hapus menu">
                                                         <i class="bx bxs-trash text-lg"></i>
                                                     </button>
@@ -425,10 +430,10 @@
                             </div>
                         <?php else: ?>
                             <div class="flex flex-col items-center justify-center py-12 px-4 text-center">
-                                <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4 border border-gray-200/80">
+                                <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4 border border-gray-200/80">
                                     <i class="bx bxs-dish text-4xl text-gray-300"></i>
                                 </div>
-                                <h3 class="text-base font-black text-slate-800 mb-1">
+                                <h3 class="text-base font-black text-gray-800 mb-1">
                                     Menu Belum Tersedia
                                 </h3>
                                 <p class="text-xs text-gray-400 max-w-sm mb-5">
@@ -460,19 +465,19 @@
             <?php if ($pagination['totalData'] > 0): ?>
              <div class="w-full flex justify-center mt-6">
                             <nav aria-label="Pagination">
-                                <ul class="inline-flex items-center gap-1.5 p-1.5 rounded-lg border-2 border-gray-200/80 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-medium">
+                                <ul class="inline-flex items-center gap-1.5 p-1.5 rounded-lg border-2 border-gray-200/80 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-medium">
                                     <li>
                                         <?php if ($halaman > 1): ?>
                                             <a
                                                 href="?route=menu&page=<?= $halaman - 1; ?><?= $kategoripilih !== '' ? '&kategori=' . urlencode($kategoripilih) : ''; ?><?= $keyword !== '' ? '&keyword=' . urlencode($keyword) : ''; ?>&layoutMode=<?= urlencode($layoutMode); ?>"
-                                                class="flex items-center justify-center px-3.5 h-9 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                                                class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                                             >
                                                 <i class="bx bx-chevron-left"></i>
                                                 Previous
                                             </a>
                                         <?php else: ?>
                                             <span
-                                                class="flex items-center justify-center px-3.5 h-9 rounded-lg text-slate-400 opacity-50 cursor-not-allowed"
+                                                class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-400 opacity-50 cursor-not-allowed"
                                             >
                                                 <i class="bx bx-chevron-left"></i>
                                                 Previous
@@ -490,7 +495,7 @@
                                             <?php else: ?>
                                                 <a
                                                     href="?route=menu&page=<?= $i; ?><?= $kategoripilih !== '' ? '&kategori=' . urlencode($kategoripilih) : ''; ?><?= $keyword !== '' ? '&keyword=' . urlencode($keyword) : ''; ?>&layoutMode=<?= urlencode($layoutMode); ?>"
-                                                    class="flex items-center justify-center w-9 h-9 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                                                    class="flex items-center justify-center w-9 h-9 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                                                 >
                                                     <?= $i; ?>
                                                 </a>
@@ -501,13 +506,13 @@
                                         <?php if ($halaman < $totalHalaman): ?>
                                             <a
                                                 href="?route=menu&page=<?= $halaman + 1; ?><?= $kategoripilih !== '' ? '&kategori=' . urlencode($kategoripilih) : ''; ?><?= $keyword !== '' ? '&keyword=' . urlencode($keyword) : ''; ?>&layoutMode=<?= urlencode($layoutMode); ?>"
-                                                class="flex items-center justify-center px-3.5 h-9 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors" >
+                                                class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" >
                                                 Next
                                                 <i class="bx bx-chevron-right"></i>
                                             </a>
                                         <?php else: ?>
                                             <span
-                                                class="flex items-center justify-center px-3.5 h-9 rounded-lg text-slate-400 opacity-50 cursor-not-allowed">
+                                                class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-400 opacity-50 cursor-not-allowed">
                                                 Next
                                                 <i class="bx bx-chevron-right"></i>
                                             </span>
@@ -523,7 +528,7 @@
         </div>
     </div>
             
-    <div id="global-modal" class="hidden fixed inset-0 z-[9999] items-center justify-center w-full p-4 sm:p-6 overflow-y-auto bg-slate-950/60 backdrop-blur-[2px]">
+    <div id="global-modal" class="hidden fixed inset-0 z-[9999] items-center justify-center w-full p-4 sm:p-6 overflow-y-auto bg-gray-950/60 backdrop-blur-[2px]">
         <div class="relative w-full max-w-5xl my-auto">
             <div class="relative bg-white border border-gray-200 rounded-lg shadow-xl p-5 sm:p-8 max-h-[calc(100vh-2rem)] overflow-y-auto">
                 <div class="mb-6 sm:mb-8 flex justify-between items-start sm:items-center gap-4">
@@ -532,11 +537,11 @@
                             <i id="globalModalIcon" class="bx bxs-bowl-hot text-2xl text-white"></i>
                         </div>
                         <div class="min-w-0">
-                            <h1 id="globalModalTitle" class="text-slate-900 font-black text-xl sm:text-2xl leading-tight">Tambah Menu</h1>
+                            <h1 id="globalModalTitle" class="text-gray-900 font-black text-xl sm:text-2xl leading-tight">Tambah Menu</h1>
                             <p id="globalModalSubtitle" class="text-xs sm:text-sm text-gray-500 font-medium mt-1">Kelola daftar menu, harga, kategori, dan informasi menu cafe.</p>
                         </div>
                     </div>
-                    <button type="button" onclick="closeGlobalModal()" title="Tutup" class="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-slate-100 text-slate-500 hover:text-white hover:bg-primary font-black cursor-pointer transition-colors shrink-0">
+                    <button type="button" onclick="closeGlobalModal()" title="Tutup" class="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gray-100 text-gray-500 hover:text-white hover:bg-primary font-black cursor-pointer transition-colors shrink-0">
                         <i class="bx bxs-x text-2xl"></i>
                     </button>
                 </div>
@@ -549,7 +554,7 @@
                                 <div class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200">
                                     <i class="bx bxs-price-tag-alt text-xl sm:text-lg"></i>
                                 </div>
-                                <input type="text" name="nama" id="nama"maxlength="100" id="globalModalInput" placeholder="Contoh: Nasi Goreng Special" autocomplete="off" class="w-full pl-10 sm:pl-11 pr-4 py-3 bg-white text-slate-900 text-sm font-medium rounded-lg border-2 border-gray-200/80 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all" required>
+                                <input type="text" name="nama" id="nama"maxlength="100" id="globalModalInput" placeholder="Contoh: Nasi Goreng Special" autocomplete="off" class="w-full pl-10 sm:pl-11 pr-4 py-3 bg-white text-gray-900 text-sm font-medium rounded-lg border-2 border-gray-200/80 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all" required>
                             </div>
                         </div>
                         <div class="flex flex-col gap-1.5 w-full min-w-0">
@@ -558,7 +563,7 @@
                                 <div class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200">
                                     <i class="bx bxs-coin text-xl sm:text-lg"></i>
                                 </div>
-                                <input type="text" inputmode="numeric" name="harga" id="harga" maxlength="9" placeholder="Contoh: 50000" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')" class="w-full pl-10 sm:pl-11 pr-4 py-3 bg-white text-slate-900 text-sm font-medium rounded-lg border-2 border-gray-200/80 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all" required>
+                                <input type="text" inputmode="numeric" name="harga" id="harga" maxlength="9" placeholder="Contoh: 50000" autocomplete="off" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')" class="w-full pl-10 sm:pl-11 pr-4 py-3 bg-white text-gray-900 text-sm font-medium rounded-lg border-2 border-gray-200/80 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all" required>
                             </div>
                         </div>
                         <div class="flex flex-col gap-1.5 w-full min-w-0">
@@ -567,7 +572,7 @@
                                 <div class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200 z-10">
                                     <i class="bx bxs-filter text-xl sm:text-lg"></i>
                                 </div>
-                                <select name="kategori" id="kategori" required class="w-full pl-10 sm:pl-11 pr-10 py-3 bg-white text-slate-900 text-sm font-medium rounded-lg border-2 border-gray-200/80 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary appearance-none cursor-pointer transition-all">
+                                <select name="kategori" id="kategori" required class="w-full pl-10 sm:pl-11 pr-10 py-3 bg-white text-gray-900 text-sm font-medium rounded-lg border-2 border-gray-200/80 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary appearance-none cursor-pointer transition-all">
                                     
                                 <?php foreach ($kategori as $k): ?>
                             <option value="<?= $k['id_kategori']; ?>">
@@ -586,18 +591,18 @@
                                 <div class="absolute left-3.5 top-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200">
                                     <i class="bx bxs-info-octagon text-xl sm:text-lg"></i>
                                 </div>
-                                <textarea name="deskripsi" maxlength="200" id="deskripsi" rows="3" placeholder="Tambahkan deskripsi menu..." class="w-full pl-10 sm:pl-11 pr-4 py-3 bg-white text-slate-900 text-sm font-medium rounded-lg border-2 border-gray-200/80 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary resize-y transition-all"></textarea>
+                                <textarea name="deskripsi" maxlength="200" id="deskripsi" rows="3" placeholder="Tambahkan deskripsi menu..." class="w-full pl-10 sm:pl-11 pr-4 py-3 bg-white text-gray-900 text-sm font-medium rounded-lg border-2 border-gray-200/80 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary resize-y transition-all"></textarea>
                             </div>
                         </div>
                         <div x-data="{ imageUrl: null }" class="flex flex-col gap-1.5 w-full col-span-1 lg:col-span-2 xl:col-span-3 min-w-0">
                             <label class="text-[11px] sm:text-xs font-bold uppercase tracking-wide text-gray-600 ml-1">Foto Menu (Opsional)</label>
-                            <label for="gambarBarang" class="relative border-2 border-dashed border-gray-200/90 hover:border-primary group transition-all duration-200 rounded-lg p-6 sm:p-8 flex flex-col items-center justify-center cursor-pointer text-center bg-slate-50/40 hover:bg-slate-50 overflow-hidden min-h-[160px]">
+                            <label for="gambarBarang" class="relative border-2 border-dashed border-gray-200/90 hover:border-primary group transition-all duration-200 rounded-lg p-6 sm:p-8 flex flex-col items-center justify-center cursor-pointer text-center bg-gray-50/40 hover:bg-gray-50 overflow-hidden min-h-[160px]">
                                 <div x-show="!imageUrl" class="flex flex-col items-center justify-center gap-3">
                                     <div class="globalModalIconContainer w-12 h-12 text-white bg-primary rounded-lg flex items-center justify-center shadow-sm">
                                         <i class="bx bxs-images text-2xl text-white"></i>
                                     </div>
                                     <div>
-                                        <p class="font-bold text-sm text-slate-800">Upload Foto Menu (Opsional)</p>
+                                        <p class="font-bold text-sm text-gray-800">Upload Foto Menu (Opsional)</p>
                                         <p class="text-gray-400 text-xs mt-0.5">JPG, PNG, WEBP (Maks. 2MB)</p>
                                     </div>
                                 </div>
@@ -638,7 +643,7 @@
                         </div>
                     </div>
                     <div class="w-full flex flex-col-reverse sm:flex-row justify-end mt-6 sm:mt-8 pt-5 border-t border-gray-100 gap-3">
-                        <button type="button" onclick="closeGlobalModal()" class="w-full sm:w-auto flex items-center justify-center bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-6 py-3 gap-2 rounded-lg cursor-pointer transition-all active:scale-95">
+                        <button type="button" onclick="closeGlobalModal()" class="w-full sm:w-auto flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold px-6 py-3 gap-2 rounded-lg cursor-pointer transition-all active:scale-95">
                             <span>Batal</span>
                         </button>
                         <button id="globalModalSubmit" type="submit" class="w-full sm:w-auto flex items-center justify-center bg-primary hover:bg-primary/90 text-white font-black px-6 py-3 gap-2 rounded-lg cursor-pointer transition-all active:scale-95">

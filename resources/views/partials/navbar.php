@@ -1,5 +1,5 @@
-<nav class="sticky top-0 left-0 min-w-full h-fit bg-white sm:border-b border-gray-100 z-[999]">
-    <div class="flex justify-between items-center px-4 sm:px-8 py-4">
+<nav class="sticky top-0 left-0 min-w-full h-fit bg-white border-b border-gray-200/70 z-[999]">
+    <div class="flex justify-between items-center px-4 py-3 sm:px-8 sm:py-6">
 
         <div class="w-full flex lg:hidden justify-between items-center">
             <button type="button" @click="sidebarOpen = !sidebarOpen" id="IconSideBar" class="group flex justify-start items-center h-9 my-2 cursor-pointer translate-x-0 duration-[3s] transition-all ease-in-out">
@@ -16,10 +16,7 @@
              </button>
         </div>
         <div class="flex items-center">
-            <div class="hidden lg:flex items-center space-x-2">
-                <div class="p-3 rounded-lg bg-primary flex items-center justify-center">
-                    <i class="bx bxs-store text-xl text-white"></i>
-                </div>
+            <div class="hidden lg:flex items-center space-x-2">              
                 <div class="flex flex-col text-left">
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
                         Outlet
@@ -32,17 +29,13 @@
         </div>
 
         <div class="hidden lg:flex justify-end items-center gap-2">
-            <div class="p-3 rounded-full w-10 h-10 bg-primary flex items-center justify-center">
-                <span class="text-xl text-white"><?= $hprofil ?></span>
+            <div class="p-3 rounded-full w-11 h-11 bg-primary flex items-center justify-center">
+                <span class="text-xl font-black text-white"><?= $hprofil ?></span>
             </div>
             <div class="flex flex-col">                
                 <span class="text-[10px] font-black text-primary uppercase tracking-widest leading-none"><?= $dataUser['nama_role'] ?></span>
                 <span class="text-base font-black text-slate-900 mt-1.5 leading-none"><?= $dataAnggota['nama'] ?></span>
-            </div>
-
-            <a href="../partials/logout.php">
-                <i class="bx bxs-door-open-alt text-rose-600 cursor-pointer transition duration-300 text-xl mx-2"></i>
-            </a>
+            </div>      
         </div> 
 
     </div>
