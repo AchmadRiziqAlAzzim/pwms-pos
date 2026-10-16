@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 28 Agu 2026 pada 16.13
+-- Waktu pembuatan: 13 Okt 2026 pada 04.33
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.5.6
 
@@ -21,24 +21,27 @@ SET time_zone = "+00:00";
 -- Database: `pw_pos`
 --
 
-CREATE DATABASE IF NOT EXISTS pw_pos;
-
-USE pw_pos;
-
 -- --------------------------------------------------------
 
 --
 -- Struktur dari tabel `anggota`
 --
 
-
 CREATE TABLE `anggota` (
   `id_anggota` int(11) NOT NULL,
-  `nama_lengkap` varchar(100) DEFAULT NULL,
-  `nama_panggilan` varchar(50) DEFAULT NULL,
+  `nama` varchar(100) DEFAULT NULL,
   `telepon` varchar(15) DEFAULT NULL,
   `status` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `anggota`
+--
+
+INSERT INTO `anggota` (`id_anggota`, `nama`, `telepon`, `status`) VALUES
+(1, 'Super Admin', '081234512345', 1),
+(3, 'I Kasir', '081231231231', 0),
+(4, 'Admin', '083213213213', 1);
 
 -- --------------------------------------------------------
 
@@ -51,11 +54,31 @@ CREATE TABLE `detail_transaksi` (
   `id_transaksi` int(11) DEFAULT NULL,
   `id_menu` int(11) DEFAULT NULL,
   `qty` int(11) DEFAULT NULL,
+  `harga` int(11) DEFAULT NULL,
   `catatan` text DEFAULT NULL,
   `diskon` int(11) DEFAULT NULL,
   `subtotal` int(11) DEFAULT NULL,
   `total` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `detail_transaksi`
+--
+
+INSERT INTO `detail_transaksi` (`id`, `id_transaksi`, `id_menu`, `qty`, `harga`, `catatan`, `diskon`, `subtotal`, `total`) VALUES
+(1, 1, 1, 1, 10000, '', 0, 10000, 10000),
+(2, 1, 2, 1, 5000, '', 0, 5000, 5000),
+(3, 2, 1, 10, 10000, '', 5000, 100000, 95000),
+(4, 3, 1, 3, 10000, '', 0, 30000, 30000),
+(5, 4, 1, 1, 10000, '', 0, 10000, 10000),
+(6, 5, 1, 1, 10000, '', 0, 10000, 10000),
+(7, 5, 2, 1, 5000, '', 0, 5000, 5000),
+(8, 9, 2, 28, 5000, '', 0, 140000, 140000),
+(9, 9, 3, 3, 8000, '', 0, 24000, 24000),
+(10, 9, 1, 99, 10000, '', 0, 990000, 990000),
+(11, 19, 1, 1, 10000, '', 0, 10000, 10000),
+(12, 19, 2, 1, 5000, '', 0, 5000, 5000),
+(13, 53, 2, 1, 5000, '', 0, 5000, 5000);
 
 -- --------------------------------------------------------
 
@@ -67,6 +90,15 @@ CREATE TABLE `kategori` (
   `id_kategori` int(11) NOT NULL,
   `nama_kategori` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `kategori`
+--
+
+INSERT INTO `kategori` (`id_kategori`, `nama_kategori`) VALUES
+(1, 'Makanan'),
+(2, 'Minuman'),
+(3, 'Camilan');
 
 -- --------------------------------------------------------
 
@@ -80,10 +112,20 @@ CREATE TABLE `menu` (
   `nama` varchar(100) DEFAULT NULL,
   `id_kategori` int(11) DEFAULT NULL,
   `deskripsi` text DEFAULT NULL,
-  `harga` int(11) DEFAULT NULL,
-  `menu_tersedia` tinyint,
-  `status_menu` tinyint
+  `harga` int(11) NOT NULL,
+  `menu_tersedia` tinyint(4) NOT NULL,
+  `status_menu` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `menu`
+--
+
+INSERT INTO `menu` (`id_menu`, `foto`, `nama`, `id_kategori`, `deskripsi`, `harga`, `menu_tersedia`, `status_menu`) VALUES
+(1, 'menu_6ac7090fb8c90.png', 'Nasi Goreng', 1, 'Nasinya digoreng', 10000, 1, 1),
+(2, '', 'Es Teh', 2, '', 5000, 1, 1),
+(3, '', 'Kentang Goreng', 3, '', 8000, 0, 1),
+(4, '', 'kripik Singkong', 3, '', 10000, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -99,6 +141,16 @@ CREATE TABLE `metode` (
   `status` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data untuk tabel `metode`
+--
+
+INSERT INTO `metode` (`id_metode`, `nama_metode`, `id_tipe`, `deskripsi`, `status`) VALUES
+(1, 'Tunai', 1, NULL, 1),
+(2, 'Bank BCA', 2, NULL, 1),
+(3, 'DANA', 3, NULL, 0),
+(4, 'BCA Debit', 4, NULL, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -108,8 +160,36 @@ CREATE TABLE `metode` (
 CREATE TABLE `pelanggan` (
   `id_pelanggan` int(11) NOT NULL,
   `nama_pelanggan` varchar(100) DEFAULT NULL,
-  `telepon` varchar(15) DEFAULT NULL
+  `telepon` varchar(15) DEFAULT NULL,
+  `catatan` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `pelanggan`
+--
+
+INSERT INTO `pelanggan` (`id_pelanggan`, `nama_pelanggan`, `telepon`, `catatan`) VALUES
+(1, 'Pelanggan', '081234512345', '');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `pengaturan`
+--
+
+CREATE TABLE `pengaturan` (
+  `id` int(11) NOT NULL,
+  `nama_usaha` varchar(100) DEFAULT NULL,
+  `telepon` varchar(20) DEFAULT NULL,
+  `alamat` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `pengaturan`
+--
+
+INSERT INTO `pengaturan` (`id`, `nama_usaha`, `telepon`, `alamat`) VALUES
+(1, 'Toko', '081234512345', 'Planet Bumi');
 
 -- --------------------------------------------------------
 
@@ -123,6 +203,15 @@ CREATE TABLE `roles` (
   `nama_role` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data untuk tabel `roles`
+--
+
+INSERT INTO `roles` (`id_role`, `kode_role`, `nama_role`) VALUES
+(1, 'super_admin', 'Super Admin'),
+(2, 'admin', 'Admin'),
+(3, 'kasir', 'Kasir');
+
 -- --------------------------------------------------------
 
 --
@@ -131,8 +220,19 @@ CREATE TABLE `roles` (
 
 CREATE TABLE `tipe` (
   `id_tipe` int(11) NOT NULL,
-  `nama_tipe` varchar(10) DEFAULT NULL
+  `kode_tipe` varchar(10) DEFAULT NULL,
+  `nama_tipe` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `tipe`
+--
+
+INSERT INTO `tipe` (`id_tipe`, `kode_tipe`, `nama_tipe`) VALUES
+(1, 'tunai', 'Tunai'),
+(2, 'transfer', 'Transfer'),
+(3, 'ewallet', 'E-Wallet'),
+(4, 'card', 'Card');
 
 -- --------------------------------------------------------
 
@@ -144,21 +244,34 @@ CREATE TABLE `transaksi` (
   `id_transaksi` int(11) NOT NULL,
   `kode_transaksi` varchar(100) DEFAULT NULL,
   `tanggal` datetime DEFAULT NULL,
-  `tipe_pesanan` tinyint NULL,
+  `tipe_pesanan` tinyint(4) DEFAULT NULL,
   `id_pelanggan` int(11) DEFAULT NULL,
   `nama_pelanggan` varchar(50) DEFAULT NULL,
   `subtotal` int(11) DEFAULT NULL,
   `total_diskon` int(11) DEFAULT NULL,
   `total` int(11) DEFAULT NULL,
-  `status_transaksi` tinyint(4) DEFAULT NULL,
-  `status_pembayaran` tinyint(4) DEFAULT NULL,
+  `status_transaksi` tinyint(4) DEFAULT NULL COMMENT '1 = selesai; 2 = menunggu',
+  `status_pembayaran` tinyint(4) DEFAULT NULL COMMENT '1 = belum lunas; 2 = lunas',
   `id_metode` int(11) DEFAULT NULL,
   `uang_diterima` int(11) DEFAULT NULL,
   `kembalian` int(11) DEFAULT NULL,
-  `id_user` int(11) DEFAULT NULL,
-  `diubah_oleh` int(11) DEFAULT NULL,
-  `diubah_pada` datetime DEFAULT NULL
+  `id_user` int(11) NOT NULL,
+  `id_pelunas` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `transaksi`
+--
+
+INSERT INTO `transaksi` (`id_transaksi`, `kode_transaksi`, `tanggal`, `tipe_pesanan`, `id_pelanggan`, `nama_pelanggan`, `subtotal`, `total_diskon`, `total`, `status_transaksi`, `status_pembayaran`, `id_metode`, `uang_diterima`, `kembalian`, `id_user`, `id_pelunas`) VALUES
+(1, 'TRX-20261008121345', '2026-10-08 12:13:45', 1, 1, '', 15000, 0, 15000, 1, 2, NULL, 15000, 0, 1, 1),
+(2, 'TRX-20261009-0001', '2026-10-09 09:35:49', 1, NULL, '', 100000, 5000, 95000, 1, 2, 1, 100000, 5000, 1, NULL),
+(3, 'TRX-20261009-0002', '2026-10-09 09:48:16', 1, NULL, '', 30000, 0, 30000, 1, 2, 1, 30000, 0, 1, NULL),
+(4, 'TRX-20261009-0003', '2026-10-09 09:49:40', 1, NULL, '', 10000, 0, 10000, 1, 2, 1, 10000, 0, 1, NULL),
+(5, 'TRX-20261009-0004', '2026-10-09 10:05:44', 1, NULL, '', 15000, 0, 15000, 1, 2, 1, 20000, 5000, 3, NULL),
+(9, 'TRX-20261009-0005', '2026-10-09 14:55:07', 1, NULL, '', 1154000, 0, 1154000, 1, 2, 2, 1154000, 0, 1, NULL),
+(19, 'TRX-20261012-0001', '2026-10-12 14:20:06', 1, 1, '', 15000, 0, 15000, 1, 2, 1, 50000, 35000, 3, NULL),
+(53, 'TRX-20261012-0002', '2026-10-12 16:50:46', 1, NULL, '', 5000, 0, 5000, 2, 1, NULL, 0, 0, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -171,9 +284,17 @@ CREATE TABLE `users` (
   `username` varchar(50) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
   `id_role` int(11) DEFAULT NULL,
-  `id_anggota` int(11) DEFAULT NULL,
-  `status` tinyint(4) DEFAULT NULL
+  `id_anggota` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `users`
+--
+
+INSERT INTO `users` (`id_user`, `username`, `password`, `id_role`, `id_anggota`) VALUES
+(1, 's.admin', '123', 1, 1),
+(3, 'kasir', '123', 3, 3),
+(4, 'admin', '123', 2, 4);
 
 --
 -- Indexes for dumped tables
@@ -220,6 +341,12 @@ ALTER TABLE `pelanggan`
   ADD PRIMARY KEY (`id_pelanggan`);
 
 --
+-- Indeks untuk tabel `pengaturan`
+--
+ALTER TABLE `pengaturan`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `roles`
 --
 ALTER TABLE `roles`
@@ -238,8 +365,8 @@ ALTER TABLE `transaksi`
   ADD PRIMARY KEY (`id_transaksi`),
   ADD KEY `id_pelanggan` (`id_pelanggan`),
   ADD KEY `id_metode` (`id_metode`),
-  ADD KEY `id_user` (`id_user`),
-  ADD KEY `diubah_oleh` (`diubah_oleh`);
+  ADD KEY `fk_user_transaksi` (`id_user`),
+  ADD KEY `fk_userlunas_transaksi` (`id_pelunas`);
 
 --
 -- Indeks untuk tabel `users`
@@ -257,61 +384,67 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT untuk tabel `anggota`
 --
 ALTER TABLE `anggota`
-  MODIFY `id_anggota` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_anggota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT untuk tabel `kategori`
 --
 ALTER TABLE `kategori`
-  MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `metode`
 --
 ALTER TABLE `metode`
-  MODIFY `id_metode` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_metode` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `pelanggan`
 --
 ALTER TABLE `pelanggan`
-  MODIFY `id_pelanggan` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_pelanggan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT untuk tabel `pengaturan`
+--
+ALTER TABLE `pengaturan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT untuk tabel `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id_role` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_role` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT untuk tabel `tipe`
 --
 ALTER TABLE `tipe`
-  MODIFY `id_tipe` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_tipe` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
@@ -340,10 +473,10 @@ ALTER TABLE `metode`
 -- Ketidakleluasaan untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
+  ADD CONSTRAINT `fk_user_transaksi` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`),
+  ADD CONSTRAINT `fk_userlunas_transaksi` FOREIGN KEY (`id_pelunas`) REFERENCES `users` (`id_user`),
   ADD CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_pelanggan`) REFERENCES `pelanggan` (`id_pelanggan`),
-  ADD CONSTRAINT `transaksi_ibfk_2` FOREIGN KEY (`id_metode`) REFERENCES `metode` (`id_metode`),
-  ADD CONSTRAINT `transaksi_ibfk_3` FOREIGN KEY (`id_user`) REFERENCES `users` (`id_user`),
-  ADD CONSTRAINT `transaksi_ibfk_4` FOREIGN KEY (`diubah_oleh`) REFERENCES `users` (`id_user`);
+  ADD CONSTRAINT `transaksi_ibfk_2` FOREIGN KEY (`id_metode`) REFERENCES `metode` (`id_metode`);
 
 --
 -- Ketidakleluasaan untuk tabel `users`
@@ -352,10 +485,6 @@ ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`id_role`) REFERENCES `roles` (`id_role`),
   ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`id_anggota`) REFERENCES `anggota` (`id_anggota`);
 COMMIT;
-
-INSERT INTO `tipe` (`nama_tipe`) VALUES ('cash'), ('bank'), ('ewallet'), ('card'), ('qris');
-INSERT INTO `roles` (`kode_role`, `nama_role`) VALUES ('super_admin', 'Super Admin'), ('admin', 'Admin'), ('kasir', 'Kasir');
-
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
