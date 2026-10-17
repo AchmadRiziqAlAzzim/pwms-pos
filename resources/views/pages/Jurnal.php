@@ -62,7 +62,7 @@
                     </p>
 
                     <h3 class="text-3xl font-black text-gray-900 mt-3 break-words">
-                        Rp 1.140.000
+                        Rp <?= number_format($uangbersih, 0, ',', '.'); ?>
                     </h3>
 
                     <p class="text-sm text-gray-500 font-medium mt-2">
@@ -86,7 +86,7 @@
                     </p>
 
                     <p class="text-sm font-black text-gray-800 mt-1">
-                        3 Transaksi
+                        <?= $totalpengeluaran ?> Transaksi
                     </p>
 
                 </div>
@@ -107,11 +107,11 @@
                 <div>
 
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">
-                        Total Pemasukan
+                        Total Pendapatan
                     </p>
 
                     <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-2">
-                        Rp 1.250.000
+                        Rp <?= number_format($uangpendaptan, 0, ',', '.'); ?>
                     </h3>
 
                     <p class="text-xs text-gray-400 font-medium mt-2">
@@ -136,7 +136,7 @@
                     </p>
 
                     <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-2">
-                        Rp 110.000
+                        Rp <?= number_format($uangpengeluaran, 0, ',', '.'); ?>
                     </h3>
 
                     <p class="text-xs text-gray-400 font-medium mt-2">
@@ -179,7 +179,7 @@
             </div>
 
             <div class="text-xs font-bold text-gray-500">
-                Total 3 catatan
+                Total <?= $totalpengeluaran ?> catatan
             </div>
 
         </div>
@@ -218,6 +218,83 @@
                 </thead>
 
                 <tbody>
+               <?php if (!empty($pengeluaran)): ?>
+                            <?php foreach ($pengeluaran as $p): ?>
+
+                                <tr class="group hover:bg-gray-50 transition-colors">
+                                    <td class="px-5 py-4 font-bold text-gray-500">
+                                        <?= $no++ ?>
+                                    </td>
+                                    <td class="px-5 py-4">
+                                    <span class="font-bold text-gray-800">
+                                    <?= kalenderInd($p['tanggal'], 'j F Y'); ?>
+                                    </span>
+                                    </td>
+                                    <td class="px-5 py-4">
+                                        <span class="font-bold text-gray-800">
+                                            Rp <?= number_format($p['harga'], 0, ',', '.'); ?>
+                                        </span>
+                                    </td>
+                                    <td class="px-5 py-4">
+                                        <span class="font-bold text-gray-800">
+                                            <?= htmlspecialchars($p['keterangan']); ?>
+                                        </span>
+                                    </td>                                    
+                                    <td class="px-5 py-4">
+                                        <div class="flex items-center justify-center gap-2">    
+                                            <button
+                                                type="button"
+                                                onclick='showGlobalModal(<?= json_encode([
+                                                    "title" => "Edit Catatan Jurnal",
+                                                    "subtitle" => "Perbarui informasi pengeluaran.",
+                                                    "icon" => "bxs-edit",
+                                                    "iconBg" => "bg-amber-500",
+                                                    "method" => "POST",
+                                                    "buttonText" => "Simpan Perubahan",
+                                                    "buttonIcon" => "bxs-save",
+                                                    "buttonColor" => "bg-amber-500 hover:bg-amber-600",
+                                                    "nameBtn" => "aksi",
+                                                    "value" => "edit"
+                                                ]) ?>); modalEdit(this)'
+                                                class="w-10 h-10 rounded-lg bg-primary text-white flex items-center justify-center hover:opacity-90 active:scale-95 transition-all"
+                                                title="Edit Pengeluaran"
+                                                data-id="<?= htmlspecialchars($p['id_pengeluaran']); ?>"
+                                                data-tanggal="<?= htmlspecialchars($p['tanggal']); ?>"
+                                                data-harga="<?= number_format($p['harga'], 0, ',', '.'); ?>"
+                                                data-keterangan="<?= htmlspecialchars($p['keterangan']); ?>"
+                                                >
+                                                <i class="bx bxs-pencil"></i>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onclick="showConfirmForm({
+                                                    title: 'Hapus Pengeluaran',
+                                                    message: 'Apakah Anda yakin ingin menghapus Pengeluaran <?= htmlspecialchars($p['keterangan']); ?>?',
+                                                    actionText: 'Ya, hapus',
+                                                    type: 'danger',
+                                                    nameAksi: 'hapus',
+                                                    inputs: [
+                                                        {
+                                                            name: 'aksi',
+                                                            type: 'hidden',
+                                                            value: 'hapus'
+                                                        },
+                                                        {
+                                                            name: 'id',
+                                                            type: 'hidden',
+                                                            value: <?= (int) $p['id_pengeluaran']; ?>
+                                                        }
+                                                    ]
+                                                });"
+                                                class="w-10 h-10 rounded-lg bg-red-500 text-white flex items-center justify-center hover:opacity-90 active:scale-95 transition-all"
+                                                title="Hapus menu">
+                                                <i class="bx bxs-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                    <?php else: ?>
                     <tr>
                         <td colspan="5">
                             <div class="flex flex-col items-center justify-center py-12 px-4 text-center bg-gray-50 dark:bg-gray-900">
@@ -256,9 +333,67 @@
                             </div>
                         </td>
                     </tr>
+                    <?php endif; ?>
                 </tbody>
 
             </table>
+
+            <?php if ($pagination['totalData'] > 0): ?>
+                            <div class="w-full flex justify-center mt-6">
+                                <nav aria-label="Pagination">
+                                    <ul class="inline-flex items-center gap-1.5 p-1.5 rounded-lg border-2 border-gray-200/80 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm font-medium">
+                                        <li>
+                                            <?php if ($halaman > 1): ?>
+                                                <a
+                                                    href="?route=jurnal&page=<?= $halaman - 1; ?>"
+                                                    class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                                    <i class="bx bx-chevron-left"></i>
+                                                    Previous
+                                                </a>
+                                            <?php else: ?>
+                                                <span
+                                                    class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-400 opacity-50 cursor-not-allowed" >
+                                                    <i class="bx bx-chevron-left"></i>
+                                                    Previous
+                                                </span>
+                                            <?php endif; ?>
+                                        </li>
+                                        <?php for ($i = 1; $i <= $totalHalaman; $i++): ?>
+                                            <li>
+                                                <?php if ($i == $halaman): ?>
+                                                    <span
+                                                        class="flex items-center justify-center w-9 h-9 rounded-lg bg-primary text-white font-bold shadow-sm" >
+                                                        <?= $i; ?>
+                                                    </span>
+                                                <?php else: ?>
+                                                    <a
+                                                        href="?route=jurnal&page=<?= $i; ?>"
+                                                        class="flex items-center justify-center w-9 h-9 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                                        <?= $i; ?>
+                                                    </a>
+                                                <?php endif; ?>
+                                            </li>
+                                        <?php endfor; ?>
+                                        <li> 
+                                            <?php if ($halaman < $totalHalaman): ?>
+                                                <a
+                                                    href="?route=jurnal&page=<?= $halaman + 1; ?>"
+                                                    class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                                    Next
+                                                    <i class="bx bx-chevron-right"></i>
+                                                </a>
+                                            <?php else: ?>
+                                                <span
+                                                    class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-400 opacity-50 cursor-not-allowed" >
+                                                    Next
+                                                    <i class="bx bx-chevron-right"></i>
+                                                </span>
+                                            <?php endif; ?>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        <?php endif; ?>
 
             <div id="global-modal" class="hidden fixed inset-0 z-[9999] items-center justify-center w-full p-4 sm:p-6 overflow-y-auto bg-gray-950/60 backdrop-blur-[2px]">
 
@@ -333,7 +468,7 @@
 
                     <div class="flex flex-col gap-1.5 w-full form-group">
 
-                        <label for="jumlah" class="label-field text-[11px] sm:text-xs font-bold uppercase tracking-wide text-gray-600 ml-1 transition-colors">
+                        <label for="harga" class="label-field text-[11px] sm:text-xs font-bold uppercase tracking-wide text-gray-600 ml-1 transition-colors">
                             Jumlah Transaksi (Rp) <span class="text-red-500">*</span>
                         </label>
 
@@ -345,11 +480,12 @@
 
                             <input
                                 type="number"
-                                name="jumlah"
-                                id="jumlah"
+                                name="harga"
+                                id="harga"
                                 min="1"
                                 step="1"
                                 placeholder="Contoh: 50000"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.')"
                                 autocomplete="off"
                                 class="w-full pl-10 sm:pl-11 pr-4 py-3 bg-white text-gray-900 text-sm font-medium rounded-lg border-2 focus:border-primary border-gray-200 focus:outline-none focus:ring-1 focus:ring-primary transition-all"
                                 required
@@ -419,3 +555,21 @@
     </div>
 
 </div>
+
+<script>
+    const input = document.getElementById('harga');
+    input.addEventListener('input', function () {
+   if(this.value.startsWith('0')) {
+      this.value = '';
+   }
+});
+
+function modalEdit(btn){
+      $('#id').val(btn.dataset.id);
+      $('#tanggal').val(btn.dataset.tanggal);
+      $('#harga').val(btn.dataset.harga);
+      $('#keterangan').val(btn.dataset.keterangan);
+    }
+</script>
+
+    

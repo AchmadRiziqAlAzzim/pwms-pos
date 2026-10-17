@@ -41,6 +41,7 @@ $data = mysqli_stmt_get_result($stmt);
 function tambah($d){
     $nama = $d['nama'];
     $telp = trim($d['telepon'] ?? '');
+    $catatan = $d['catatan'];
 
     if(trim($nama) == ''){
         return [
@@ -79,7 +80,7 @@ function tambah($d){
         ];
     }
 
-    $q = query("INSERT INTO pelanggan (nama_pelanggan, telepon) VALUES ('$nama', '$telp')");
+    $q = query("INSERT INTO pelanggan (nama_pelanggan, telepon, catatan) VALUES ('$nama', '$telp', '$catatan')");
     if($q){
         return [
             'bg' => 'success',
@@ -97,6 +98,7 @@ function edit($d){
     $id = (int)$d['id'];
     $nama = $d['nama'];
     $telp = $d['telepon'];
+    $catatan = $d['catatan'];
 
     $cn = query("SELECT * FROM pelanggan WHERE nama_pelanggan='$nama' AND id_pelanggan <> '$id'");
     if(mysqli_num_rows($cn) > 0){
@@ -106,7 +108,7 @@ function edit($d){
         ];
     }
 
-    $q = query("UPDATE pelanggan SET nama_pelanggan='$nama', telepon='$telp' WHERE id_pelanggan='$id'");
+    $q = query("UPDATE pelanggan SET nama_pelanggan='$nama', telepon='$telp', catatan='$catatan' WHERE id_pelanggan='$id'");
     if($q){
         return [
             'bg' => 'success',

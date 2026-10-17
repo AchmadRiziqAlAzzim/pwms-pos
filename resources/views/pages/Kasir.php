@@ -131,7 +131,7 @@
                                         class="w-full h-12 px-4 pr-10 bg-white border border-gray-200 rounded-lg text-sm font-semibold text-slate-900 focus:bg-white focus:ring-2 focus:ring-primary outline-none transition-all appearance-none cursor-pointer" 
                                         onchange="this.form.submit()"
                                     > 
-                                        <option value="" disabled selected>Pilih Kategori</option> 
+                                        <option value="" selected>Semua Kategori</option> 
                                         <?php foreach($kategori as $d): ?>
                                             <option value="<?= $d['id_kategori'] ?>" <?= $kategorif == $d['id_kategori'] ? 'selected' :'' ?>><?= $d['nama_kategori'] ?></option>
                                         <?php endforeach; ?>
@@ -1397,7 +1397,17 @@
       idm.classList.toggle('hidden');
     }
 
-    let order = [];
+    
+    let order = JSON.parse(
+    sessionStorage.getItem('pesananKasir') || '[]'
+);
+
+function simpanPesananSementara() {
+    sessionStorage.setItem(
+        'pesananKasir',
+        JSON.stringify(order)
+    );
+}
     function addMenu(m){
         const ex = order.find(item => item.id_menu == m.id_menu);
         if(ex){
@@ -1454,6 +1464,7 @@
     }
 
     function renderOrder(){
+        simpanPesananSementara();
         const container = document.getElementById('detailPesanan');
         container.innerHTML = '';
         let subtotal = 0;
@@ -1748,6 +1759,7 @@ function updatePayment(totalOverride = null) {
 
     function resetTransaksi() {
         order = [];
+        sessionStorage.removeItem('pesananKasir');
         renderOrder();
 
         idPelanggan = null;
@@ -2397,4 +2409,7 @@ function cetakStruk(result) {
         url
     );
 }
+document.addEventListener('DOMContentLoaded', function () {
+    renderOrder();
+});
 </script>

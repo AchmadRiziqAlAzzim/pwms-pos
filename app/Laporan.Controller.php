@@ -385,13 +385,10 @@ $sqlStatistik = "
         COALESCE(SUM(t.total), 0) AS total_pendapatan_bersih,
         COALESCE(SUM(t.uang_diterima), 0) AS total_pendapatan_kotor,
         COUNT(t.id_transaksi) AS total_transaksi
-
     FROM transaksi t
-
     LEFT JOIN pelanggan p
         ON p.id_pelanggan = t.id_pelanggan
-
-    WHERE 1=1
+    WHERE t.status_pembayaran = 2
     $where
 ";
 
