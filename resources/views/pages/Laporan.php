@@ -178,7 +178,7 @@ function formatWaktuLaporan($tanggal): string
                     </p>
 
                     <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-1.5">
-                        <?= formatRupiahLaporan($totalPendapatanBersih) ?>
+                        <?= formatRupiahLaporan($uangbersih) ?>
                     </h3>
 
                     <p class="text-xs text-gray-400 mt-1.5">

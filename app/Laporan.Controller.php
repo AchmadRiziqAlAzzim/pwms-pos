@@ -647,6 +647,13 @@ function hapusTransaksi($d){
         ];
     }
 }
+function getuangbersih(){
+global $conn;
+$n = mysqli_fetch_assoc(mysqli_query($conn,"SELECT SUM(harga) t FROM pengeluaran"))['t'];
+$k = mysqli_fetch_assoc(mysqli_query($conn,"SELECT SUM(total) t FROM transaksi WHERE status_pembayaran = 2"))['t'];
+return ($k??0)-($n??0);
+}
+$uangbersih = getuangbersih();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
