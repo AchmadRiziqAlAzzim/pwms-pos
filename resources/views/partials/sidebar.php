@@ -160,17 +160,10 @@
                     </li>                  
                 </div>
                 <?php endif; ?>                
-                <li>
-                    <a href="/resources/views/partials/logout.php" class="flex sm:hidden relative justify-center items-center px-4 py-4 bg-rose-600 text-white rounded-xl gap-4 mt-10">                           
-                        <i class="bx bx-door-open text-xl"></i>
-                        <span x-show="sidebarOpen" x-transition class="font-semibold whitespace-nowrap">
-                            Logout
-                        </span>
-                    </a>
-                </li>
+                
             </ul>
             <div class="shrink-0 w-full bg-white px-5 py-1">
-                <a href="/resources/views/partials/logout.php" class="flex relative justify-center items-center px-4 py-4 bg-rose-600 text-white rounded-xl gap-4">                           
+                <a href="../partials/logout.php" class="flex relative justify-center items-center px-4 py-4 bg-rose-600 text-white rounded-xl gap-4">                           
                         <i class="bx bx-door-open text-xl"></i>
                         <span x-show="sidebarOpen" x-transition class="font-semibold whitespace-nowrap">
                             Logout

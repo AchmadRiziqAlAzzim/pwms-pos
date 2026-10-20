@@ -18,7 +18,7 @@ function pagipengeluaran() {
     if (!empty($keyword)) {
         $keywordEscaped = mysqli_real_escape_string($conn, $keyword);
 
-        $sql .= " WHERE tanggal LIKE '%$keywordEscaped%' OR keterangan LIKE '%$keywordEscaped%'";
+        $sql .= " WHERE tanggal LIKE '%$keywordEscaped%' OR harga LIKE '%$keywordEscaped%' OR keterangan LIKE '%$keywordEscaped%'";
 
     }
     $sql .= " ORDER BY tanggal DESC, id_pengeluaran DESC";
@@ -26,7 +26,7 @@ function pagipengeluaran() {
      if (!empty($keyword)) {
         $keywordEscaped = mysqli_real_escape_string($conn, $keyword);
 
-        $sqlTotal .= " WHERE tanggal LIKE '%$keywordEscaped%' OR keterangan LIKE '%$keywordEscaped%'";
+        $sqlTotal .= " WHERE tanggal LIKE '%$keywordEscaped%' OR harga LIKE '%$keywordEscaped%' OR keterangan LIKE '%$keywordEscaped%'";
 
     }
     $resultTotal = query($sqlTotal);
