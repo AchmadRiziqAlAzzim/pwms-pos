@@ -2,6 +2,9 @@
 
 function pagipengeluaran() {
     global $conn;
+    $keyword = isset($_GET['keyword'])
+        ? trim($_GET['keyword'])
+        : '';
     $halaman = isset($_GET['page'])
         ? (int) $_GET['page']
         : 1;
@@ -11,9 +14,21 @@ function pagipengeluaran() {
     }
     $perHalaman = 5;
     $offset = ($halaman - 1) * $perHalaman;
-    $sql = "SELECT * FROM pengeluaran ORDER BY tanggal DESC";
+    $sql = "SELECT * FROM pengeluaran ";
+    if (!empty($keyword)) {
+        $keywordEscaped = mysqli_real_escape_string($conn, $keyword);
 
+        $sql .= " WHERE tanggal LIKE '%$keywordEscaped%' OR keterangan LIKE '%$keywordEscaped%'";
+
+    }
+    $sql .= " ORDER BY tanggal DESC, id_pengeluaran DESC";
     $sqlTotal = "SELECT COUNT(*) AS total FROM pengeluaran";
+     if (!empty($keyword)) {
+        $keywordEscaped = mysqli_real_escape_string($conn, $keyword);
+
+        $sqlTotal .= " WHERE tanggal LIKE '%$keywordEscaped%' OR keterangan LIKE '%$keywordEscaped%'";
+
+    }
     $resultTotal = query($sqlTotal);
     $dataTotal = mysqli_fetch_assoc($resultTotal);
     $totalData = (int) $dataTotal['total'];
@@ -231,7 +246,7 @@ $uangpengeluaran =getpengeluaran();
 $uangpendaptan = getpendapatan();  
 $totaltransaksi = totaltransaksi();
 $totalpengeluaran = totalpengeluaran();
-
+$keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
 $pengeluaran = pagipengeluaran();
 
 $pagination = $paginationPengeluaran;

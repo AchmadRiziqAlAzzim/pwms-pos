@@ -134,11 +134,31 @@ function formatWaktuLaporan($tanggal): string
 
             <div class="flex flex-row gap-x-3 my-1 shrink-0">
 
-                <button type="button"
-                    class="w-full sm:w-auto flex-1 xl:flex-none flex items-center justify-center gap-2 text-gray-700 font-bold px-5 py-3 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 active:scale-95 transition-all duration-200 cursor-pointer">
-                        <i class="bx bxs-file text-md"></i>
-                    <span class="">Eksport</span>
-                </button>
+                <?php
+$exportParams = $_GET;
+
+// Tentukan route laporan
+$exportParams['route'] = 'laporan';
+$exportParams['export'] = 'excel';
+
+// Hapus parameter halaman agar semua hasil ikut diekspor
+unset($exportParams['page']);
+
+$urlExport = '?' . http_build_query($exportParams);
+?>
+
+<a
+    href="<?= htmlspecialchars($urlExport, ENT_QUOTES, 'UTF-8') ?>"
+    class="w-full sm:w-auto flex-1 xl:flex-none
+           flex items-center justify-center gap-2
+           text-gray-700 font-bold px-5 py-3
+           bg-gray-50 border border-gray-200 rounded-lg
+           hover:bg-gray-100 active:scale-95
+           transition-all duration-200 cursor-pointer"
+>
+    <i class="bx bxs-file text-md"></i>
+    <span>Export Excel</span>
+</a>
 
                 <button
                     type="button"

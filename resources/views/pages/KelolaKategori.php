@@ -356,3 +356,17 @@
         </div>
     </div>
 </section>
+<script>
+    const formCariKategori = document.getElementById('formCariKategori');
+    const searchKategori = document.getElementById('searchKategori');
+
+    let typingTimer;
+    searchKategori.addEventListener('input', function() {
+        clearTimeout(typingTimer);
+
+    typingTimer = setTimeout(function () {
+        formCariKategori.submit();
+    }, 500);
+    });
+    
+</script>

@@ -130,6 +130,176 @@ if ($tanggalSampai !== '') {
     $types .= "s";
 }
 
+// EXPORT LAPORAN KE EXCEL
+if (($_GET['export'] ?? '') === 'excel') {
+
+    // Ambil semua data sesuai filter, tanpa pagination
+    $sqlExport = "
+        SELECT
+            t.kode_transaksi,
+            t.tanggal,
+            COALESCE(
+                NULLIF(t.nama_pelanggan, ''),
+                p.nama_pelanggan,
+                '-'
+            ) AS nama_pelanggan,
+            t.tipe_pesanan,
+            t.subtotal,
+            t.total_diskon,
+            t.total,
+            t.status_transaksi,
+            t.status_pembayaran,
+            m.nama_metode,
+            a.nama AS nama_user
+
+        FROM transaksi t
+
+        LEFT JOIN pelanggan p
+            ON p.id_pelanggan = t.id_pelanggan
+
+        LEFT JOIN metode m
+            ON m.id_metode = t.id_metode
+
+        LEFT JOIN users u
+            ON u.id_user = t.id_user
+
+        LEFT JOIN anggota a
+            ON a.id_anggota = u.id_anggota
+
+        WHERE 1=1
+        $where
+
+        ORDER BY t.id_transaksi DESC
+    ";
+
+    $stmtExport = mysqli_prepare($conn, $sqlExport);
+
+    if (!$stmtExport) {
+        die('Gagal menyiapkan export: ' . mysqli_error($conn));
+    }
+
+    // Gunakan parameter filter yang sudah dibuat sebelumnya
+    if (!empty($params)) {
+        mysqli_stmt_bind_param(
+            $stmtExport,
+            $types,
+            ...$params
+        );
+    }
+
+    mysqli_stmt_execute($stmtExport);
+
+    $resultExport = mysqli_stmt_get_result($stmtExport);
+
+    // Header download Excel
+    $namaFile = 'laporan_penjualan_' . date('Y-m-d') . '.xls';
+
+    header('Content-Type: application/vnd.ms-excel; charset=UTF-8');
+    header(
+        'Content-Disposition: attachment; filename="' . $namaFile . '"'
+    );
+    header('Cache-Control: max-age=0');
+
+    // BOM agar karakter UTF-8 terbaca dengan baik
+    echo "\xEF\xBB\xBF";
+
+    echo '<table border="1">';
+    echo '<thead>';
+    echo '<tr>
+        <th>No</th>
+        <th>Kode Transaksi</th>
+        <th>Tanggal</th>
+        <th>Nama Pelanggan</th>
+        <th>Tipe Pesanan</th>
+        <th>Subtotal</th>
+        <th>Diskon</th>
+        <th>Total</th>
+        <th>Metode Pembayaran</th>
+        <th>Status Transaksi</th>
+        <th>Status Pembayaran</th>
+        <th>Kasir</th>
+    </tr>';
+    echo '</thead>';
+    echo '<tbody>';
+
+    $noExport = 1;
+
+    while ($row = mysqli_fetch_assoc($resultExport)) {
+
+        $tipePesanan = match ((int) $row['tipe_pesanan']) {
+            1 => 'Dine In',
+            2 => 'Takeaway',
+            default => '-'
+        };
+
+        $statusTransaksi = match ((int) $row['status_transaksi']) {
+            1 => 'Selesai',
+            2 => 'Menunggu',
+            default => '-'
+        };
+
+        $statusPembayaran = match ((int) $row['status_pembayaran']) {
+            1 => 'Belum Lunas',
+            2 => 'Lunas',
+            default => '-'
+        };
+
+        echo '<tr>';
+
+        echo '<td>' . $noExport++ . '</td>';
+
+        echo '<td>' . htmlspecialchars(
+            (string) $row['kode_transaksi'],
+            ENT_QUOTES,
+            'UTF-8'
+        ) . '</td>';
+
+        echo '<td>' . htmlspecialchars(
+            (string) $row['tanggal'],
+            ENT_QUOTES,
+            'UTF-8'
+        ) . '</td>';
+
+        echo '<td>' . htmlspecialchars(
+            (string) $row['nama_pelanggan'],
+            ENT_QUOTES,
+            'UTF-8'
+        ) . '</td>';
+
+        echo '<td>' . $tipePesanan . '</td>';
+
+        echo '<td>' . (float) $row['subtotal'] . '</td>';
+
+        echo '<td>' . (float) $row['total_diskon'] . '</td>';
+
+        echo '<td>' . (float) $row['total'] . '</td>';
+
+        echo '<td>' . htmlspecialchars(
+            (string) ($row['nama_metode'] ?? '-'),
+            ENT_QUOTES,
+            'UTF-8'
+        ) . '</td>';
+
+        echo '<td>' . $statusTransaksi . '</td>';
+
+        echo '<td>' . $statusPembayaran . '</td>';
+
+        echo '<td>' . htmlspecialchars(
+            (string) ($row['nama_user'] ?? '-'),
+            ENT_QUOTES,
+            'UTF-8'
+        ) . '</td>';
+
+        echo '</tr>';
+    }
+
+    echo '</tbody>';
+    echo '</table>';
+
+    mysqli_stmt_close($stmtExport);
+
+    exit;
+}
 
 $sqlCount = "
     SELECT COUNT(*) AS total
