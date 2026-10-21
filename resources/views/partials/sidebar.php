@@ -84,7 +84,9 @@
                     </li>
                     <div x-show="sidebarOpen" x-transition class="px-2 text-[11px] font-bold uppercase tracking-wider text-gray-400">
                         Keuangan
-                    </div> 
+                    </div>                         
+                <div class="w-full">
+                    <?php if(in_array($kr, ['super_admin','admin'])): ?>
                     <li class="mt-4">
                         <a href="?route=jurnal" class="relative flex justify-start items-center px-4 py-4 rounded-xl gap-4 <?= $route === "jurnal" ? 'bg-primary text-white font-bold' : 'text-gray-400/90 hover:bg-black/5 duration-300 transition-all ease-in-out' ?>">                        
                             <i class="bx bx-book-alt text-xl"></i>
@@ -92,9 +94,7 @@
                                 Jurnal
                             </span>
                         </a>
-                    </li>                         
-                <div class="w-full">
-                    <?php if(in_array($kr, ['super_admin','admin'])): ?>
+                    </li> 
                     <li>
                         <button type="button" @click="if (!sidebarOpen) { sidebarOpen = true; Pengguna = true; } else { Pengguna = !Pengguna; }" class="relative w-full justify-between flex items-center px-4 py-4 rounded-xl cursor-pointer <?= $route === "pelanggan" || $route === "anggota" ? 'bg-primary text-white font-bold' : 'text-gray-400/90 hover:bg-black/5 duration-300 transition-all ease-in-out' ?>">
                             <div class="flex items-center gap-4">

@@ -196,10 +196,16 @@ $urlExport = '?' . http_build_query($exportParams);
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">
                         Total Pendapatan Bersih
                     </p>
-
-                    <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-1.5">
+                    <?php if(in_array($kr, ['super_admin','admin'])): ?>
+                         <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-1.5">
                         <?= formatRupiahLaporan($uangbersih) ?>
                     </h3>
+                    <?php else: ?>
+                        <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-1.5">
+                        <?= formatRupiahLaporan($totalPendapatanBersih) ?>
+                    </h3>
+                    <?php endif; ?>
+                   
 
                     <p class="text-xs text-gray-400 mt-1.5">
                         dari seluruh transaksi

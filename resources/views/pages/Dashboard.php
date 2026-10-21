@@ -161,9 +161,15 @@
                         <p class="text-sm font-semibold text-gray-700 mb-2">
                             Total Pendapatan Bersih
                         </p>
-                        <h2 class="text-3xl font-black text-gray-900">
-                            <?= formatRupiahLaporan($statistik['total_pendapatan_bersih']) ?>
-                        </h2>
+                        <?php if(in_array($kr, ['super_admin','admin'])): ?>
+                         <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-1.5">
+                        <?= formatRupiahLaporan($uangbersih) ?>
+                    </h3>
+                    <?php else: ?>
+                        <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-1.5">
+                         <?= formatRupiahLaporan($statistik['total_pendapatan_bersih']) ?>
+                    </h3>
+                    <?php endif; ?>
                         <div class="mt-3">
                             <p class="text-xs font-semibold text-primary">
                                 Pendapatan hari ini

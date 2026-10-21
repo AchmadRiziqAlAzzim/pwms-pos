@@ -1,4 +1,11 @@
 <?php
+function getuangbersih(){
+global $conn;
+$n = mysqli_fetch_assoc(mysqli_query($conn,"SELECT SUM(harga) t FROM pengeluaran"))['t'];
+$k = mysqli_fetch_assoc(mysqli_query($conn,"SELECT SUM(total) t FROM transaksi WHERE status_pembayaran = 2"))['t'];
+return ($k??0)-($n??0);
+}
+$uangbersih = getuangbersih();
 function totalmenuaktif() {
     global $conn;
     $q = mysqli_query($conn, "SELECT COUNT(*) AS total FROM menu WHERE status_menu = 1");
