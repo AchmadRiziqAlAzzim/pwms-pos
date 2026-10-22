@@ -53,31 +53,25 @@ function pagipengeluaran() {
     return $rows;
 }
 
-function getuangbersih(){
-global $conn;
-$n = mysqli_fetch_assoc(mysqli_query($conn,"SELECT SUM(harga) t FROM pengeluaran"))['t'];
-$k = mysqli_fetch_assoc(mysqli_query($conn,"SELECT SUM(total) t FROM transaksi WHERE status_pembayaran = 2"))['t'];
-return ($k??0)-($n??0);
-}
 
 function getpengeluaran() {
     global $conn;
-    $q = mysqli_query($conn, "SELECT SUM(harga) AS total FROM pengeluaran ");
+    $q = mysqli_query($conn, "SELECT SUM(harga) AS total FROM pengeluaran WHERE MONTH(tanggal) = MONTH(CURDATE())");
     return mysqli_fetch_assoc($q)['total'] ?? 0;
 }
 function getpendapatan() {
     global $conn;
-    $q = mysqli_query($conn, "SELECT SUM(total) AS total FROM transaksi WHERE status_pembayaran = 2 ");
+    $q = mysqli_query($conn, "SELECT SUM(total) AS total FROM transaksi WHERE status_pembayaran = 2 AND MONTH(tanggal) = MONTH(CURDATE())");
     return mysqli_fetch_assoc($q)['total'] ?? 0;
 }
 function totaltransaksi() {
     global $conn;
-    $q = mysqli_query($conn, "SELECT COUNT(*) AS total FROM transaksi ");
+    $q = mysqli_query($conn, "SELECT COUNT(*) AS total FROM transaksi WHERE MONTH(tanggal) = MONTH(CURDATE()) ");
     return mysqli_fetch_assoc($q)['total'] ?? 0;
 }
 function totalpengeluaran() {
     global $conn;
-    $q = mysqli_query($conn, "SELECT COUNT(*) AS total FROM pengeluaran ");
+    $q = mysqli_query($conn, "SELECT COUNT(*) AS total FROM pengeluaran WHERE MONTH(tanggal) = MONTH(CURDATE()) ");
     return mysqli_fetch_assoc($q)['total'] ?? 0;
 }
 
@@ -241,7 +235,7 @@ if (isset($_POST['aksi']) && $_POST['aksi'] === 'hapus') {
 $hasil = $_SESSION['toast'] ?? null;
 unset($_SESSION['toast']);
 
-$uangbersih = getuangbersih();
+$uangbersih = getpendapatan() - getpengeluaran();
 $uangpengeluaran =getpengeluaran();
 $uangpendaptan = getpendapatan();  
 $totaltransaksi = totaltransaksi();

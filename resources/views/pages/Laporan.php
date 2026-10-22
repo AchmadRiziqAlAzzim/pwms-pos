@@ -146,7 +146,7 @@ unset($exportParams['page']);
 
 $urlExport = '?' . http_build_query($exportParams);
 ?>
-
+<?php if(in_array($kr, ['super_admin','admin'])): ?>
 <a
     href="<?= htmlspecialchars($urlExport, ENT_QUOTES, 'UTF-8') ?>"
     class="w-full sm:w-auto flex-1 xl:flex-none
@@ -160,6 +160,7 @@ $urlExport = '?' . http_build_query($exportParams);
     <span>Export Excel</span>
 </a>
 
+<?php endif; ?>
                 <button
                     type="button"
                     @click="FilterRiwayatTransaksi = true"
@@ -196,17 +197,11 @@ $urlExport = '?' . http_build_query($exportParams);
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">
                         Total Pendapatan Bersih
                     </p>
-                    <?php if(in_array($kr, ['super_admin','admin'])): ?>
-                         <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-1.5">
-                        <?= formatRupiahLaporan($uangbersih) ?>
-                    </h3>
-                    <?php else: ?>
+                   
                         <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-1.5">
                         <?= formatRupiahLaporan($totalPendapatanBersih) ?>
                     </h3>
-                    <?php endif; ?>
-                   
-
+                
                     <p class="text-xs text-gray-400 mt-1.5">
                         dari seluruh transaksi
                     </p>

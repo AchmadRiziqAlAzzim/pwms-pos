@@ -189,7 +189,101 @@ if (($_GET['export'] ?? '') === 'excel') {
 
     mysqli_stmt_execute($stmtExport);
 
+    function formatRupiahExcel($angka)
+{
+    return 'Rp ' . number_format((float) $angka, 0, ',', '.');
+}
+
     $resultExport = mysqli_stmt_get_result($stmtExport);
+
+   // Hitung total transaksi yang diekspor
+$totalPenjualan = 0;
+$totalPenjualanLunas = 0;
+$jumlahTransaksi = 0;
+
+$dataExport = [];
+
+while ($row = mysqli_fetch_assoc($resultExport)) {
+    $dataExport[] = $row;
+
+    // Hanya hitung kolom total
+    $totalPenjualan += (float) $row['total'];
+
+    // Total transaksi yang sudah lunas
+    if ((int) $row['status_pembayaran'] === 2) {
+        $totalPenjualanLunas += (float) $row['total'];
+    }
+
+    $jumlahTransaksi++;
+}
+
+// Hitung pengeluaran sesuai periode filter laporan
+$totalPengeluaran = 0;
+$pendapatanBersih = 0;
+
+if (in_array($roleLogin, ['admin', 'super_admin'], true)) {
+
+    $wherePengeluaran = [];
+    $paramsPengeluaran = [];
+    $typesPengeluaran = '';
+
+    if (!empty($tanggalMulai)) {
+        $wherePengeluaran[] = 'tanggal >= ?';
+        $paramsPengeluaran[] = $tanggalMulai . ' 00:00:00';
+        $typesPengeluaran .= 's';
+    }
+
+    if (!empty($tanggalSampai)) {
+        $wherePengeluaran[] = 'tanggal <= ?';
+        $paramsPengeluaran[] = $tanggalSampai . ' 23:59:59';
+        $typesPengeluaran .= 's';
+    }
+
+    $sqlPengeluaran = "
+        SELECT COALESCE(SUM(harga), 0) AS total_pengeluaran
+        FROM pengeluaran
+    ";
+
+    if (!empty($wherePengeluaran)) {
+        $sqlPengeluaran .= ' WHERE '
+            . implode(' AND ', $wherePengeluaran);
+    }
+
+    $stmtPengeluaran = mysqli_prepare(
+        $conn,
+        $sqlPengeluaran
+    );
+
+    if (!$stmtPengeluaran) {
+        die('Gagal menyiapkan query pengeluaran.');
+    }
+
+    if (!empty($paramsPengeluaran)) {
+        mysqli_stmt_bind_param(
+            $stmtPengeluaran,
+            $typesPengeluaran,
+            ...$paramsPengeluaran
+        );
+    }
+
+    mysqli_stmt_execute($stmtPengeluaran);
+
+    $resultPengeluaran = mysqli_stmt_get_result(
+        $stmtPengeluaran
+    );
+
+    $rowPengeluaran = mysqli_fetch_assoc(
+        $resultPengeluaran
+    );
+
+    $totalPengeluaran =
+        (float) $rowPengeluaran['total_pengeluaran'];
+
+    mysqli_stmt_close($stmtPengeluaran);
+
+    $pendapatanBersih =
+        $totalPenjualanLunas - $totalPengeluaran;
+}
 
     // Header download Excel
     $namaFile = 'laporan_penjualan_' . date('Y-m-d') . '.xls';
@@ -206,25 +300,23 @@ if (($_GET['export'] ?? '') === 'excel') {
     echo '<table border="1">';
     echo '<thead>';
     echo '<tr>
-        <th>No</th>
-        <th>Kode Transaksi</th>
-        <th>Tanggal</th>
-        <th>Nama Pelanggan</th>
-        <th>Tipe Pesanan</th>
-        <th>Subtotal</th>
-        <th>Diskon</th>
-        <th>Total</th>
-        <th>Metode Pembayaran</th>
-        <th>Status Transaksi</th>
-        <th>Status Pembayaran</th>
-        <th>Kasir</th>
-    </tr>';
+    <th>No</th>
+    <th>Kode Transaksi</th>
+    <th>Tanggal</th>
+    <th>Nama Pelanggan</th>
+    <th>Tipe Pesanan</th>
+    <th>Metode Pembayaran</th>
+    <th>Status Transaksi</th>
+    <th>Status Pembayaran</th>
+    <th>Kasir</th>
+    <th>Total</th>
+</tr>';
     echo '</thead>';
     echo '<tbody>';
 
     $noExport = 1;
 
-    while ($row = mysqli_fetch_assoc($resultExport)) {
+  foreach ($dataExport as $row) {
 
         $tipePesanan = match ((int) $row['tipe_pesanan']) {
             1 => 'Dine In',
@@ -268,11 +360,6 @@ if (($_GET['export'] ?? '') === 'excel') {
 
         echo '<td>' . $tipePesanan . '</td>';
 
-        echo '<td>' . (float) $row['subtotal'] . '</td>';
-
-        echo '<td>' . (float) $row['total_diskon'] . '</td>';
-
-        echo '<td>' . (float) $row['total'] . '</td>';
 
         echo '<td>' . htmlspecialchars(
             (string) ($row['nama_metode'] ?? '-'),
@@ -285,16 +372,42 @@ if (($_GET['export'] ?? '') === 'excel') {
         echo '<td>' . $statusPembayaran . '</td>';
 
         echo '<td>' . htmlspecialchars(
-            (string) ($row['nama_user'] ?? '-'),
-            ENT_QUOTES,
-            'UTF-8'
-        ) . '</td>';
+    (string) ($row['nama_user'] ?? '-'),
+    ENT_QUOTES,
+    'UTF-8'
+) . '</td>';
 
-        echo '</tr>';
+echo '<td>' . formatRupiahExcel($row['total']) . '</td>';
+
+echo '</tr>';
     }
+echo '</tbody>';
 
-    echo '</tbody>';
-    echo '</table>';
+// Ringkasan keuangan
+echo '<tfoot>';
+
+
+echo '<tr>
+    <th colspan="9">TOTAL PENJUALAN LUNAS</th>
+    <th>' . formatRupiahExcel($totalPenjualanLunas) . '</th>
+</tr>';
+
+// Pengeluaran hanya ditampilkan untuk admin dan super admin
+if (in_array($roleLogin, ['admin', 'super_admin'], true)) {
+
+    echo '<tr>
+        <th colspan="9">TOTAL PENGELUARAN</th>
+        <th>' . formatRupiahExcel($totalPengeluaran) . '</th>
+    </tr>';
+
+    echo '<tr>
+        <th colspan="9">PENDAPATAN BERSIH</th>
+        <th>' . formatRupiahExcel($pendapatanBersih) . '</th>
+    </tr>';
+}
+
+echo '</tfoot>';
+echo '</table>';
 
     mysqli_stmt_close($stmtExport);
 
@@ -554,14 +667,19 @@ $sqlStatistik = "
     SELECT
         COALESCE(SUM(t.total), 0) AS total_pendapatan_bersih,
         COALESCE(SUM(t.uang_diterima), 0) AS total_pendapatan_kotor,
-        COUNT(t.id_transaksi) AS total_transaksi
+        COUNT(t.id_transaksi) AS total_transaksi,
+
+        COALESCE((
+            SELECT SUM(k.harga)
+            FROM pengeluaran k
+        ), 0) AS pengeluaran
+
     FROM transaksi t
     LEFT JOIN pelanggan p
         ON p.id_pelanggan = t.id_pelanggan
     WHERE t.status_pembayaran = 2
     $where
 ";
-
 $stmtStatistik = mysqli_prepare($conn, $sqlStatistik);
 
 if (!$stmtStatistik) {
@@ -582,7 +700,9 @@ $resultStatistik = mysqli_stmt_get_result($stmtStatistik);
 
 $statistik = mysqli_fetch_assoc($resultStatistik);
 
-$totalPendapatanBersih  = (int) ($statistik['total_pendapatan_bersih'] ?? 0);
+$totalPendapatanBersih = (int) ($statistik['total_pendapatan_bersih'] ?? 0);
+$totalPengeluaran = (int) ($statistik['pengeluaran'] ?? 0);
+$totalpendapatansemua = $totalPendapatanBersih - $totalPengeluaran;
 $totalPendapatanKotor = (int) ($statistik['total_pendapatan_kotor'] ?? 0);
 $totalTransaksi = (int) ($statistik['total_transaksi'] ?? 0);
 
@@ -817,13 +937,7 @@ function hapusTransaksi($d){
         ];
     }
 }
-function getuangbersih(){
-global $conn;
-$n = mysqli_fetch_assoc(mysqli_query($conn,"SELECT SUM(harga) t FROM pengeluaran"))['t'];
-$k = mysqli_fetch_assoc(mysqli_query($conn,"SELECT SUM(total) t FROM transaksi WHERE status_pembayaran = 2"))['t'];
-return ($k??0)-($n??0);
-}
-$uangbersih = getuangbersih();
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
