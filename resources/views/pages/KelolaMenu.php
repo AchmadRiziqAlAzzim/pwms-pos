@@ -655,6 +655,396 @@
             </div>
         </div>
     </div>
+
+    <div
+                x-show="FilterRiwayatTransaksi"
+                x-cloak
+                @keydown.escape.window="FilterRiwayatTransaksi = false"
+                class="fixed inset-0 z-[999] flex justify-center items-center w-full p-4 sm:p-6 overflow-y-auto"
+            >
+
+
+                <div
+                    x-show="FilterRiwayatTransaksi"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                    x-transition:leave="transition ease-in duration-200"
+                    x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    class="fixed inset-0 bg-gray-950/60 backdrop-blur-[2px]"
+                    @click="FilterRiwayatTransaksi = false"
+                ></div>
+
+
+
+                <div
+                    x-show="FilterRiwayatTransaksi"
+                    x-transition:enter="transition ease-out duration-300 transform"
+                    x-transition:enter-start="opacity-0 scale-95 translate-y-4 sm:translate-y-2"
+                    x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                    x-transition:leave="transition ease-in duration-200 transform"
+                    x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                    x-transition:leave-end="opacity-0 scale-95 translate-y-4 sm:translate-y-2"
+                    class="relative w-full max-w-xl z-10 my-auto"
+                >
+
+                    <div
+                        class="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-5 sm:p-8 shadow-xl max-h-[calc(100vh-2rem)] overflow-y-auto"
+                    >
+
+
+                        <div class="mb-6 sm:mb-8 flex justify-between items-start sm:items-center gap-4">
+
+                            <div class="flex items-center gap-3 sm:gap-4">
+
+                                <div
+                                    class="flex w-12 h-12 rounded-lg bg-primary items-center justify-center shrink-0"
+                                >
+                                    <i class="bx bxs-filter text-2xl text-white"></i>
+                                </div>
+
+                                <div>
+
+                                    <h1 class="text-gray-900 dark:text-white font-black text-xl sm:text-2xl leading-tight">
+                                        Filter Riwayat Transaksi
+                                    </h1>
+
+                                    <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium mt-1">
+                                        Atur periode dan kriteria pencarian transaksi.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                @click="FilterRiwayatTransaksi = false"
+                                class="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-white dark:hover:text-white hover:bg-primary dark:hover:bg-primary font-black cursor-pointer transition-colors shrink-0"
+                                title="Tutup"
+                            >
+                                <i class="bx bx-x text-2xl"></i>
+                            </button>
+
+                        </div>
+
+
+                        <form
+                            action=""
+                            method="GET"
+                            class="w-full"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="route"
+                                value="laporan"
+                            >
+
+
+                            <div class="grid grid-cols-1 gap-5">
+
+
+                                <div class="flex flex-col gap-1.5 w-full">
+
+                                    <label
+                                        class="text-[11px] sm:text-xs font-bold uppercase tracking-wide text-gray-600 dark:text-gray-400 ml-1"
+                                    >
+                                        Metode Pembayaran
+                                    </label>
+
+                                    <div class="relative flex items-center w-full group">
+
+                                        <div
+                                            class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200"
+                                        >
+                                            <i class="bx bxs-credit-card text-xl sm:text-lg"></i>
+                                        </div>
+
+
+                                        <select
+                                            name="pembayaran"
+                                            class="w-full pl-10 sm:pl-11 pr-10 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary focus:border-primary appearance-none transition-all cursor-pointer"
+                                        >
+
+                                            <option value="">
+                                                Semua Pembayaran
+                                            </option>
+
+                                            <?php foreach ($metode as $d): ?>
+
+                                                <option
+                                                    value="<?= (int) $d['id_metode'] ?>"
+                                                    <?= (string) $pembayaran === (string) $d['id_metode'] ? 'selected' : '' ?>
+                                                >
+                                                    <?= htmlspecialchars($d['nama_metode']) ?>
+                                                </option>
+
+                                            <?php endforeach; ?>
+
+                                        </select>
+
+
+                                        <div
+                                            class="absolute right-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200"
+                                        >
+                                            <i class="bx bxs-chevron-down text-lg"></i>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="flex flex-col gap-1.5 w-full">
+
+                                    <label
+                                        class="text-[11px] sm:text-xs font-bold uppercase tracking-wide text-gray-600 dark:text-gray-400 ml-1"
+                                    >
+                                        Status Pembayaran
+                                    </label>
+
+                                    <div class="relative flex items-center w-full group">
+
+                                        <div
+                                            class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200"
+                                        >
+                                            <i class="bx bxs-note text-xl sm:text-lg"></i>
+                                        </div>
+
+
+                                        <select
+                                            name="status_pembayaran"
+                                            class="w-full pl-10 sm:pl-11 pr-10 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary focus:border-primary appearance-none transition-all cursor-pointer"
+                                        >
+
+                                            <option value="">
+                                                Semua Status
+                                            </option>
+
+                                            <option
+                                                value="2"
+                                                <?= $statusPembayaranFilter === '2' ? 'selected' : '' ?>
+                                            >
+                                                Lunas
+                                            </option>
+                                                                                    
+                                            <option
+                                                value="1"
+                                                <?= $statusPembayaranFilter === '1' ? 'selected' : '' ?>
+                                            >
+                                                Belum Lunas
+                                            </option>
+
+                                        </select>
+
+
+                                        <div
+                                            class="absolute right-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200"
+                                        >
+                                            <i class="bx bxs-chevron-down text-lg"></i>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="flex flex-col gap-1.5 w-full">
+
+                                    <label
+                                        class="text-[11px] sm:text-xs font-bold uppercase tracking-wide text-gray-600 dark:text-gray-400 ml-1"
+                                    >
+                                        Kategori
+                                    </label>
+
+                                    <div class="relative flex items-center w-full group">
+
+                                        <div
+                                            class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200"
+                                        >
+                                            <i class="bx bxs-layers-alt text-xl sm:text-lg"></i>
+                                        </div>
+
+
+                                        <select
+                                            name="kategori"
+                                            class="w-full pl-10 sm:pl-11 pr-10 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary focus:border-primary appearance-none transition-all cursor-pointer"
+                                        >
+
+                                            <option value="">
+                                                Semua Kategori
+                                            </option>
+
+                                            <?php foreach ($kategoriData as $d): ?>
+
+                                                <option
+                                                    value="<?= (int) $d['id_kategori'] ?>"
+                                                    <?= (int) $kategori === (int) $d['id_kategori'] ? 'selected' : '' ?>
+                                                >
+                                                    <?= htmlspecialchars($d['nama_kategori']) ?>
+                                                </option>
+
+                                            <?php endforeach; ?>
+
+                                        </select>
+
+
+                                        <div
+                                            class="absolute right-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200"
+                                        >
+                                            <i class="bx bxs-chevron-down text-lg"></i>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <?php if(in_array($kr, ['super_admin','admin'])): ?>
+                                <div class="flex flex-col gap-1.5 w-full">
+
+                                    <label
+                                        class="text-[11px] sm:text-xs font-bold uppercase tracking-wide text-gray-600 dark:text-gray-400 ml-1"
+                                    >
+                                        Pengguna
+                                    </label>
+
+                                    <div class="relative flex items-center w-full group">
+
+                                        <div
+                                            class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200"
+                                        >
+                                            <i class="bx bxs-user text-xl sm:text-lg"></i>
+                                        </div>
+
+
+                                        <select
+                                            name="pengguna"
+                                            class="w-full pl-10 sm:pl-11 pr-10 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary focus:border-primary appearance-none transition-all cursor-pointer"
+                                        >
+
+                                            <option value="">
+                                                Semua Pengguna
+                                            </option>
+
+                                            <?php foreach ($penggunaData as $d): ?>
+
+                                                <option
+                                                    value="<?= (int) $d['id_user'] ?>"
+                                                    <?= (int) $pengguna === (int) $d['id_user'] ? 'selected' : '' ?>
+                                                >
+                                                    <?= htmlspecialchars($d['nama']) ?>
+                                                </option>
+
+                                            <?php endforeach; ?>
+
+                                        </select>
+
+
+                                        <div
+                                            class="absolute right-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200"
+                                        >
+                                            <i class="bx bxs-chevron-down text-lg"></i>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <?php endif; ?>
+
+
+                                <div class="flex flex-col gap-1.5 w-full">
+
+                                    <label
+                                        class="text-[11px] sm:text-xs font-bold uppercase tracking-wide text-gray-600 dark:text-gray-400 ml-1"
+                                    >
+                                        Rentang Tanggal
+                                    </label>
+
+
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+
+
+                                        <div class="relative flex items-center w-full group">
+
+                                            <div
+                                                class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200"
+                                            >
+                                                <i class="bx bxs-calendar text-xl sm:text-lg"></i>
+                                            </div>
+
+
+                                            <input
+                                                type="date"
+                                                name="tanggal_mulai"
+                                                value="<?= htmlspecialchars($tanggalMulai) ?>"
+                                                class="w-full pl-10 sm:pl-11 pr-3 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary focus:border-primary transition-all cursor-pointer"
+                                            >
+
+                                        </div>
+
+
+                                        <div class="relative flex items-center w-full group">
+
+                                            <div
+                                                class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200"
+                                            >
+                                                <i class="bx bxs-calendar text-xl sm:text-lg"></i>
+                                            </div>
+
+
+                                            <input
+                                                type="date"
+                                                name="tanggal_sampai"
+                                                value="<?= htmlspecialchars($tanggalSampai) ?>"
+                                                class="w-full pl-10 sm:pl-11 pr-3 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary focus:border-primary transition-all cursor-pointer"
+                                            >
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                class="w-full flex flex-col-reverse sm:flex-row justify-end mt-6 sm:mt-8 pt-5 border-t border-gray-100 dark:border-gray-800 gap-3"
+                            >
+
+                                <button
+                                    type="button"
+                                    @click="FilterRiwayatTransaksi = false"
+                                    class="w-full sm:w-auto flex items-center justify-center bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold px-6 py-3 gap-2 rounded-lg cursor-pointer transition-all active:scale-95"
+                                >
+                                    Batal
+                                </button>
+
+
+                                <button
+                                    type="submit"
+                                    class="w-full sm:w-auto flex items-center justify-center bg-primary hover:bg-primary/90 text-white font-black px-6 py-3 gap-2 rounded-lg cursor-pointer transition-all active:scale-95"
+                                >
+
+                                    <i class="bx bxs-filter-alt text-lg"></i>
+
+                                    <span>
+                                        Terapkan Filter
+                                    </span>
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
 </section>
 <script>
 const searchMenu = document.getElementById('searchMenu');

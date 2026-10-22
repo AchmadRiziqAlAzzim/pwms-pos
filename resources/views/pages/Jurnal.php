@@ -1,4 +1,70 @@
-<section id="JurnalKas">
+<section id="JurnalKas" x-data="{
+            FilterRiwayatCatatan: false,
+            ViewRiwayatTransaksi: false,
+
+            selectedData: {
+                id_transaksi: null,
+                nama_user: null,
+                nama_pelunas: null,
+                kode_transaksi: '',
+                status_transaksi: '',
+                status_pembayaran: '',
+                tanggal: '',
+                pelanggan: '',
+                pembayaran: '',
+                subtotal: 0,
+                total_diskon: 0,
+                total: 0,
+                uang_diterima: 0,
+                kembalian: 0,
+                items: []
+            },
+
+            formatDesimal(value) {
+                return Number(value || 0).toLocaleString('id-ID');
+            },
+
+            formatRupiah(value) {
+                return 'Rp ' + Number(value || 0).toLocaleString('id-ID');
+            },
+
+            openDetail(data) {
+                this.selectedData = data;
+                this.ViewRiwayatTransaksi = true;
+            },
+
+            formatTipePesanan(value) {
+                return Number(value) === 1 ? 'DineIn' : 'TakeAway';
+            },
+
+            printStruk() {
+                const id = this.selectedData.id_transaksi;
+            
+                if (!id) {
+                    return;
+                }
+            
+                window.open(
+                    '?route=struk&id=' + encodeURIComponent(id)
+                );
+            }
+        }"
+
+        x-init="
+            $watch('FilterRiwayatCatatan', value => {
+                document.body.classList.toggle(
+                    'overflow-hidden',
+                    value || ViewRiwayatTransaksi
+                );
+            });
+
+            $watch('ViewRiwayatTransaksi', value => {
+                document.body.classList.toggle(
+                    'overflow-hidden',
+                    value || FilterRiwayatCatatan
+                );
+            });
+        ">
 
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-5">
 
@@ -25,6 +91,12 @@
 
         <div class="flex flex-row gap-x-3 my-1 shrink-0">
     
+          <button type="button" @click="FilterRiwayatCatatan = true"
+                class="w-full sm:w-auto flex-1 xl:flex-none flex items-center justify-center gap-2 text-gray-700 font-bold px-5 py-3 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 active:scale-95 transition-all duration-200">
+                    <i class="bx bxs-book-bookmark text-md"></i>
+                <span>Filter</span>
+            </button>
+            
             <button
                 type="button"
                 onclick='showGlobalModal(<?= json_encode([
@@ -43,77 +115,17 @@
             >
                 <i class="bx bx-plus text-lg"></i>
                 <span>Tambah Catatan</span>
-            </button>
-
-            <button
-                    type="button"
-                    @click="FilterRiwayatTransaksi = true"
-                    class="w-full h-12 md:w-auto flex-1 items-center justify-center bg-primary text-white font-bold px-6 gap-2 rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
-                >
-                    <i class="bx bxs-filter text-lg"></i>
-
-                    <span>
-                        Filter
-                    </span>
-                </button>
+            </button>    
 
         </div>
 
     </div>
 
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 mt-10 mb-8">
-
-        <div class="lg:col-span-5 bg-white border-y border-gray-200/80 rounded-lg p-6 flex flex-col justify-between min-h-[250px]">
-
-            <div class="flex items-start justify-between gap-4">
-
-                <div>
-
-                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">
-                        Saldo Bersih
-                    </p>
-
-                    <h3 class="text-3xl font-black text-gray-900 mt-3 break-words">
-                        Rp <?= number_format($uangbersih, 0, ',', '.'); ?>
-                    </h3>
-
-                    <p class="text-sm text-gray-500 font-medium mt-2">
-                        Selisih pengeluaran
-                    </p>
-
-                </div>
-
-                <div class="w-12 h-12 rounded-lg bg-primary flex items-center justify-center shrink-0">
-                    <i class="bx bx-wallet text-xl text-white"></i>
-                </div>
-
-            </div>
-
-            <div class="mt-8 pt-5 border-t border-gray-200/80 flex items-center justify-between gap-3">
-
-                <div>
-
-                    <p class="text-xs text-gray-400 font-medium">
-                        Total Catatan
-                    </p>
-
-                    <p class="text-sm font-black text-gray-800 mt-1">
-                        <?= $totalpengeluaran ?> Transaksi
-                    </p>
-
-                </div>
-
-                <div class="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center">
-                    <i class="bx bx-receipt text-xl text-gray-500"></i>
-                </div>
-
-            </div>
-
-        </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-10 mb-8">
 
 
-        <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-5">
+        <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2  gap-5">
 
             <div class="bg-white border-t border-gray-200/80 rounded-lg px-5 py-5 flex items-center justify-between gap-4">
 
@@ -586,6 +598,188 @@
     </div>
 
 </div>
+
+<div
+                x-show="FilterRiwayatCatatan"
+                x-cloak
+                @keydown.escape.window="FilterRiwayatCatatan = false"
+                class="fixed inset-0 z-[999] flex justify-center items-center w-full p-4 sm:p-6 overflow-y-auto"
+            >
+
+
+                <div
+                    x-show="FilterRiwayatCatatan"
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100"
+                    x-transition:leave="transition ease-in duration-200"
+                    x-transition:leave-start="opacity-100"
+                    x-transition:leave-end="opacity-0"
+                    class="fixed inset-0 bg-gray-950/60 backdrop-blur-[2px]"
+                    @click="FilterRiwayatCatatan = false"
+                ></div>
+
+
+
+                <div
+                    x-show="FilterRiwayatCatatan"
+                    x-transition:enter="transition ease-out duration-300 transform"
+                    x-transition:enter-start="opacity-0 scale-95 translate-y-4 sm:translate-y-2"
+                    x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                    x-transition:leave="transition ease-in duration-200 transform"
+                    x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                    x-transition:leave-end="opacity-0 scale-95 translate-y-4 sm:translate-y-2"
+                    class="relative w-full max-w-xl z-10 my-auto"
+                >
+
+                    <div
+                        class="relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-5 sm:p-8 shadow-xl max-h-[calc(100vh-2rem)] overflow-y-auto"
+                    >
+
+
+                        <div class="mb-6 sm:mb-8 flex justify-between items-start sm:items-center gap-4">
+
+                            <div class="flex items-center gap-3 sm:gap-4">
+
+                                <div
+                                    class="flex w-12 h-12 rounded-lg bg-primary items-center justify-center shrink-0"
+                                >
+                                    <i class="bx bxs-filter text-2xl text-white"></i>
+                                </div>
+
+                                <div>
+
+                                    <h1 class="text-gray-900 dark:text-white font-black text-xl sm:text-2xl leading-tight">
+                                        Filter Riwayat Catatan
+                                    </h1>
+
+                                    <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-medium mt-1">
+                                        Atur periode dan kriteria pencarian catatan.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                @click="FilterRiwayatCatatan = false"
+                                class="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-white dark:hover:text-white hover:bg-primary dark:hover:bg-primary font-black cursor-pointer transition-colors shrink-0"
+                                title="Tutup"
+                            >
+                                <i class="bx bx-x text-2xl"></i>
+                            </button>
+
+                        </div>
+
+
+                        <form
+                            action=""
+                            method="GET"
+                            class="w-full"
+                        >
+
+                            <input
+                                type="hidden"
+                                name="route"
+                                value="laporan"
+                            >
+
+
+                            <div class="grid grid-cols-1 gap-5">
+                     
+                                <div class="flex flex-col gap-1.5 w-full">
+
+                                    <label
+                                        class="text-[11px] sm:text-xs font-bold uppercase tracking-wide text-gray-600 dark:text-gray-400 ml-1"
+                                    >
+                                        Rentang Tanggal
+                                    </label>
+
+
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+
+
+                                        <div class="relative flex items-center w-full group">
+
+                                            <div
+                                                class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200"
+                                            >
+                                                <i class="bx bxs-calendar text-xl sm:text-lg"></i>
+                                            </div>
+
+
+                                            <input
+                                                type="date"
+                                                name="tanggal_mulai"
+                                                value="<?= htmlspecialchars($tanggalMulai) ?>"
+                                                class="w-full pl-10 sm:pl-11 pr-3 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary focus:border-primary transition-all cursor-pointer"
+                                            >
+
+                                        </div>
+
+
+                                        <div class="relative flex items-center w-full group">
+
+                                            <div
+                                                class="absolute left-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-primary transition-colors duration-200"
+                                            >
+                                                <i class="bx bxs-calendar text-xl sm:text-lg"></i>
+                                            </div>
+
+
+                                            <input
+                                                type="date"
+                                                name="tanggal_sampai"
+                                                value="<?= htmlspecialchars($tanggalSampai) ?>"
+                                                class="w-full pl-10 sm:pl-11 pr-3 py-3 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm font-medium rounded-lg border-2 border-gray-200/80 dark:border-gray-700 focus:outline-none focus:ring focus:ring-primary focus:border-primary transition-all cursor-pointer"
+                                            >
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                class="w-full flex flex-col-reverse sm:flex-row justify-end mt-6 sm:mt-8 pt-5 border-t border-gray-100 dark:border-gray-800 gap-3"
+                            >
+
+                                <button
+                                    type="button"
+                                    @click="FilterRiwayatCatatan = false"
+                                    class="w-full sm:w-auto flex items-center justify-center bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold px-6 py-3 gap-2 rounded-lg cursor-pointer transition-all active:scale-95"
+                                >
+                                    Batal
+                                </button>
+
+
+                                <button
+                                    type="submit"
+                                    class="w-full sm:w-auto flex items-center justify-center bg-primary hover:bg-primary/90 text-white font-black px-6 py-3 gap-2 rounded-lg cursor-pointer transition-all active:scale-95"
+                                >
+
+                                    <i class="bx bxs-filter-alt text-lg"></i>
+
+                                    <span>
+                                        Terapkan Filter
+                                    </span>
+
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
 
 <script>
      const formCariPengeluaran = document.getElementById('formCariPengeluaran');

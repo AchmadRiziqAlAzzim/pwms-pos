@@ -980,12 +980,12 @@
                                 (metode === 'E-Wallet' && ewallet === '') ||
                                 (metode === 'Card' && card === '')
                                     ? 'opacity-30 cursor-not-allowed'
-                                    : 'hover:bg-hover-primary active:scale-95 cursor-pointer'
+                                    : 'hover:bg-primary hover:border-2 hover:border-primary hover:text-white active:scale-95 cursor-pointer'
                             "
-                            class="w-full sm:w-auto flex items-center justify-center bg-white border-2 border-gray-200 hover:border-2 hover:border-primary text-gray-900 hover:text-white font-bold px-8 py-4 gap-2 rounded-lg transition-all shadow-md"
+                            class="w-full sm:w-auto flex items-center justify-center bg-white border-2 border-gray-200 text-gray-900 font-bold px-8 py-4 gap-2 rounded-lg transition-all"
                         >
                             <i class="bx bxs-receipt text-xl"></i>
-                            <span>KONFIRMASI & CETAK STRUK</span>
+                            <span>Print</span>
                         </button>
 
                         <button             
