@@ -21,6 +21,7 @@
             </div>
 
         </div>
+        
 
         <div class="flex flex-row gap-x-3 my-1 shrink-0">
     
@@ -44,6 +45,18 @@
                 <span>Tambah Catatan</span>
             </button>
 
+            <button
+                    type="button"
+                    @click="FilterRiwayatTransaksi = true"
+                    class="w-full h-12 md:w-auto flex-1 items-center justify-center bg-primary text-white font-bold px-6 gap-2 rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                >
+                    <i class="bx bxs-filter text-lg"></i>
+
+                    <span>
+                        Filter
+                    </span>
+                </button>
+
         </div>
 
     </div>
@@ -66,7 +79,7 @@
                     </h3>
 
                     <p class="text-sm text-gray-500 font-medium mt-2">
-                        Selisih pemasukan dan pengeluaran
+                        Selisih pengeluaran
                     </p>
 
                 </div>
@@ -173,7 +186,7 @@
                 </div>
 
                 <p class="text-xs text-gray-400 font-medium mt-1 ml-3.5">
-                    Daftar pencatatan pemasukan dan pengeluaran
+                    Daftar pencatatan pengeluaran
                 </p>
 
             </div>
@@ -434,7 +447,7 @@
                         </h1>
 
                         <p id="globalModalSubtitle" class="text-xs sm:text-sm text-gray-500 font-medium mt-1">
-                            Catat pemasukan atau pengeluaran keuangan.
+                            Catat atau pengeluaran keuangan.
                         </p>
 
                     </div>

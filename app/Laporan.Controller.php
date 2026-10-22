@@ -199,6 +199,7 @@ if (($_GET['export'] ?? '') === 'excel') {
    // Hitung total transaksi yang diekspor
 $totalPenjualan = 0;
 $totalPenjualanLunas = 0;
+$totalPenjualanbelumlunas = 0;
 $jumlahTransaksi = 0;
 
 $dataExport = [];
@@ -212,6 +213,11 @@ while ($row = mysqli_fetch_assoc($resultExport)) {
     // Total transaksi yang sudah lunas
     if ((int) $row['status_pembayaran'] === 2) {
         $totalPenjualanLunas += (float) $row['total'];
+    }
+    
+    // Total transaksi yang belum lunas
+    if ((int) $row['status_pembayaran'] === 1) {
+        $totalPenjualanbelumlunas += (float) $row['total'];
     }
 
     $jumlahTransaksi++;
@@ -377,7 +383,7 @@ if (in_array($roleLogin, ['admin', 'super_admin'], true)) {
     'UTF-8'
 ) . '</td>';
 
-echo '<td>' . formatRupiahExcel($row['total']) . '</td>';
+echo '<td>' . $row['total'] . '</td>';
 
 echo '</tr>';
     }
@@ -389,22 +395,18 @@ echo '<tfoot>';
 
 echo '<tr>
     <th colspan="9">TOTAL PENJUALAN LUNAS</th>
-    <th>' . formatRupiahExcel($totalPenjualanLunas) . '</th>
+    <th>' . $totalPenjualanLunas . '</th>
+</tr>';
+echo '<tr>
+    <th colspan="9">TOTAL PENJUALAN BELUM LUNAS</th>
+    <th>' . $totalPenjualanbelumlunas . '</th>
+</tr>';
+echo '<tr>
+    <th colspan="9">TOTAL PENJUALAN</th>
+    <th>' .$totalPenjualan . '</th>
 </tr>';
 
-// Pengeluaran hanya ditampilkan untuk admin dan super admin
-if (in_array($roleLogin, ['admin', 'super_admin'], true)) {
 
-    echo '<tr>
-        <th colspan="9">TOTAL PENGELUARAN</th>
-        <th>' . formatRupiahExcel($totalPengeluaran) . '</th>
-    </tr>';
-
-    echo '<tr>
-        <th colspan="9">PENDAPATAN BERSIH</th>
-        <th>' . formatRupiahExcel($pendapatanBersih) . '</th>
-    </tr>';
-}
 
 echo '</tfoot>';
 echo '</table>';

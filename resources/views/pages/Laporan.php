@@ -146,7 +146,6 @@ unset($exportParams['page']);
 
 $urlExport = '?' . http_build_query($exportParams);
 ?>
-<?php if(in_array($kr, ['super_admin','admin'])): ?>
 <a
     href="<?= htmlspecialchars($urlExport, ENT_QUOTES, 'UTF-8') ?>"
     class="w-full sm:w-auto flex-1 xl:flex-none
@@ -160,7 +159,6 @@ $urlExport = '?' . http_build_query($exportParams);
     <span>Export Excel</span>
 </a>
 
-<?php endif; ?>
                 <button
                     type="button"
                     @click="FilterRiwayatTransaksi = true"
