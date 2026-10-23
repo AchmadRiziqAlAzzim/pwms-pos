@@ -1,64 +1,164 @@
 <?php 
 
+
 function pagipengeluaran() {
     global $conn;
-    $keyword = isset($_GET['keyword'])
-        ? trim($_GET['keyword'])
-        : '';
-    $halaman = isset($_GET['page'])
-        ? (int) $_GET['page']
-        : 1;
 
-    if ($halaman < 1) {
-        $halaman = 1;
-    }
+    $keyword = trim($_GET['keyword'] ?? '');
+    $tanggalMulai = $_GET['tanggal_mulai'] ?? '';
+    $tanggalSampai = $_GET['tanggal_sampai'] ?? '';
+
+    $halaman = max(1, (int) ($_GET['page'] ?? 1));
     $perHalaman = 5;
-    $offset = ($halaman - 1) * $perHalaman;
-    $sql = "SELECT * FROM pengeluaran ";
-    if (!empty($keyword)) {
+
+    
+    $kondisi = [];
+
+    if ($keyword !== '') {
         $keywordEscaped = mysqli_real_escape_string($conn, $keyword);
 
-        $sql .= " WHERE tanggal LIKE '%$keywordEscaped%' OR harga LIKE '%$keywordEscaped%' OR keterangan LIKE '%$keywordEscaped%'";
-
+        $kondisi[] = "(
+            tanggal LIKE '%$keywordEscaped%'
+            OR harga LIKE '%$keywordEscaped%'
+            OR keterangan LIKE '%$keywordEscaped%'
+        )";
     }
-    $sql .= " ORDER BY tanggal DESC, id_pengeluaran DESC";
-    $sqlTotal = "SELECT COUNT(*) AS total FROM pengeluaran";
-     if (!empty($keyword)) {
-        $keywordEscaped = mysqli_real_escape_string($conn, $keyword);
 
-        $sqlTotal .= " WHERE tanggal LIKE '%$keywordEscaped%' OR harga LIKE '%$keywordEscaped%' OR keterangan LIKE '%$keywordEscaped%'";
-
+    
+    if ($tanggalMulai !== '') {
+        $tanggalMulaiEscaped = mysqli_real_escape_string($conn, $tanggalMulai);
+        $kondisi[] = "tanggal >= '$tanggalMulaiEscaped'";
     }
+
+    // Filter tanggal sampai
+    if ($tanggalSampai !== '') {
+        $tanggalSampaiEscaped = mysqli_real_escape_string($conn, $tanggalSampai);
+        $kondisi[] = "tanggal <= '$tanggalSampaiEscaped'";
+    }
+
+    // Menggabungkan seluruh kondisi
+    $where = '';
+    if (!empty($kondisi)) {
+        $where = ' WHERE ' . implode(' AND ', $kondisi);
+    }
+
+    // Menghitung jumlah data sesuai filter
+    $sqlTotal = "SELECT COUNT(*) AS total FROM pengeluaran $where";
     $resultTotal = query($sqlTotal);
     $dataTotal = mysqli_fetch_assoc($resultTotal);
-    $totalData = (int) $dataTotal['total'];
-    $totalHalaman = max(1, ceil($totalData / $perHalaman));
+
+    $totalData = (int) ($dataTotal['total'] ?? 0);
+    $totalHalaman = max(1, (int) ceil($totalData / $perHalaman));
+
     if ($halaman > $totalHalaman) {
         $halaman = $totalHalaman;
-
-        $offset = ($halaman - 1) * $perHalaman;
     }
-    $sql .= " LIMIT $offset, $perHalaman";
+
+    $offset = ($halaman - 1) * $perHalaman;
+
+   
+    $sql = "
+        SELECT *
+        FROM pengeluaran
+        $where
+        ORDER BY tanggal DESC, id_pengeluaran DESC
+        LIMIT $offset, $perHalaman
+    ";
+
     $result = query($sql);
     $rows = [];
+
     while ($row = mysqli_fetch_assoc($result)) {
         $rows[] = $row;
     }
+
     $GLOBALS['paginationPengeluaran'] = [
         'halaman' => $halaman,
         'perHalaman' => $perHalaman,
         'totalData' => $totalData,
         'totalHalaman' => $totalHalaman
     ];
+
     return $rows;
 }
 
 
+
+
 function getpengeluaran() {
     global $conn;
-    $q = mysqli_query($conn, "SELECT SUM(harga) AS total FROM pengeluaran WHERE MONTH(tanggal) = MONTH(CURDATE())");
-    return mysqli_fetch_assoc($q)['total'] ?? 0;
+
+    $tanggalMulai = $_GET['tanggal_mulai'] ?? '';
+    $tanggalSampai = $_GET['tanggal_sampai'] ?? '';
+
+    $kondisi = [];
+
+    if ($tanggalMulai !== '') {
+        $mulai = mysqli_real_escape_string($conn, $tanggalMulai);
+        $kondisi[] = "tanggal >= '$mulai'";
+    }
+
+    if ($tanggalSampai !== '') {
+        $sampai = mysqli_real_escape_string($conn, $tanggalSampai);
+        $kondisi[] = "tanggal <= '$sampai'";
+    }
+
+
+    if (!empty($kondisi)) {
+        $where = implode(' AND ', $kondisi);
+    } else {
+  
+        $where = "MONTH(tanggal) = MONTH(CURDATE())
+                  AND YEAR(tanggal) = YEAR(CURDATE())";
+    }
+
+    $q = mysqli_query(
+        $conn,
+        "SELECT COALESCE(SUM(harga), 0) AS total
+         FROM pengeluaran
+         WHERE $where"
+    );
+
+    return (int) (mysqli_fetch_assoc($q)['total'] ?? 0);
 }
+
+function getpendapatanbackup() {
+    global $conn;
+
+    $tanggalMulai = $_GET['tanggal_mulai'] ?? '';
+    $tanggalSampai = $_GET['tanggal_sampai'] ?? '';
+
+    $kondisi = [];
+
+    if ($tanggalMulai !== '') {
+        $mulai = mysqli_real_escape_string($conn, $tanggalMulai);
+        $kondisi[] = "tanggal >= '$mulai'";
+    }
+
+    if ($tanggalSampai !== '') {
+        $sampai = mysqli_real_escape_string($conn, $tanggalSampai);
+        $kondisi[] = "tanggal <= '$sampai'";
+    }
+
+
+    if (!empty($kondisi)) {
+        $where = implode(' AND ', $kondisi);
+    } else {
+  
+        $where = "MONTH(tanggal) = MONTH(CURDATE())
+                  AND YEAR(tanggal) = YEAR(CURDATE())";
+    }
+
+    $q = mysqli_query(
+        $conn,
+        "SELECT COALESCE(SUM(total), 0) AS total
+         FROM transaksi
+         WHERE status_pembayaran = 2 AND $where"
+    );
+
+    return (int) (mysqli_fetch_assoc($q)['total'] ?? 0);
+}
+
 function getpendapatan() {
     global $conn;
     $q = mysqli_query($conn, "SELECT SUM(total) AS total FROM transaksi WHERE status_pembayaran = 2 AND MONTH(tanggal) = MONTH(CURDATE())");
@@ -237,9 +337,12 @@ unset($_SESSION['toast']);
 
 $uangbersih = getpendapatan() - getpengeluaran();
 $uangpengeluaran =getpengeluaran();
-$uangpendaptan = getpendapatan();  
+$uangpendaptan = getpendapatanbackup();  
+$uangpendapatan = getpendapatan();
 $totaltransaksi = totaltransaksi();
 $totalpengeluaran = totalpengeluaran();
+$tanggalMulai = $_GET['tanggal_mulai'] ?? '';
+$tanggalSampai = $_GET['tanggal_sampai'] ?? '';
 $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
 $pengeluaran = pagipengeluaran();
 

@@ -94,6 +94,11 @@
                 <form method="GET" class="flex flex-col md:flex-row rounded-lg bg-white overflow-hidden" id="formCariMenu">
 
     <input type="hidden" name="route" value="menu">
+    <input
+        type="hidden"
+        name="layoutMode"
+        value="<?= htmlspecialchars($_GET['layoutMode'] ?? 'table') ?>"
+    >
 
     <div class="relative w-full md:w-52 shrink-0">
         <select 
@@ -298,7 +303,7 @@
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="8">
+                                <td colspan="9">
                                     <div class="flex flex-col items-center justify-center py-12 px-4 text-center bg-gray-50">
                                         <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4 border border-gray-200/80">
                                             <i class="bx bxs-dish text-4xl text-gray-300"></i>

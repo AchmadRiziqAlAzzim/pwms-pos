@@ -70,40 +70,91 @@
 
     </div>
 
-    <div class="rounded-lg sm:p-5 my-6 bg-white dark:bg-slate-950">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5">
-            <div class="min-w-0">
-                <div class="flex items-center gap-2">
-                    <div class="w-1.5 h-5 rounded-full bg-primary"></div>
-                    <h2 class="text-xl font-black text-slate-800 dark:text-white">
-                        Daftar Metode pembayaran
-                    </h2>
+
+<div class="rounded-lg sm:p-5 my-6 bg-white dark:bg-slate-950">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5">
+
+        <div class="min-w-0">
+            <div class="flex items-center gap-2">
+                <div class="w-1.5 h-5 rounded-full bg-primary"></div>
+                <h2 class="text-xl font-black text-slate-800 dark:text-white">
+                    Daftar Metode Pembayaran
+                </h2>
+            </div>
+
+            <p class="text-xs font-medium text-slate-400 mt-1 ml-3.5">
+                Kelola metode pembayaran yang tersedia.
+            </p>
+        </div>
+
+        <form action="" method="GET"
+              class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto"
+              autocomplete="off">
+
+            <input type="hidden" name="route"
+                   value="<?= htmlspecialchars($_GET['route'] ?? '') ?>">
+
+            <?php $statusFilter = $_GET['status'] ?? ''; ?>
+
+            <!-- Filter Status -->
+            <div class="relative w-full sm:w-44 shrink-0">
+                <select
+                    name="status"
+                    onchange="this.form.submit()"
+                    class="w-full h-12 pl-4 pr-10 bg-gray-50 dark:bg-slate-800
+                           text-sm font-bold text-gray-700 dark:text-gray-200
+                           border border-gray-200 dark:border-slate-700
+                           rounded-lg focus:outline-none focus:ring-2
+                           focus:ring-primary cursor-pointer appearance-none">
+
+                    <option value=""
+                        <?= $statusFilter === '' ? 'selected' : '' ?>>
+                        Semua Status
+                    </option>
+
+                    <option value="1"
+                        <?= $statusFilter === '1' ? 'selected' : '' ?>>
+                        Aktif
+                    </option>
+
+                    <option value="0"
+                        <?= $statusFilter === '0' ? 'selected' : '' ?>>
+                        Tidak Aktif
+                    </option>
+                </select>
+
+                <div class="absolute inset-y-0 right-3 flex items-center
+                            pointer-events-none text-gray-400">
+                    <i class="bx bxs-chevron-down text-lg"></i>
+                </div>
+            </div>
+
+            <!-- Pencarian -->
+            <div class="relative flex items-center gap-2 p-1.5
+                        rounded-lg border-2 border-gray-200/80
+                        dark:border-slate-700 bg-white dark:bg-slate-800
+                        focus-within:ring-2 focus-within:ring-primary
+                        transition-all min-h-[48px] w-full sm:w-[280px]">
+
+                <div class="flex items-center text-gray-400 pl-2 shrink-0">
+                    <i class="bx bx-search text-lg"></i>
                 </div>
 
-                <p class="text-xs font-medium text-slate-400 mt-1 ml-3.5">
-                    Kelola metode pembayaran yang tersedia.
-                </p>
+                <input
+                    name="cari"
+                    type="search"
+                    id="search-dropdown"
+                    class="input-delay flex-1 px-1 py-1 bg-transparent
+                           text-slate-900 dark:text-slate-100 text-sm
+                           placeholder:text-gray-400 focus:outline-none
+                           font-medium min-w-0"
+                    placeholder="Cari metode..."
+                    value="<?= htmlspecialchars($_GET['cari'] ?? '') ?>">
             </div>
-            <div class="flex items-center gap-3 w-full sm:w-auto">
-                <form action="" method="GET" class="flex-1 sm:w-[280px]" autocomplete="off">
-                    <input type="hidden" name="route" value="<?= htmlspecialchars($_GET['route'] ?? '')?>">
-                    <div class="relative flex items-center gap-2 p-1.5 rounded-lg border-2 border-gray-200/80 dark:border-slate-700 bg-white dark:bg-slate-800 focus-within:ring-2 focus-within:ring-primary transition-all min-h-[48px]">
-                        <div class="flex items-center text-gray-400 pl-2 shrink-0">
-                            <i class="bx bx-search text-lg"></i>
-                        </div>
 
-                        <input
-                            name="cari"
-                            type="search"
-                            id="search-dropdown"
-                            class="input-delay flex-1 px-1 py-1 bg-transparent text-slate-900 dark:text-slate-100 text-sm placeholder:text-gray-400 focus:outline-none font-medium min-w-0"
-                            placeholder="Cari metode..."
-                            value="<?= htmlspecialchars($_GET['cari'] ?? '')?>"
-                            >
-                    </div>
-                </form>
-            </div>
-        </div>
+        </form>
+    </div>
+</div>
 
         <div class="overflow-x-auto overflow-y-auto max-h-[700px] p-1">
             <table id="selection-table" class="w-full min-w-[600px] text-sm">

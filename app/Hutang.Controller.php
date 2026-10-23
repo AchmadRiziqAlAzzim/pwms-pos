@@ -42,7 +42,9 @@ if ($cari !== '') {
             t.kode_transaksi LIKE ?
             OR t.tanggal LIKE ?
             OR p.nama_pelanggan LIKE ?
-            OR t.total LIKE ?
+            OR CAST(t.total AS CHAR) LIKE ?
+            OR a.nama LIKE ?
+            OR r.nama_role LIKE ?
         )
     ";
 
@@ -52,8 +54,10 @@ if ($cari !== '') {
     $params[] = $keyword;
     $params[] = $keyword;
     $params[] = $keyword;
+    $params[] = $keyword;
+    $params[] = $keyword;
 
-    $types .= "ssss";
+    $types .= "ssssss";
 }
 
 
@@ -64,6 +68,15 @@ $sqlCount = "
 
     LEFT JOIN pelanggan p
         ON t.id_pelanggan = p.id_pelanggan
+
+    LEFT JOIN users u
+    ON t.id_user = u.id_user
+
+LEFT JOIN anggota a
+    ON u.id_anggota = a.id_anggota
+
+LEFT JOIN roles r
+    ON u.id_role = r.id_role
 
     WHERE t.status_transaksi = 1
       AND t.status_pembayaran = 1
@@ -144,6 +157,10 @@ $sql = "
 
     LEFT JOIN anggota a
         ON u.id_anggota = a.id_anggota
+
+        
+LEFT JOIN roles r
+    ON u.id_role = r.id_role
 
     WHERE t.status_transaksi = 1
       AND t.status_pembayaran = 1

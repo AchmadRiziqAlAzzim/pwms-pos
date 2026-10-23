@@ -419,12 +419,13 @@
                                         <?php endfor; ?>
                                         <li> 
                                             <?php if ($halaman < $totalHalaman): ?>
-                                                <a
-                                                    href="?route=jurnal&page=<?= $halaman + 1; ?>"
-                                                    class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                                                    Next
-                                                    <i class="bx bx-chevron-right"></i>
-                                                </a>
+                                                <a href="?route=jurnal
+                                                &page=<?= $halaman + 1 ?>
+                                                &keyword=<?= urlencode($keyword) ?>
+                                                &tanggal_mulai=<?= urlencode($tanggalMulai) ?>
+                                                &tanggal_sampai=<?= urlencode($tanggalSampai) ?>">
+                                                Next
+                                            </a>
                                             <?php else: ?>
                                                 <span
                                                     class="flex items-center justify-center px-3.5 h-9 rounded-lg text-gray-400 opacity-50 cursor-not-allowed" >
@@ -680,12 +681,11 @@
                             class="w-full"
                         >
 
-                            <input
-                                type="hidden"
-                                name="route"
-                                value="laporan"
-                            >
-
+                           <input
+                            type="hidden"
+                            name="route"
+                            value="jurnal"
+                        >
 
                             <div class="grid grid-cols-1 gap-5">
                      

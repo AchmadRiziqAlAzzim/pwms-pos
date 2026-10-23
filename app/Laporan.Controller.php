@@ -1,6 +1,8 @@
 <?php
 
+
 $cari = trim($_GET['cari'] ?? '');
+$status = $_GET['status'] ?? '';
 
 $currentPage = max(1, (int) ($_GET['page'] ?? 1));
 $limit = 10;
@@ -16,119 +18,101 @@ $tanggalSampai = $_GET['tanggal_sampai'] ?? '';
 $idUserLogin = (int) ($_SESSION['id_user'] ?? 0);
 $roleLogin = $_SESSION['role'] ?? '';
 
-$where = "";
-
+$where = [];
 $params = [];
-$types = "";
+$types = '';
+
+if ($status !== '' && in_array($status, ['1', '2'], true)) {
+    $where[] = 't.status_pembayaran = ?';
+    $params[] = (int) $status;
+    $types .= 'i';
+}
 
 if ($cari !== '') {
-
-    $where .= "
-        AND (
-            t.kode_transaksi LIKE ?
-            OR t.tanggal LIKE ?
-            OR COALESCE(p.nama_pelanggan, '') LIKE ?
-            OR t.total LIKE ?
-        )
-    ";
+    $where[] = "(
+        t.kode_transaksi LIKE ?
+        OR t.tanggal LIKE ?
+        OR COALESCE(p.nama_pelanggan, '') LIKE ?
+        OR CAST(t.total AS CHAR) LIKE ?
+        OR m.nama_metode LIKE ?
+    )";
 
     $keyword = "%{$cari}%";
 
-    $params[] = $keyword;
-    $params[] = $keyword;
-    $params[] = $keyword;
-    $params[] = $keyword;
+    for ($i = 0; $i < 5; $i++) {
+        $params[] = $keyword;
+    }
 
-    $types .= "ssss";
+    $types .= 'sssss';
 }
 
 if ($pembayaran !== '') {
-
-    $where .= " AND t.id_metode = ?";
-
+    $where[] = 't.id_metode = ?';
     $params[] = (int) $pembayaran;
-    $types .= "i";
+    $types .= 'i';
 }
 
 if ($statusPembayaranFilter !== '') {
-    $where .= " AND t.status_pembayaran = ?";
+    $where[] = 't.status_pembayaran = ?';
     $params[] = (int) $statusPembayaranFilter;
-    $types .= "i";
+    $types .= 'i';
 }
 
-
 if ($kategori !== '') {
-
-    $where .= "
-        AND EXISTS (
-            SELECT 1
-            FROM detail_transaksi dt2
-            INNER JOIN menu m2
-                ON m2.id_menu = dt2.id_menu
-            WHERE dt2.id_transaksi = t.id_transaksi
-            AND m2.id_kategori = ?
-        )
-    ";
+    $where[] = "EXISTS (
+        SELECT 1
+        FROM detail_transaksi dt2
+        INNER JOIN menu m2 ON m2.id_menu = dt2.id_menu
+        WHERE dt2.id_transaksi = t.id_transaksi
+          AND m2.id_kategori = ?
+    )";
 
     $params[] = (int) $kategori;
-    $types .= "i";
+    $types .= 'i';
 }
 
 if ($roleLogin === 'kasir') {
-
-    $where .= " AND t.id_user = ?";
-
+    $where[] = 't.id_user = ?';
     $params[] = $idUserLogin;
-    $types .= "i";
+    $types .= 'i';
 
 } elseif ($roleLogin === 'admin') {
-
-    $where .= "
-        AND EXISTS (
-            SELECT 1
-            FROM users ux
-            LEFT JOIN roles rx ON ux.id_role = rx.id_role
-            WHERE ux.id_user = t.id_user
-            AND rx.kode_role <> 'super_admin'
-        )
-    ";
+    $where[] = "EXISTS (
+        SELECT 1
+        FROM users ux
+        LEFT JOIN roles rx ON ux.id_role = rx.id_role
+        WHERE ux.id_user = t.id_user
+          AND rx.kode_role <> 'super_admin'
+    )";
 
     if ($pengguna !== '') {
-
-        $where .= " AND t.id_user = ?";
-
+        $where[] = 't.id_user = ?';
         $params[] = (int) $pengguna;
-        $types .= "i";
+        $types .= 'i';
     }
 
-} elseif ($roleLogin === 'super_admin') {
-
-    if ($pengguna !== '') {
-
-        $where .= " AND t.id_user = ?";
-
-        $params[] = (int) $pengguna;
-        $types .= "i";
-    }
+} elseif ($roleLogin === 'super_admin' && $pengguna !== '') {
+    $where[] = 't.id_user = ?';
+    $params[] = (int) $pengguna;
+    $types .= 'i';
 }
-
 
 if ($tanggalMulai !== '') {
-
-    $where .= " AND DATE(t.tanggal) >= ?";
-
+    $where[] = 'DATE(t.tanggal) >= ?';
     $params[] = $tanggalMulai;
-    $types .= "s";
+    $types .= 's';
 }
-
 
 if ($tanggalSampai !== '') {
-
-    $where .= " AND DATE(t.tanggal) <= ?";
-
+    $where[] = 'DATE(t.tanggal) <= ?';
     $params[] = $tanggalSampai;
-    $types .= "s";
+    $types .= 's';
 }
+
+$sqlWhere = !empty($where)
+    ? ' AND ' . implode(' AND ', $where)
+    : '';
+
 
 // EXPORT LAPORAN KE EXCEL
 if (($_GET['export'] ?? '') === 'excel') {
@@ -167,7 +151,7 @@ if (($_GET['export'] ?? '') === 'excel') {
             ON a.id_anggota = u.id_anggota
 
         WHERE 1=1
-        $where
+        $sqlWhere
 
         ORDER BY t.id_transaksi DESC
     ";
@@ -419,10 +403,12 @@ echo '</table>';
 $sqlCount = "
     SELECT COUNT(*) AS total
     FROM transaksi t
+    LEFT JOIN metode m
+        ON m.id_metode = t.id_metode
     LEFT JOIN pelanggan p
         ON p.id_pelanggan = t.id_pelanggan
     WHERE 1=1
-    $where
+    $sqlWhere
 ";
 
 $stmtCount = mysqli_prepare($conn, $sqlCount);
@@ -500,13 +486,12 @@ $sql = "
         ON u.id_anggota = a.id_anggota
 
     LEFT JOIN users up
-        ON t.id_user = up.id_user
-
+        ON t.id_pelunas = up.id_user
     LEFT JOIN anggota ap
         ON up.id_anggota = ap.id_anggota
 
     WHERE 1=1
-    $where
+    $sqlWhere
 
     ORDER BY t.id_transaksi DESC
 
@@ -677,10 +662,12 @@ $sqlStatistik = "
         ), 0) AS pengeluaran
 
     FROM transaksi t
+    LEFT JOIN metode m
+        ON m.id_metode = t.id_metode
     LEFT JOIN pelanggan p
         ON p.id_pelanggan = t.id_pelanggan
     WHERE t.status_pembayaran = 2
-    $where
+    $sqlWhere
 ";
 $stmtStatistik = mysqli_prepare($conn, $sqlStatistik);
 
@@ -720,11 +707,14 @@ $sqlMenuTerjual = "
     INNER JOIN detail_transaksi dt
         ON dt.id_transaksi = t.id_transaksi
 
+        LEFT JOIN metode m
+        ON m.id_metode = t.id_metode
+
     LEFT JOIN pelanggan p
         ON p.id_pelanggan = t.id_pelanggan
 
     WHERE 1=1
-    $where
+    $sqlWhere
 ";
 
 $stmtMenuTerjual = mysqli_prepare($conn, $sqlMenuTerjual);

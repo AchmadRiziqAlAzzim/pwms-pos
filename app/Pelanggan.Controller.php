@@ -8,11 +8,12 @@ $params = [];
 $types = "";
 
 if($cari !== ''){
-    $where .= " AND ( nama_pelanggan LIKE ? OR telepon LIKE ? )";
+    $where .= " AND ( nama_pelanggan LIKE ? OR telepon LIKE ? OR catatan LIKE ? )";
     $keyword = "%$cari%";
     $params[] = $keyword;
     $params[] = $keyword;
-    $types .= "ss";
+    $params[] = $keyword;
+    $types .= "sss";
 }
 
 $sqlCount = "SELECT COUNT(*) AS total FROM pelanggan WHERE 1=1 $where";

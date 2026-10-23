@@ -121,28 +121,37 @@
                                 </span>
                             </button>
                         </div> 
-                        <form method="GET" autocomplete="off">
-                            <input type="hidden" name="route" value="<?= htmlspecialchars($_GET['route'] ?? '')?>">
-                            <div class="flex flex-col md:flex-row gap-3 my-5"> 
-                                <div class="relative w-full md:w-64"> 
-                                    <select  
-                                        name="kategorif" 
-                                        required 
-                                        class="w-full h-12 px-4 pr-10 bg-white border border-gray-200 rounded-lg text-sm font-semibold text-slate-900 focus:bg-white focus:ring-2 focus:ring-primary outline-none transition-all appearance-none cursor-pointer" 
-                                        onchange="this.form.submit()"
-                                    > 
-                                        <option value="" selected>Semua Kategori</option> 
-                                        <?php foreach($kategori as $d): ?>
-                                            <option value="<?= $d['id_kategori'] ?>" <?= $kategorif == $d['id_kategori'] ? 'selected' :'' ?>><?= $d['nama_kategori'] ?></option>
-                                        <?php endforeach; ?>
-                                    </select> 
-    
-                                    <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gray-400"> 
-                                        <i class="bx bx-chevron-down text-xl"></i> 
-                                    </div> 
-                                </div> 
-    
-                                <div class="relative w-full flex-1"> 
+                        
+<form method="GET" autocomplete="off">
+    <input type="hidden" name="route" value="kasir">
+
+    <input
+        type="hidden"
+        name="layoutMode"
+        value="<?= htmlspecialchars($_GET['layoutMode'] ?? 'table') ?>"
+    >
+
+    <div class="flex flex-col md:flex-row gap-3 my-5">
+        <div class="relative w-full md:w-64">
+            <select
+                name="kategorif"
+                class="w-full h-12 px-4 pr-10 bg-white border border-gray-200 rounded-lg text-sm font-semibold"
+                onchange="this.form.submit()"
+            >
+                <option value="">Semua Kategori</option>
+
+                <?php foreach ($kategori as $d): ?>
+                    <option
+                        value="<?= $d['id_kategori'] ?>"
+                        <?= $kategorif == $d['id_kategori'] ? 'selected' : '' ?>
+                    >
+                        <?= htmlspecialchars($d['nama_kategori']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+       <div class="relative w-full flex-1"> 
                                     <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-gray-400"> 
                                         <i class="bx bx-search text-xl"></i> 
                                     </div> 
@@ -155,8 +164,8 @@
                                         value="<?= htmlspecialchars($_GET['cari'] ?? '')?>"
                                     > 
                                 </div> 
-                            </div> 
-                        </form>
+    </div>
+</form>
 
                     </div> 
                 </div>
@@ -227,7 +236,7 @@
                                             </td>
 
                                             <td class="px-5 py-4">
-                                                <span class="font-bold <?= $w ?>"><?= $d['nama'] ?></span>
+                                                <span class="font-bold text-black <?= $w ?>"><?= $d['nama'] ?></span>
                                             </td>
 
                                             <td>
@@ -237,7 +246,7 @@
                                             </td>
 
                                             <td class="px-5 py-4">
-                                                <span class="font-bold <?= $w ?>">Rp <?= number_format($d['harga'], 0, ',', '.') ?></span>
+                                                <span class="font-bold text-black <?= $w ?>">Rp <?= number_format($d['harga'], 0, ',', '.') ?></span>
                                             </td>
 
                                             <?php if($d['menu_tersedia'] !== 0): ?>

@@ -3,44 +3,91 @@ $tipe = fetchAllAssoc("SELECT * FROM tipe WHERE kode_tipe <> 'tunai'");
 $totalMetode = mysqli_fetch_assoc(query("SELECT COUNT(*) AS total FROM metode"))['total'];
 $totalMetodeAktif = mysqli_fetch_assoc(query("SELECT COUNT(*) AS total FROM metode WHERE status=1"))['total'];
 
+
 $cari = trim($_GET['cari'] ?? '');
+$status = $_GET['status'] ?? '';
+
 $currentPage = max(1, (int) ($_GET['page'] ?? 1));
 $limit = 10;
 $offset = ($currentPage - 1) * $limit;
-$where = "";
-$params = [];
-$types = "";
 
-if($cari !== ''){
-    $where .= " AND ( m.nama_metode LIKE ? OR t.nama_tipe LIKE ? )";
-    $keyword = "%$cari%";
-    $params[] = $keyword;
-    $params[] = $keyword;
-    $types .= "ss";
+// Kondisi filter
+$where = [];
+$params = [];
+$types = '';
+
+if ($status !== '' && in_array($status, ['0', '1'], true)) {
+    $where[] = "m.status = ?";
+    $params[] = (int) $status;
+    $types .= 'i';
 }
 
-$sqlCount = "SELECT COUNT(*) AS total FROM metode m LEFT JOIN tipe t ON m.id_tipe = t.id_tipe WHERE 1=1 $where";
+
+if ($cari !== '') {
+    $where[] = "(m.nama_metode LIKE ? OR t.nama_tipe LIKE ?)";
+    $keyword = "%$cari%";
+
+    $params[] = $keyword;
+    $params[] = $keyword;
+    $types .= 'ss';
+}
+
+$sqlWhere = !empty($where)
+    ? " WHERE " . implode(" AND ", $where)
+    : "";
+
+// Hitung total data sesuai filter
+$sqlCount = "
+    SELECT COUNT(*) AS total
+    FROM metode m
+    LEFT JOIN tipe t ON m.id_tipe = t.id_tipe
+    $sqlWhere
+";
+
 $stmtCount = mysqli_prepare($conn, $sqlCount);
 
-if(!empty($params)){
+if (!empty($params)) {
     mysqli_stmt_bind_param($stmtCount, $types, ...$params);
 }
 
 mysqli_stmt_execute($stmtCount);
 $resultCount = mysqli_stmt_get_result($stmtCount);
-$totalData = mysqli_fetch_assoc($resultCount)['total'];
-$totalPage = max(1, (int) ceil($totalData / $limit));
+$totalData = (int) mysqli_fetch_assoc($resultCount)['total'];
+
 mysqli_stmt_close($stmtCount);
 
-$sql = "SELECT * FROM metode m LEFT JOIN tipe t ON m.id_tipe = t.id_tipe WHERE 1=1 $where LIMIT ? OFFSET ?";
+// Hitung total halaman
+$totalPage = max(1, (int) ceil($totalData / $limit));
+
+// Jika halaman melebihi jumlah halaman, sesuaikan
+if ($currentPage > $totalPage) {
+    $currentPage = $totalPage;
+    $offset = ($currentPage - 1) * $limit;
+}
+
+// Ambil data sesuai filter dan pagination
+$sql = "
+    SELECT m.*, t.nama_tipe, t.kode_tipe
+    FROM metode m
+    LEFT JOIN tipe t ON m.id_tipe = t.id_tipe
+    $sqlWhere
+    ORDER BY m.id_metode DESC
+    LIMIT ? OFFSET ?
+";
+
 $paramsData = $params;
-$typesData = $types . "ii";
+$typesData = $types . 'ii';
+
 $paramsData[] = $limit;
 $paramsData[] = $offset;
+
 $stmt = mysqli_prepare($conn, $sql);
+
 mysqli_stmt_bind_param($stmt, $typesData, ...$paramsData);
 mysqli_stmt_execute($stmt);
+
 $data = mysqli_stmt_get_result($stmt);
+
 
 function tambah($d){
     $nama = trim($d['nama'] ?? '');

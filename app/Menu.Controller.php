@@ -386,6 +386,7 @@ $sql = "
         ON menu.id_kategori = kategori.id_kategori
     WHERE 1=1
 ";
+
 if ($kategoripilih !== '') {
 
     $kategoripilih = (int) $kategoripilih;
@@ -399,6 +400,15 @@ if ($keyword !== '') {
     $sql .= " AND (
         menu.nama LIKE '%$keywordEscaped%'
         OR menu.harga LIKE '%$keywordEscaped%'
+        OR menu.deskripsi LIKE '%$keywordEscaped%'
+        OR CASE menu.menu_tersedia
+            WHEN 1 THEN 'Tersedia'
+            WHEN 0 THEN 'Tidak Tersedia'
+          END LIKE '%$keywordEscaped%'
+        OR CASE menu.status_menu
+            WHEN 1 THEN 'Aktif'
+            WHEN 0 THEN 'Nonaktif'
+          END LIKE '%$keywordEscaped%'
     )";
 }
 $sql .= " ORDER BY menu.id_menu DESC";
@@ -412,8 +422,17 @@ if ($kategoripilih !== '') {
 }
 if ($keyword !== '') {
     $sqlTotal .= " AND (
-        nama LIKE '%$keywordEscaped%'
-        OR harga LIKE '%$keywordEscaped%'
+        menu.nama LIKE '%$keywordEscaped%'
+        OR menu.harga LIKE '%$keywordEscaped%'
+        OR menu.deskripsi LIKE '%$keywordEscaped%'
+        OR CASE menu.menu_tersedia
+            WHEN 1 THEN 'Tersedia'
+            WHEN 0 THEN 'Tidak Tersedia'
+          END LIKE '%$keywordEscaped%'
+        OR CASE menu.status_menu
+            WHEN 1 THEN 'Aktif'
+            WHEN 0 THEN 'Nonaktif'
+          END LIKE '%$keywordEscaped%'
     )";
 }
 $resultTotal = query($sqlTotal);

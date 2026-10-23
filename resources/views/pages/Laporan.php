@@ -193,7 +193,7 @@ $urlExport = '?' . http_build_query($exportParams);
                 <div class="mt-5">
 
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">
-                        Total Pendapatan Bersih
+                        Total Pendapatan
                     </p>
                    
                         <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-1.5">
@@ -296,57 +296,72 @@ $urlExport = '?' . http_build_query($exportParams);
                 </div>
 
 
-                <div class="relative w-full lg:w-96">
+                <form action="" method="GET"
+              class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto"
+              autocomplete="off">
 
-                    <div
-                        class="
-                            relative flex items-center gap-2
-                            p-1.5
-                            rounded-lg
-                            border-2 border-gray-200/80
-                            dark:border-gray-700
-                            bg-white dark:bg-gray-800
-                            min-h-[48px]
-                            transition-all
-                            focus-within:ring-2
-                            focus-within:ring-primary
-                        "
-                    >
+            <input type="hidden" name="route"
+                   value="<?= htmlspecialchars($_GET['route'] ?? '') ?>">
 
-                        <div class="flex items-center text-gray-400 shrink-0 ml-2">
+            <?php $statusFilter = $_GET['status'] ?? ''; ?>
 
-                            <i class="bx bx-search text-lg"></i>
+            <!-- Filter Status -->
+            <div class="relative w-full sm:w-44 shrink-0">
+                <select
+                    name="status"
+                    onchange="this.form.submit()"
+                    class="w-full h-12 pl-4 pr-10 bg-gray-50 dark:bg-slate-800
+                           text-sm font-bold text-gray-700 dark:text-gray-200
+                           border border-gray-200 dark:border-slate-700
+                           rounded-lg focus:outline-none focus:ring-2
+                           focus:ring-primary cursor-pointer appearance-none">
 
-                        </div>
+                    <option value=""
+                        <?= $statusFilter === '' ? 'selected' : '' ?>>
+                        Semua Status
+                    </option>
 
+                    <option value="1"
+                        <?= $statusFilter === '1' ? 'selected' : '' ?>>
+                        Belum Lunas
+                    </option>
 
-                        <div class="flex-1 min-w-0">
-                            <form action="" method="GET" autocomplete="off">
-                                <input type="hidden" name="route" value="laporan">
-                            
-                                <input
-                                    type="search"
-                                    name="cari"
-                                    class="
-                                        input-delay
-                                        w-full
-                                        px-1 py-0.5
-                                        bg-transparent
-                                        text-gray-900 dark:text-gray-100
-                                        text-sm
-                                        placeholder:text-gray-400
-                                        focus:outline-none
-                                        font-medium
-                                    "
-                                    placeholder="Cari transaksi..."
-                                    value="<?= htmlspecialchars($cari) ?>"
-                                >
-                            </form>
-                        </div>
+                    <option value="2"
+                        <?= $statusFilter === '2' ? 'selected' : '' ?>>
+                        Lunas
+                    </option>
+                </select>
 
-                    </div>
-
+                <div class="absolute inset-y-0 right-3 flex items-center
+                            pointer-events-none text-gray-400">
+                    <i class="bx bxs-chevron-down text-lg"></i>
                 </div>
+            </div>
+
+            <!-- Pencarian -->
+            <div class="relative flex items-center gap-2 p-1.5
+                        rounded-lg border-2 border-gray-200/80
+                        dark:border-slate-700 bg-white dark:bg-slate-800
+                        focus-within:ring-2 focus-within:ring-primary
+                        transition-all min-h-[48px] w-full sm:w-[280px]">
+
+                <div class="flex items-center text-gray-400 pl-2 shrink-0">
+                    <i class="bx bx-search text-lg"></i>
+                </div>
+
+                <input
+                    name="cari"
+                    type="search"
+                    id="search-dropdown"
+                    class="input-delay flex-1 px-1 py-1 bg-transparent
+                           text-slate-900 dark:text-slate-100 text-sm
+                           placeholder:text-gray-400 focus:outline-none
+                           font-medium min-w-0"
+                    placeholder="Cari metode..."
+                    value="<?= htmlspecialchars($_GET['cari'] ?? '') ?>">
+            </div>
+
+        </form>
 
             </div>
 
