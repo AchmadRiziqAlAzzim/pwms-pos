@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 13 Okt 2026 pada 04.33
+-- Waktu pembuatan: 29 Okt 2026 pada 07.00
 -- Versi server: 10.4.32-MariaDB
--- Versi PHP: 8.5.6
+-- Versi PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -61,25 +61,6 @@ CREATE TABLE `detail_transaksi` (
   `total` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data untuk tabel `detail_transaksi`
---
-
-INSERT INTO `detail_transaksi` (`id`, `id_transaksi`, `id_menu`, `qty`, `harga`, `catatan`, `diskon`, `subtotal`, `total`) VALUES
-(1, 1, 1, 1, 10000, '', 0, 10000, 10000),
-(2, 1, 2, 1, 5000, '', 0, 5000, 5000),
-(3, 2, 1, 10, 10000, '', 5000, 100000, 95000),
-(4, 3, 1, 3, 10000, '', 0, 30000, 30000),
-(5, 4, 1, 1, 10000, '', 0, 10000, 10000),
-(6, 5, 1, 1, 10000, '', 0, 10000, 10000),
-(7, 5, 2, 1, 5000, '', 0, 5000, 5000),
-(8, 9, 2, 28, 5000, '', 0, 140000, 140000),
-(9, 9, 3, 3, 8000, '', 0, 24000, 24000),
-(10, 9, 1, 99, 10000, '', 0, 990000, 990000),
-(11, 19, 1, 1, 10000, '', 0, 10000, 10000),
-(12, 19, 2, 1, 5000, '', 0, 5000, 5000),
-(13, 53, 2, 1, 5000, '', 0, 5000, 5000);
-
 -- --------------------------------------------------------
 
 --
@@ -116,16 +97,6 @@ CREATE TABLE `menu` (
   `menu_tersedia` tinyint(4) NOT NULL,
   `status_menu` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `menu`
---
-
-INSERT INTO `menu` (`id_menu`, `foto`, `nama`, `id_kategori`, `deskripsi`, `harga`, `menu_tersedia`, `status_menu`) VALUES
-(1, 'menu_6ac7090fb8c90.png', 'Nasi Goreng', 1, 'Nasinya digoreng', 10000, 1, 1),
-(2, '', 'Es Teh', 2, '', 5000, 1, 1),
-(3, '', 'Kentang Goreng', 3, '', 8000, 0, 1),
-(4, '', 'kripik Singkong', 3, '', 10000, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -169,7 +140,7 @@ CREATE TABLE `pelanggan` (
 --
 
 INSERT INTO `pelanggan` (`id_pelanggan`, `nama_pelanggan`, `telepon`, `catatan`) VALUES
-(1, 'Pelanggan', '081234512345', '');
+(1, 'Pelanggan', '081234512345', 'untuk orang bisa piutang');
 
 -- --------------------------------------------------------
 
@@ -190,6 +161,19 @@ CREATE TABLE `pengaturan` (
 
 INSERT INTO `pengaturan` (`id`, `nama_usaha`, `telepon`, `alamat`) VALUES
 (1, 'Toko', '081234512345', 'Planet Bumi');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `pengeluaran`
+--
+
+CREATE TABLE `pengeluaran` (
+  `id_pengeluaran` int(11) NOT NULL,
+  `tanggal` date NOT NULL,
+  `harga` int(11) NOT NULL,
+  `keterangan` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -258,20 +242,6 @@ CREATE TABLE `transaksi` (
   `id_user` int(11) NOT NULL,
   `id_pelunas` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data untuk tabel `transaksi`
---
-
-INSERT INTO `transaksi` (`id_transaksi`, `kode_transaksi`, `tanggal`, `tipe_pesanan`, `id_pelanggan`, `nama_pelanggan`, `subtotal`, `total_diskon`, `total`, `status_transaksi`, `status_pembayaran`, `id_metode`, `uang_diterima`, `kembalian`, `id_user`, `id_pelunas`) VALUES
-(1, 'TRX-20261008121345', '2026-10-08 12:13:45', 1, 1, '', 15000, 0, 15000, 1, 2, NULL, 15000, 0, 1, 1),
-(2, 'TRX-20261009-0001', '2026-10-09 09:35:49', 1, NULL, '', 100000, 5000, 95000, 1, 2, 1, 100000, 5000, 1, NULL),
-(3, 'TRX-20261009-0002', '2026-10-09 09:48:16', 1, NULL, '', 30000, 0, 30000, 1, 2, 1, 30000, 0, 1, NULL),
-(4, 'TRX-20261009-0003', '2026-10-09 09:49:40', 1, NULL, '', 10000, 0, 10000, 1, 2, 1, 10000, 0, 1, NULL),
-(5, 'TRX-20261009-0004', '2026-10-09 10:05:44', 1, NULL, '', 15000, 0, 15000, 1, 2, 1, 20000, 5000, 3, NULL),
-(9, 'TRX-20261009-0005', '2026-10-09 14:55:07', 1, NULL, '', 1154000, 0, 1154000, 1, 2, 2, 1154000, 0, 1, NULL),
-(19, 'TRX-20261012-0001', '2026-10-12 14:20:06', 1, 1, '', 15000, 0, 15000, 1, 2, 1, 50000, 35000, 3, NULL),
-(53, 'TRX-20261012-0002', '2026-10-12 16:50:46', 1, NULL, '', 5000, 0, 5000, 2, 1, NULL, 0, 0, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -347,6 +317,12 @@ ALTER TABLE `pengaturan`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `pengeluaran`
+--
+ALTER TABLE `pengeluaran`
+  ADD PRIMARY KEY (`id_pengeluaran`);
+
+--
 -- Indeks untuk tabel `roles`
 --
 ALTER TABLE `roles`
@@ -390,19 +366,19 @@ ALTER TABLE `anggota`
 -- AUTO_INCREMENT untuk tabel `detail_transaksi`
 --
 ALTER TABLE `detail_transaksi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `kategori`
 --
 ALTER TABLE `kategori`
-  MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `metode`
@@ -414,13 +390,19 @@ ALTER TABLE `metode`
 -- AUTO_INCREMENT untuk tabel `pelanggan`
 --
 ALTER TABLE `pelanggan`
-  MODIFY `id_pelanggan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_pelanggan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `pengaturan`
 --
 ALTER TABLE `pengaturan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT untuk tabel `pengeluaran`
+--
+ALTER TABLE `pengeluaran`
+  MODIFY `id_pengeluaran` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `roles`
@@ -438,7 +420,7 @@ ALTER TABLE `tipe`
 -- AUTO_INCREMENT untuk tabel `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `users`
