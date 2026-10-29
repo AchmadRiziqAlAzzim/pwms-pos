@@ -1,6 +1,5 @@
 <?php 
 
-
 function pagipengeluaran() {
     global $conn;
 
@@ -11,9 +10,9 @@ function pagipengeluaran() {
     $halaman = max(1, (int) ($_GET['page'] ?? 1));
     $perHalaman = 5;
 
-    
     $kondisi = [];
 
+    // Filter pencarian
     if ($keyword !== '') {
         $keywordEscaped = mysqli_real_escape_string($conn, $keyword);
 
@@ -24,26 +23,34 @@ function pagipengeluaran() {
         )";
     }
 
-    
+    // Filter tanggal mulai
     if ($tanggalMulai !== '') {
         $tanggalMulaiEscaped = mysqli_real_escape_string($conn, $tanggalMulai);
+
         $kondisi[] = "tanggal >= '$tanggalMulaiEscaped'";
     }
 
     // Filter tanggal sampai
     if ($tanggalSampai !== '') {
         $tanggalSampaiEscaped = mysqli_real_escape_string($conn, $tanggalSampai);
+
         $kondisi[] = "tanggal <= '$tanggalSampaiEscaped'";
     }
 
-    // Menggabungkan seluruh kondisi
+    // Gabungkan filter pencarian dan tanggal
     $where = '';
+
     if (!empty($kondisi)) {
         $where = ' WHERE ' . implode(' AND ', $kondisi);
     }
 
-    // Menghitung jumlah data sesuai filter
-    $sqlTotal = "SELECT COUNT(*) AS total FROM pengeluaran $where";
+    // Hitung total data berdasarkan semua filter
+    $sqlTotal = "
+        SELECT COUNT(*) AS total
+        FROM pengeluaran
+        $where
+    ";
+
     $resultTotal = query($sqlTotal);
     $dataTotal = mysqli_fetch_assoc($resultTotal);
 
@@ -56,7 +63,7 @@ function pagipengeluaran() {
 
     $offset = ($halaman - 1) * $perHalaman;
 
-   
+    // Ambil data berdasarkan filter yang sama
     $sql = "
         SELECT *
         FROM pengeluaran
@@ -81,6 +88,7 @@ function pagipengeluaran() {
 
     return $rows;
 }
+
 
 
 

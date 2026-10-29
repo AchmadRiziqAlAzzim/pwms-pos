@@ -172,7 +172,7 @@
                     <?php endif; ?>
                         <div class="mt-3">
                             <p class="text-xs font-semibold text-primary">
-                                Pendapatan hari ini
+                                Pendapatani bulan ini
                             </p>
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                 <div class="bg-white p-6 rounded-lg border border-gray-200/80 flex items-center justify-between">
                     <div>
                         <p class="text-sm font-semibold text-gray-700 mb-2">
-                            Transaksi Hari Ini
+                            Transaksi bulan Ini
                         </p>
                         <h2 class="text-3xl font-black text-gray-900">
                             <?= $statistik['total_transaksi'] ?>
