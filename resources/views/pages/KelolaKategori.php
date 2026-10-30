@@ -368,5 +368,8 @@
         formCariKategori.submit();
     }, 500);
     });
-    
+    function modalEdit(btn){
+      $('#id').val(btn.dataset.id);
+      $('#nama').val(btn.dataset.nama);
+    }
 </script>
